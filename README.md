@@ -1,5 +1,5 @@
 # Runtime_Terror
 Commands to run
 
-npm ci \newline
+npm ci\
 npm start
