@@ -44,16 +44,11 @@ function Login() {
 
           <MDBTabsContent>
             <MDBTabsPane show={justifyActive === 'tab1'}>
-              <MDBInput wrapperClass='mb-4' label='Email address' id='form1' type='email' />
-              <MDBInput wrapperClass='mb-4' label='Password' id='form2' type='password' />
-
-              <div className="d-flex justify-content-between mx-4 mb-4">
-                <MDBCheckbox name='flexCheck' value='' id='flexCheckDefault' label='Remember me' />
-                <a href="!#">Forgot password?</a>
-              </div>
+              <MDBInput wrapperClass='mb-4' placeholder='Email address' id='form1' type='email' />
+              <MDBInput wrapperClass='mb-4' placeholder='Password' id='form2' type='password' />
 
               <button className="w-100 btn btn-primary">Sign in</button>
-              <p className="text-center">Not a member? <a href="#!">Register</a></p>
+              <p className="text-center"><a href="#!">Continue as Guest</a></p>
 
             </MDBTabsPane>
 
@@ -61,11 +56,26 @@ function Login() {
 
 
 
-              <MDBInput wrapperClass='mb-4' label='Name' id='form1' type='text' />
-              <MDBInput wrapperClass='mb-4' label='Username' id='form1' type='text' />
-              <MDBInput wrapperClass='mb-4' label='Email' id='form1' type='email' />
-              <MDBInput wrapperClass='mb-4' label='Password' id='form1' type='password' />
-
+              <MDBInput wrapperClass='mb-4' placeholder='First Name' id='form1' type='text' />
+              <MDBInput wrapperClass='mb-4' placeholder='Last Name' id='form1' type='text' />
+              <MDBInput wrapperClass='mb-4' placeholder='Email' id='form1' type='email' />
+              <MDBInput wrapperClass='mb-4' placeholder='Password' id='form1' type='password' />
+              <MDBInput wrapperClass='mb-4' placeholder='Confirm Password' id='form1' type='password' />
+              <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+  <div style={{ marginRight: '10px' }}>
+    <MDBInput wrapperClass='mb-4' id='form1' type='text' placeholder='Tag 1'/>
+  </div>
+  <div style={{ marginRight: '10px' }}>
+    <MDBInput wrapperClass='mb-4' placeholder='Tag 2' id='form2' type='text' />
+  </div>
+  <div style={{ marginRight: '10px' }}>
+    <MDBInput wrapperClass='mb-4' placeholder='Tag 3' id='form3' type='text' />
+  </div>
+  <div style={{ marginRight: '10px' }}>
+    <MDBInput wrapperClass='mb-4' placeholder='Tag 4' id='form4' type='text' />
+  </div>
+  <MDBInput wrapperClass='mb-4' placeholder='Tag 5' id='form5' type='text' />
+</div>
 
               <MDBBtn className="mb-4 w-100">Sign up</MDBBtn>
 
