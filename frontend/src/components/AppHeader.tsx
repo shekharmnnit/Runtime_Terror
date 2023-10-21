@@ -19,7 +19,7 @@ function AppHeader() {
 
         <header className="header">
             <div className="logo-and-title">
-                <Link to="/">
+                <Link to="/home">
                     <div style={{ display: 'inline-flex' }}>
                         <i className="fa-solid fa-user-pen fa-2x"></i>
                     </div>
@@ -30,7 +30,7 @@ function AppHeader() {
             </div>
             <div className="search-box">
                 <input type="text" className="search-bar" placeholder="Search" />
-                <Link to="/"> <i className="fa fa-search"></i> </Link>
+                <Link to="/home"> <i className="fa fa-search"></i> </Link>
             </div>
             <div>
                 <button className="button-create-post" onClick={() => setShow(!show)}>
@@ -50,19 +50,23 @@ function AppHeader() {
                     <i class="fa-solid fa-sort-down"></i>
                 </button> </Link>
             </div> */}
-            <div>
+
+            <div className="header-dropdown">
                 <button className="button-login" onClick={toggleDropdown}>
                     Kunal
                     <i className={`fa-solid fa-sort-${isDropdownOpen ? 'up' : 'down'}`}></i>
+                 
                 </button>
                 {isDropdownOpen && (
-                    <div className="dropdown-content">
-                        <Link to="/">Profile</Link>
-                        <Link to="/">Log out</Link>
-
-                    </div>
-                )}
+                <ul >
+                <li> Profile</li>
+                    <li>Log out</li>
+                    {/* <li> <Link to="/">Profile</Link></li>
+                    <li><Link to="/">Log out</Link></li> */}
+                </ul>
+                  )}
             </div>
+            
         </header>
     )
 }
