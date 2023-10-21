@@ -1,0 +1,110 @@
+header {
+    background-color: var(--secondary-background-color);
+
+    display: flex;
+    padding: 0.5em;
+     /*gap: 0.25em;*/
+    min-height: 70px;
+    align-items: center; /* Vertically center items */
+    justify-content: space-between; /* Distribute items evenly horizontally */
+    top: 50%;
+    /*transform: translate(0, 50%);*/
+}
+
+.logo-and-title{
+    display: flex;
+}
+
+.text-logo {
+    font-family: var(--title-font-family);
+    font-size: 1.5em;
+    top: 50%;
+    left: 15%;
+    transform: translate(0, 50%);
+    align-self: center;
+    color: var(--default-text-color);
+    text-decoration: none;
+    font-style: italic;
+    font-weight: bold;
+}
+
+.search-bar {
+    background-color: var(--neutral-color);
+    height: 20 px;
+    color: #710808;
+    border: none;
+    align-items: center;
+}
+
+.search-box{
+    width: 350 px;
+    height: 30 px;
+    background-color: var(--neutral-color);
+    display: flex;
+    align-items: center;
+    padding: 0.25em;
+}
+.button-login{
+    background-color: var(--default-text-color);
+    color: var(--secondary-background-color);
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    /* display: inline-block; */
+    text-decoration: none;
+    padding: 0.25em 0.5em;
+    cursor: pointer;
+    border: none;
+    font-weight: bold;
+    display: flex;
+  align-items: center;
+}
+
+
+.button-create-post{
+    align-items: center;
+    background-color: var(--default-text-color);
+    color: var(--secondary-background-color);
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    display: inline-block;
+    text-decoration: none;
+    padding: 0.25em 0.5em;
+    cursor: pointer;
+    border: none;
+    font-weight: bold;
+}
+
+.fa-search{
+    color: var(--secondary-background-color);
+}
+
+.fa-bell{
+    color: var(--icons-background-color);
+}
+
+.fa-circle-plus{
+    margin-right: 10px;
+}
+
+.fa-sort-down{
+    margin-left: 5px;
+    align-self: self-start;
+}
+
+/* .dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    z-index: 1;
+    color: black;
+  } */
+
+
+
+/* @media (max-width: 600px) {
+    header {
+        flex-direction: column;
+    }
+} */

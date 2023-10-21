@@ -135,7 +135,10 @@ function Login() {
         <div className="col-md-6">
           <div style={{ background: '#710808', height: '100vh' }}>
             <div style={{ textAlign: 'center', color: 'white', padding: '35% 5% 0% 5%' }}>
-              <h1 >REVIEW ME</h1>
+              <div style={{ display: 'inline-flex' }}>
+                <i className="fa-solid fa-user-pen fa-3x"></i>
+                <h1><em>REVIEW ME</em></h1>
+              </div>
               <p>Welcome to Review Me, your go-to platform for peer reviews of posts and content. Our community of writers, researchers, and creators is dedicated to providing valuable feedback to help you improve your work. Simply submit your content, and our diverse group of expert reviewers will offer constructive insights to elevate your creations. Join us today, collaborate, and enhance your skills as you grow with Review Me.</p>
             </div>
           </div>
