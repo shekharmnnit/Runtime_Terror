@@ -7,14 +7,14 @@ function Home() {
     const [show, setShow] = useState(true);
     return (
         <section>
-            <AppHeader/>
+            <div style={{ height: '10vh' }}><AppHeader/></div>
             <div>
                 <button onClick={() => setShow(!show)}>
                     {show ? "Hide" : "Show"} component
                 </button>
                 {show ? <CreatePost /> : null}
             </div>
-            <AppFooter/>
+            <div><AppFooter/></div>
         </section>
     );
 }

@@ -1,12 +1,16 @@
 footer {
     background: var(--secondary-background-color);
-    display: flex;
-    gap: 1em;
+    /* display: flex; */
+    /* gap: 1em; */
     min-height: 43px;
     justify-content: space-between;
     align-items: center;
     padding: 0.5em;
-    width:auto;
+    /* width:auto; */
+    position: fixed;
+    left: 0;
+   bottom: 0;
+   width: 100%;
 }
 
 
