@@ -10,13 +10,29 @@ const mongoose = require('mongoose')
 
 const app = express();
 
+const connectDB = async () => {
+    try {
+      await mongoose.connect(db);
+      console.log('MongoDB Connected...');
+    } catch (err) {
+      console.error(err.message);
+      // Exit process with failure
+      process.exit(1);
+    }
+  };
+
+connectDB();
+
 const conn = mongoose.createConnection(db);
 conn.on('error', e => {
     throw e;
 })
-let gfs;
+let gfs, gridfsBucket;
 conn.once('open', () => {
     // Init stream
+    gridfsBucket = new mongoose.mongo.GridFSBucket(conn.db, {
+        bucketName: 'uploads'
+    });
     console.log("MongoDB connected...")
     gfs = Grid(conn.db, mongoose.mongo);  
     gfs.collection('uploads');
@@ -39,32 +55,40 @@ const upload = multer({ storage: storage });
 
 // Init Middleware
 app.use(express.json());
-app.use(express.static('uploads'));
 
-
+app.use('/api/register', require('./routes/api/users'));
+app.use('/api/login', require('./routes/api/auth'))
+app.use('/api/posts', require('./routes/api/posts'));
 // To be commented, route to handle file upload
 
 app.post('/upload', upload.single('postfile'), (req, res) => {
     res.json({file: req.file})
 })
 
-app.get('/files', (req,res) => {
-    console.log("reached get files route")
-    gfs.files.find().toArray((err,files) => {
-        if(!files || files.length === 0){
-            return re.status(404).json({
-                err:"No files exist"
-            });
-        }
-        return res.json(files);
-    })
+app.get('/getfiles/:filename', async (req,res) => {
+    console.log("reached route");
+    const file = await gfs.files.findOne({filename:req.params.filename});
+    if (!file || file.length === 0) {
+        return res.status(404).json({
+            err: 'No file exists'
+        });
+    }
+
+    if(file.contentType === 'image/jpeg' || file.contentType === 'image/png' || file.contentType === 'image/jpeg'){
+        const readStream = gridfsBucket.openDownloadStream(file._id);
+        readStream.pipe(res)
+    } else {
+        const readStream = gridfsBucket.openDownloadStream(file._id);
+        readStream.pipe(res)
+        // res.json('yet to be handled')
+    }
+
 })
 
 
+
 // app.get('/',(req,res) => res.send('API running'))
-app.use('/api/register', require('./routes/api/users'));
-app.use('/api/login', require('./routes/api/auth'))
-app.use('/api/posts', require('./routes/api/posts'));
+
 
 
 const PORT = process.env.PORT || 5000;
