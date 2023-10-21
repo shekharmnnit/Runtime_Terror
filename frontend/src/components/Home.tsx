@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import Post from './Post.tsx';
+import CreatePost from './Create_post.tsx';
 import AppHeader from './AppHeader.tsx';
 import AppFooter from './AppFooter.tsx';
 
@@ -12,7 +12,7 @@ function Home() {
                 <button onClick={() => setShow(!show)}>
                     {show ? "Hide" : "Show"} component
                 </button>
-                {show ? <Post /> : null}
+                {show ? <CreatePost /> : null}
             </div>
             <AppFooter/>
         </section>
