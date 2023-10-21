@@ -2,6 +2,7 @@
 import ReactDOM from "react-dom/client";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import './App.css';
+import './assets/css/global.css';
 import Login from './components/Login.tsx'
 import FileUpload from './components/FileUpload.tsx'
 import Home from "./components/Home.tsx";

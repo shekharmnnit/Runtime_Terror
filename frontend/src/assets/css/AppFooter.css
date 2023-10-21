@@ -1,0 +1,41 @@
+footer {
+    background: var(--secondary-background-color);
+    display: flex;
+    gap: 1em;
+    min-height: 43px;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5em;
+    width:auto;
+}
+
+
+.links,
+.social-media-icons {
+    flex-direction: column;
+    color: var(--default-text-color);
+    padding: 0.5em;
+}
+
+.social-media-icons {
+    text-align: center;
+    gap: 1.75em;
+    padding: 0.5em 0 0.5em 0;
+    color: white;
+}
+
+.footer-style{
+    height: 40px;
+}
+
+.no-underline{
+    text-decoration: none;
+}
+
+.centered-section{
+    text-align: center;
+} 
+
+ .centered-section div {
+    display: inline-block; 
+}
