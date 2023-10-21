@@ -12,6 +12,7 @@ import {
     MDBCheckbox
 }
     from 'mdb-react-ui-kit';
+    import axios from 'axios';
 
 function CreatePost() {
     const [justifyActive, setJustifyActive] = useState('tab1');
@@ -21,6 +22,48 @@ function CreatePost() {
     const [tag3, setTag3] = useState('')
     const [tag4, setTag4] = useState('')
     const [tag5, setTag5] = useState('')
+
+    const [selectedFile, setSelectedFile] = useState(null);
+  const handleFileChange = (event) => {
+    setSelectedFile(event.target.files[0]);
+  };
+  const handleFileUpload = () => {
+    if (selectedFile) {
+      console.log('Uploading file:', selectedFile);
+      const formData = new FormData();
+      formData.append('file', selectedFile);
+      axios.post('YOUR_API_ENDPOINT', formData)
+      .then((response) => {
+        // setLoading(false);
+        if (response.status === 200) {
+          console.log('File uploaded successfully.');
+          // Handle the API's response here, if needed.
+        } else {
+          console.error('File upload failed.');
+          // Handle error cases here.
+        }
+      })
+      .catch((error)=> {
+        // setLoading(false);
+        console.error('File upload failed:', error);
+        // Handle network or other errors here.
+      });
+
+    } else {
+      console.log('No file selected.');
+    }
+  };
+
+  async function postRequest() {
+    handleFileUpload()
+    let obj = [{
+      "caption": caption,
+      "tags": [tag1, tag2, tag3, tag4, tag5]
+    }]
+
+    console.warn(obj)
+  }
+
     return (
         <div>
             <div className='w-50'>
@@ -40,9 +83,9 @@ function CreatePost() {
                     </div>
                     <MDBInput wrapperClass='mb-4' value={tag5} onChange={(e) => setTag5(e.target.value)} placeholder='Tag 5' type='text' style={{ backgroundColor: '#D9D9D9' }} />
                 </div>
-                <MDBInput wrapperClass='mb-4' type='file' style={{ backgroundColor: '#D9D9D9' }} />
+                <MDBInput wrapperClass='mb-4' type='file' style={{ backgroundColor: '#D9D9D9' }} onChange={handleFileChange} />
                 <div className="text-center">
-                    <button className="btn btn-primary" style={{ backgroundColor: '#710808', borderColor: '#710808' }}>POST</button>
+                    <button className="btn btn-primary" onClick={postRequest} style={{ backgroundColor: '#710808', borderColor: '#710808' }}>POST</button>
                 </div>
             </div>
 
