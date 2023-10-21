@@ -3,11 +3,14 @@ import ReactDOM from "react-dom/client";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import './App.css';
 import Login from './components/Login.tsx'
+import FileUpload from './components/FileUpload.tsx'
 function App() {
   return (
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Login />}>
+        </Route>
+        <Route path="/upload" element={<FileUpload />}> // To be commented, form to handle file upload
         </Route>
       </Routes>
     </BrowserRouter>

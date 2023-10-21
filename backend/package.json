@@ -1,6 +1,36 @@
 {
   "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "config": "^3.3.9",
     "express": "^4.18.2",
-    "mongoose": "^7.6.3"
-  }
+    "express-validator": "^7.0.1",
+    "gridfs-stream": "^1.1.1",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^7.6.3",
+    "multer": "^1.4.5-lts.1",
+    "multer-gridfs-storage": "^5.0.2",
+    "normalize-url": "^8.0.0"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2",
+    "nodemon": "^3.0.1"
+  },
+  "scripts": {
+    "start": "node server",
+    "server": "nodemon server"
+  },
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "Backend codebase for Runtime_Terror",
+  "main": "server.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/shekharmnnit/Runtime_Terror.git"
+  },
+  "author": "Srikar, Kunal, Shekhar, Laxman, Lavisha",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/shekharmnnit/Runtime_Terror/issues"
+  },
+  "homepage": "https://github.com/shekharmnnit/Runtime_Terror#readme"
 }
