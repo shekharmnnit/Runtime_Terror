@@ -1,52 +1,86 @@
 const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
 
-const PostSchema = new Schema({
-  user: {
-    type: Schema.Types.ObjectId
+// Define the Comment schema for the comments in the post
+const CommentSchema = new mongoose.Schema({
+  commentedUserId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
   },
-  text: {
+  commentedByFirstName: {
     type: String,
-    required: true
+    required: true,
   },
-  name: {
-    type: String
+  commentedByLastName: {
+    type: String,
+    required: true,
   },
-  avatar: {
-    type: String
+  commentString: {
+    type: String,
   },
-  likes: [
-    {
-      user: {
-        type: Schema.Types.ObjectId
-      }
-    }
-  ],
-  comments: [
-    {
-      user: {
-        type: Schema.Types.ObjectId
-      },
-      text: {
-        type: String,
-        required: true
-      },
-      name: {
-        type: String
-      },
-      avatar: {
-        type: String
-      },
-      date: {
-        type: Date,
-        default: Date.now
-      }
-    }
-  ],
-  date: {
+  lastUpdatedOn: {
     type: Date,
-    default: Date.now
-  }
+    default: Date.now,
+  },
 });
 
-module.exports = mongoose.model('post', PostSchema);
+// Define the Post schema
+const PostSchema = new mongoose.Schema({
+  postId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Post',
+  },
+  userId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+  },
+  email: {
+    type: String,
+    required: true,
+    unique: true,
+  },
+  firstName: {
+    type: String,
+    required: true,
+  },
+  lastName: {
+    type: String,
+    required: true,
+  },
+  skills: {
+    type: [String],
+    validate: [
+      {
+        validator: (value) => value.length >= 1 && value.length <= 5,
+        message: 'Skills array must have between 1 and 5 elements',
+      },
+    ],
+  },
+  captions: {
+    type: String,
+    maxlength: 1000,
+  },
+  comments: {
+    type: [CommentSchema], // Array of Comment objects
+  },
+  upvotes: {
+    type: Number,
+    default: 0,
+  },
+  downvotes: {
+    type: Number,
+    default: 0,
+  },
+  createdOn: {
+    type: Date,
+    default: Date.now,
+  },
+  lastUpdatedOn: {
+    type: Date,
+    default: Date.now,
+  },
+});
+
+// Create the Post model
+const Post = mongoose.model('Post', PostSchema);
+
+module.exports = Post;
