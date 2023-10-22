@@ -15,6 +15,9 @@ import {
 
 function Login() {
 
+  const [log_email, setLogEmail] = useState('')
+  const [log_password, setLogPassword] = useState('')
+
   const [justifyActive, setJustifyActive] = useState('tab1');
   const [f_name, setFirstName] = useState('')
   const [l_name, setLastName] = useState('')
@@ -37,6 +40,19 @@ function Login() {
       "tags": [tag1, tag2, tag3, tag4, tag5]
     }]
 
+    localStorage.setItem('local_first_name', f_name);
+    // let localFname= localStorage.getItem('local_first_name');   
+    // console.log(localFname);
+
+    localStorage.setItem('local_last_name', l_name);
+    // let localLname= localStorage.getItem('local_last_name');
+    // console.log(localLname);
+
+    localStorage.setItem('local_reg_email', email);
+    // let localRegEmail= localStorage.getItem('local_reg_email');   
+    // console.log(localRegEmail);
+    alert("Registration successfully done.");
+    window.location.replace("http://localhost:3000/home");
     console.warn(obj)
     // let result = fetch("http://localhost:8000/api/regsiter", {
     //   method:'POST',
@@ -48,6 +64,19 @@ function Login() {
     // })
     // result = (await result).json()
     // console.warn("registeration result", result)
+  }
+
+  async function login() {
+    let obj = [{
+      "login_email": log_email,
+      "login_password": log_password,
+    }]
+
+    localStorage.setItem('Local_login_email', log_email);
+    // let localUserEmail= localStorage.getItem('Local_login_email');   
+    // console.log(localUserEmail);
+    alert("Successfully loged in.");
+    window.location.replace("http://localhost:3000/home");
   }
 
   const handleJustifyClick = (value) => {
@@ -92,10 +121,10 @@ function Login() {
 
           <MDBTabsContent>
             <MDBTabsPane show={justifyActive === 'tab1'}>
-              <MDBInput wrapperClass='mb-4' placeholder='Email address' type='email' style={{ backgroundColor: '#D9D9D9' }} />
-              <MDBInput wrapperClass='mb-4' placeholder='Password' id='form2' type='password' style={{ backgroundColor: '#D9D9D9' }} />
+              <MDBInput wrapperClass='mb-4' value={log_email} onChange={(e) => setLogEmail(e.target.value)} placeholder='Email address' type='email' style={{ backgroundColor: '#D9D9D9' }} />
+              <MDBInput wrapperClass='mb-4' value={log_password} onChange={(e) => setLogPassword(e.target.value)} placeholder='Password' id='form2' type='password' style={{ backgroundColor: '#D9D9D9' }} />
 
-              <button className="w-100 btn btn-primary" style={{ backgroundColor: '#710808', borderColor: '#710808' }}>SIGN IN</button>
+              <button className="w-100 btn btn-primary" onClick={login} style={{ backgroundColor: '#710808', borderColor: '#710808' }}>SIGN IN</button>
               <p className="text-left"><a href="#!" style={{ color: '#710808' }}>Continue as Guest</a></p>
 
             </MDBTabsPane>

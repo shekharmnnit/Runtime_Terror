@@ -15,6 +15,7 @@ function AppHeader() {
     const toggleDropdown = () => {
         setIsDropdownOpen(!isDropdownOpen);
     };
+    let local_first_name= localStorage.getItem('local_first_name');
     return (
 
         <header className="header">
@@ -53,7 +54,7 @@ function AppHeader() {
 
             <div className="header-dropdown">
                 <button className="button-login" onClick={toggleDropdown}>
-                    Kunal
+                    {local_first_name}
                     <i className={`fa-solid fa-sort-${isDropdownOpen ? 'up' : 'down'}`}></i>
                  
                 </button>
