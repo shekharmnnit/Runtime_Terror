@@ -88,9 +88,9 @@ function Login() {
   };
 
   return (
-    <MDBContainer className='container'>
-      <div className='row' style={{ backgroundColor: '#F5F5F5' }}>
-        <div className="col-md-6 my-5" >
+    // <MDBContainer >
+      <div className='' style={{  }}>
+        <div  style={{ backgroundColor: '#F5F5F5',height:'100%', width:'50%', position: 'fixed', left: '0',padding:'5% 3% 0vh 3%' }}>
           <MDBTabs pills justify className='mb-3 d-flex flex-row justify-content-between'>
             <MDBTabsItem>
 
@@ -132,7 +132,7 @@ function Login() {
             <MDBTabsPane show={justifyActive === 'tab2'}>
 
 
-
+              <div style={{ height: '53vh', overflow: 'auto' }}>
               <MDBInput wrapperClass='mb-4' value={f_name} onChange={(e) => setFirstName(e.target.value)} placeholder='First Name' type='text' style={{ backgroundColor: '#D9D9D9' }} />
               <MDBInput wrapperClass='mb-4' value={l_name} onChange={(e) => setLastName(e.target.value)} placeholder='Last Name' type='text' style={{ backgroundColor: '#D9D9D9' }} />
               <MDBInput wrapperClass='mb-4' value={email} onChange={(e) => setEmail(e.target.value)} placeholder='Email' type='email' style={{ backgroundColor: '#D9D9D9' }} />
@@ -154,6 +154,7 @@ function Login() {
                 </div>
                 <MDBInput wrapperClass='mb-4' value={tag5} onChange={(e) => setTag5(e.target.value)} placeholder='Tag 5' type='text' style={{ backgroundColor: '#D9D9D9' }} />
               </div>
+              </div>
 
               {/* <MDBBtn className="mb-4 w-100"  style={{ backgroundColor: '#710808', borderColor: '#710808' }}>SIGN UP</MDBBtn> */}
               <button className="w-100 btn btn-primary" onClick={register} style={{ backgroundColor: '#710808', borderColor: '#710808' }}>SIGN UP</button>
@@ -161,7 +162,7 @@ function Login() {
           </MDBTabsContent>
 
         </div >
-        <div className="col-md-6">
+        <div  style={{height:'100%', width:'50%', position: 'fixed', right: '0' }}>
           <div style={{ background: '#710808', height: '100vh' }}>
             <div style={{ textAlign: 'center', color: 'white', padding: '35% 5% 0% 5%' }}>
               <div style={{ display: 'inline-flex' }}>
@@ -173,7 +174,7 @@ function Login() {
           </div>
         </div>
       </div>
-    </MDBContainer>
+    // </MDBContainer>
 
   );
 }

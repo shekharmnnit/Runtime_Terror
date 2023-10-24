@@ -4,13 +4,13 @@ import AppHeader from './AppHeader.tsx';
 import AppFooter from './AppFooter.tsx';
 
 function Home() {
-    const [show, setShow] = useState(true);
+    const [show, setShow] = useState(false);
     return (
         <section>
             <div style={{ height: '10vh' }}><AppHeader/></div>
             <div>
                 <button onClick={() => setShow(!show)}>
-                    {show ? "Hide" : "Show"} component
+                    {show ? "Create" : "Create"} Post
                 </button>
                 {show ? <CreatePost /> : null}
             </div>
