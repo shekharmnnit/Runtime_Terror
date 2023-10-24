@@ -140,13 +140,9 @@ header {
     }
 } */
 
-
-
-
-
-
-
-
-
-
-
+.popup-content {
+    top: 8vh !important;
+    left: 120vh !important;
+    width: 61vh !important;
+    background: cornsilk;
+  }

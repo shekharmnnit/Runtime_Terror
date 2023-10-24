@@ -5,6 +5,7 @@ import './App.css';
 import './assets/css/global.css';
 import Login from './components/Login.tsx'
 import FileUpload from './components/FileUpload.tsx'
+import Shekhar_test from './components/shekhar_test.tsx'
 import Home from "./components/Home.tsx";
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
         </Route>
         <Route path="/upload" element={<FileUpload />}> // To be commented, form to handle file upload
         </Route>
+        <Route path="/shekhar" element={<Shekhar_test />}></Route>
       </Routes>
     </BrowserRouter>
     // <Login/>

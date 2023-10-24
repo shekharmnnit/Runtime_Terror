@@ -3,6 +3,9 @@ import React, { useState } from 'react';
 import '../assets/css/global.css'
 import '../assets/css/AppHeader.css';
 import { Link } from 'react-router-dom';
+import Popup from 'reactjs-popup';
+import 'reactjs-popup/dist/index.css'; 
+import CreatePost from './Create_post.tsx';
 // import Post from './Post';
 
 
@@ -34,12 +37,13 @@ function AppHeader() {
                 <Link to="/home"> <i className="fa fa-search"></i> </Link>
             </div>
             <div>
-                <button className="button-create-post" onClick={() => setShow(!show)}>
-                    <i className="fa-solid fa-circle-plus"></i>
-                    Create post
-                    {show ? "Hide" : "Show"}
-
-                </button>
+                <Popup trigger={<button className="button-create-post" onClick={() => setShow(!show)}><i className="fa-solid fa-circle-plus"></i>Create post{/* {show ? "Hide" : "Show"} */}</button>} position="center center">
+                  <div>
+                    Create Post
+                    <div><CreatePost/></div>
+                    {/* <button onClick={() => Popup.close()}>Close</button> */}
+                  </div>
+                </Popup>
                 {/* {show ? <Post /> : null} */}
             </div>
             <div>
