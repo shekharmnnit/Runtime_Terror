@@ -72,7 +72,7 @@ function PostComment() {
                         <div>{count}</div>
                     </div>
                 </div>
-                <div>
+                <div style={{height: '29vh', overflow:'auto'}}>
                     {obj.map((item, index) => (
                         <div key={index}>
                             <div className="comment-details">

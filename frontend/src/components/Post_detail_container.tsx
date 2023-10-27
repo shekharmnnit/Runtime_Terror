@@ -13,9 +13,9 @@ function ShowPostContent() {
     }];
 
     return (
-        <div className="post-summary-container">
+        <div className="post-detail-summary-container">
             {obj.map((item, index) => (
-                <div className="post-summary" key={index}>
+                <div className="post-detail-summary" key={index}>
                     <div className="post-details">
                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%' }}>
                             <h4 style={{ display: 'inline' }}>{item.first_name} {item.last_name}</h4>
