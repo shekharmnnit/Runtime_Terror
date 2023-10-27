@@ -1,31 +1,11 @@
-/* ShowPostSummary.css */
-.post-summary-container {
-    display: flex;
-    flex-direction: column;
-    height: 50%;
-}
 
-.post-summary {
-    display: flex;
-    justify-content: space-between;
-    background-color: white;
-    padding: 10px;
-    border-radius: 8px;
-    margin: 1vh;
-}
-
-.post-details {
-    display: flex;
-    flex-direction: column;
-    color: black;
-}
 
 .name {
     margin-right: 10px; /* Added margin property */
 }
 .caption {
     margin-right: 10px; /* Added margin property */
-    height: 33vh;
+    height: 15vh;
 }
 
 .tags {

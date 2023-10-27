@@ -10,6 +10,7 @@ import Home from "./components/Home.tsx";
 import ProfilePage from './components/ProfilePage.tsx'
 import ShowPostSummary from "./components/Post_summary.tsx";
 import ShowPostContent from "./components/Post_detail_container.tsx";
+import PostPage from './components/PostPage.tsx'
 function App() {
   return (
     <BrowserRouter>
@@ -22,6 +23,7 @@ function App() {
         </Route>
         <Route path="/shekhar" element={<Shekhar_test />}></Route>
         <Route path="/profile" element={<ProfilePage />}></Route>
+        <Route path="/post" element={<PostPage />}></Route>
       </Routes>
     </BrowserRouter>
     // <Login/>
