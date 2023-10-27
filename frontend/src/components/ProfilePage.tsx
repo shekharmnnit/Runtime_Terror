@@ -8,11 +8,7 @@ import UserProfileDetail from './UserProfileDetail.tsx';
 function ProfilePage() {
 
     let local_first_name= localStorage.getItem('local_first_name');
-    const itemElements = [];
-    for (let i = 0; i < 3; i++) {
-        itemElements.push(<div><ShowPostSummary/></div>);
-      }
-  
+    
     return (
 
         <section>
@@ -22,7 +18,7 @@ function ProfilePage() {
                     <div><UserProfileDetail/></div>
                 </div>
                 <div className='postSection'>
-                    <div>{itemElements}</div>
+                    <div><ShowPostSummary/></div>
                 </div>
             </div>
             <div><AppFooter/></div>
