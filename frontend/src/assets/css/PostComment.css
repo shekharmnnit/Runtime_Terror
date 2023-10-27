@@ -1,0 +1,55 @@
+.comment{
+    background-color: var(--icons-background-color);
+}
+
+.add-comment{
+    border-radius: 4px;
+   background-color: var(--neutral-color);
+   margin: 5px;
+   padding: 0.5em;
+}
+
+.comment-box{
+    border-radius: 4px;
+    background-color: var(--neutral-color);
+    height: 2 vh;
+    border: none;
+    align-items: center;
+}
+
+.new-comment{
+    display: flex;
+    align-items: center;
+}
+
+.fa-plus{
+    color: var(--secondary-background-color);   
+}
+
+.upvote-downvote{
+    display: flex; 
+}
+
+.fa-circle-arrow-up, .fa-circle-arrow-down{
+    padding: 0.25em;
+}
+
+.comment-details{
+    background-color: var(--neutral-color);
+    border-radius: 4px;
+    
+}
+
+.comment-user{
+    display: flex;
+    justify-content: space-between;
+    margin: 2px;
+}
+
+.comment-date{
+    display: flex;
+}
+
+.comment-text{
+    margin: 2px;
+}
