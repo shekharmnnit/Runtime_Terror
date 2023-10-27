@@ -69,4 +69,15 @@ router.get('/fetch/:postId', async (req, res) => {
   }
 });
 
+// Fetch all posts
+router.get('/fetchAll', async (req, res) => {
+  try {
+    const posts = await Post.find();
+    res.json(posts);
+  } catch (error) {
+    console.error('Error fetching all posts:', error);
+    res.status(500).json({ message: 'Failed to fetch all posts' });
+  }
+});
+
 module.exports = router;
