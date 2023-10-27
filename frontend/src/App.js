@@ -8,6 +8,8 @@ import FileUpload from './components/FileUpload.tsx'
 import Shekhar_test from './components/shekhar_test.tsx'
 import Home from "./components/Home.tsx";
 import ProfilePage from './components/ProfilePage.tsx'
+import ShowPostSummary from "./components/Post_summary.tsx";
+import ShowPostContent from "./components/Post_detail_container.tsx";
 function App() {
   return (
     <BrowserRouter>
