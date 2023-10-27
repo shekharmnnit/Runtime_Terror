@@ -80,4 +80,17 @@ router.get('/fetchAll', async (req, res) => {
   }
 });
 
+// Fetch posts by a specific skill from the request body
+router.post('/searchBySkill', async (req, res) => {
+  const skillToSearch = req.body.skill; // Get the skill from the request body
+
+  try {
+    const posts = await Post.find({ skills: skillToSearch });
+    res.json(posts);
+  } catch (error) {
+    console.error(`Error fetching posts with skill '${skillToSearch}':`, error);
+    res.status(500).json({ message: `Failed to fetch posts with skill '${skillToSearch}'` });
+  }
+});
+
 module.exports = router;
