@@ -1,0 +1,69 @@
+/* ShowPostSummary.css */
+.post-summary-container {
+    display: flex;
+    flex-direction: column;
+    height: auto;
+    min-width: 70%;
+}
+
+.post-summary {
+    display: flex;
+    justify-content: space-between;
+    background-color: white;
+    padding: 10px;
+}
+
+.post-details {
+    display: flex;
+    flex-direction: column;
+}
+
+.name {
+    margin-right: 10px; /* Added margin property */
+}
+.caption {
+    margin-right: 10px; /* Added margin property */
+    height: 10vh;
+}
+
+.tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    align-items: flex-end;
+}
+
+.tag-pill {
+    background-color: #ddd;
+    border: none;
+    color: black;
+    padding: 5px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    cursor: pointer;
+    border-radius: 16px;
+}
+
+.date {
+    background-color: white;
+    border: none;
+    color: black;
+    padding: 5px 20px;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.tag-pill:hover {
+    background-color: #f1f1f1;
+}
+
+.link-container {
+    display: flex;
+    align-items: center;
+}
+
+.link-image {
+    width: 200px;
+    height: 200px;
+}
