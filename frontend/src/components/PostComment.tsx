@@ -36,26 +36,54 @@ function PostComment() {
         });
     }
 
-    let obj = [{
-        "first_name": "Kunal",
-        "last_name": "Mahato",
-        "comment": "This is a great paper!",
-        "date": "12-08-2023"
-    }, {
-        "first_name": "Kunal",
-        "last_name": "Mahato",
-        "comment": "This is a great paper!",
-        "date": "12-08-2023"
-    }]
 
+    const [newComment, setNewComment] = useState(''); 
+    const [comments, setComments] = useState([
+        {
+            "first_name": "Kunal",
+            "last_name": "Mahato",
+            "comment": "This is a great paper!",
+            "date": "12-08-2023"
+        },
+        {
+            "first_name": "Kunal",
+            "last_name": "Mahato",
+            "comment": "This is a great paper!",
+            "date": "12-08-2023"
+        }
+    ]);
+    
+    const handleAddComment = () => {
+        let localFname= (String)(localStorage.getItem('local_first_name')); 
+    let localLname= (String)(localStorage.getItem('local_last_name'));
+        if (newComment.trim() !== '') {
+            const currentDate = formatDate(new Date()); 
+            const newCommentObj = {
+                "first_name": localFname,
+                "last_name": localLname,
+                "comment": newComment,
+                "date": currentDate,
+            };
+
+            setComments([...comments, newCommentObj]);
+            setNewComment('');
+        }
+    }
+
+    function formatDate(date) {
+        const day = date.getDate().toString().padStart(2, '0');
+        const month = (date.getMonth() + 1).toString().padStart(2, '0');
+        const year = date.getFullYear();
+        return `${day}-${month}-${year}`;
+    }
 
     return (
         <section>
             <div className="comment">
                 <div className="new-comment">
                     <div className="add-comment">
-                        <input type="text" className="comment-box" placeholder="Add new comment" />
-                        <i className="fa-solid fa-plus"></i>
+                        <input type="text" className="comment-box" placeholder="Add new comment" onChange={(e) => setNewComment(e.target.value)}/>
+                        <i className="fa-solid fa-plus" onClick={handleAddComment}></i>
                     </div>
 
                     <div className="upvote-downvote">
@@ -73,7 +101,7 @@ function PostComment() {
                     </div>
                 </div>
                 <div style={{height: '29vh', overflow:'auto'}}>
-                    {obj.map((item, index) => (
+                    {comments.map((item, index) => (
                         <div key={index}>
                             <div className="comment-details">
                                 <div className="comment-user">
