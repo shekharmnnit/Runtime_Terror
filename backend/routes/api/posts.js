@@ -16,23 +16,30 @@ router.post('/create', async (req, res) => {
   }
 });
 
+
 // Update a post by postId
 router.put('/update/:postId', async (req, res) => {
   try {
+    const postId = req.params.postId;
+    const updateFields = req.body; // This should contain only the fields you want to update
+
     const updatedPost = await Post.findOneAndUpdate(
-      { _id: req.params.postId },
-      req.body,
+      { _id: postId },
+      { $set: updateFields }, // Use $set to update only specific fields
       { new: true }
     );
+
     if (!updatedPost) {
       return res.status(404).json({ message: 'Post not found' });
     }
+
     res.json(updatedPost);
   } catch (error) {
     console.error('Error updating post:', error);
     res.status(500).json({ message: 'Failed to update the post' });
   }
 });
+
 
 // Delete a post by postId
 router.delete('/delete/:postId', async (req, res) => {

@@ -63,12 +63,10 @@ const PostSchema = new mongoose.Schema({
     type: [CommentSchema], // Array of Comment objects
   },
   upvotes: {
-    type: Number,
-    default: 0,
+    type: [Number]
   },
   downvotes: {
-    type: Number,
-    default: 0,
+    type: [Number]
   },
   createdOn: {
     type: Date,
