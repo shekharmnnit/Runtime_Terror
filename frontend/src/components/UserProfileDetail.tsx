@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
 import '../assets/css/global.css';
 import '../assets/css/UserProfileDetail.css';
-import AppHeader from './AppHeader.tsx';
-import AppFooter from './AppFooter.tsx';
 
 
 function UserProfileDetail() {
@@ -17,7 +15,6 @@ function UserProfileDetail() {
 
     return (
         <section>
-            <div style={{ height: '10vh' }}><AppHeader /></div>
             <div className="user-detail">
                 <div className="user-image" >
                     {profileObj.initials}
@@ -30,7 +27,6 @@ function UserProfileDetail() {
                 </div>
                 <div className="edit-button">Edit</div>
             </div>
-            <div><AppFooter /></div>
         </section>
     )
 }

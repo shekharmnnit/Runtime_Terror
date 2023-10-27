@@ -17,7 +17,7 @@ function ShowPostSummary() {
             {obj.map((item, index) => (
                 <div className="post-summary" key={index}>
                     <div className="post-details">
-                        <p className="name">{item.first_name} {item.last_name}</p>
+                        <h4>{item.first_name} {item.last_name}</h4>
                         <p className="caption">{item.caption}</p>
                         <hr/>
                         <div className="tags">

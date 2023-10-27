@@ -5,15 +5,11 @@ section {
   }
 
 .user-detail{
-    background-color: var( --neutral-color);
-    width: 28vh;
     text-align: center;
-    padding: 0.5em;
-    margin: 0.5em;
+    margin: 6.5em 0.5em 0.5em 0.5em;
     flex: 1;
     display: flex;
     flex-direction: column;
-    max-height: 75vh;
    
 }
 
