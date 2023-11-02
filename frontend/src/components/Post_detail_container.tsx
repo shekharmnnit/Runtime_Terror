@@ -2,19 +2,19 @@ import React from 'react';
 import '../assets/css/post_detail.css';
 import linkImage from '../assets/file.png';
 
-function ShowPostContent() {
-    let obj = [{
-        "first_name": "Kunal",
-        "last_name": "Mahato",
-        "caption": "Review my paper on Software Engineering",
-        "link": "https://www.google.com/",
-        "tags": ["C++", "tag2", "tag3", "tag4", "tag5"],
-        "date": "12-08-2023"
-    }];
-
+function PostDetailContainer({ postContent }) {
+    // let obj = [{
+    //     "first_name": "Kunal",
+    //     "last_name": "Mahato",
+    //     "caption": "Review my paper on Software Engineering",
+    //     "link": "https://www.google.com/",
+    //     "tags": ["C++", "tag2", "tag3", "tag4", "tag5"],
+    //     "date": "12-08-2023"
+    // }];
+    postContent = [postContent];
     return (
         <div className="post-detail-summary-container">
-            {obj.map((item, index) => (
+            {postContent && postContent.map((item, index) => (
                 <div className="post-detail-summary" key={index}>
                     <div className="post-details">
                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%' }}>
@@ -39,4 +39,4 @@ function ShowPostContent() {
     );
 }
 
-export default ShowPostContent;
+export default PostDetailContainer;

@@ -3,7 +3,7 @@ import '../assets/css/global.css';
 import '../assets/css/PostComment.css';
 
 
-function PostComment() {
+function PostComment({ postComments }) {
 
 
     const [count, setCount] = useState(25);
@@ -37,27 +37,16 @@ function PostComment() {
     }
 
 
-    const [newComment, setNewComment] = useState(''); 
-    const [comments, setComments] = useState([
-        {
-            "first_name": "Kunal",
-            "last_name": "Mahato",
-            "comment": "This is a great paper!",
-            "date": "12-08-2023"
-        },
-        {
-            "first_name": "Kunal",
-            "last_name": "Mahato",
-            "comment": "This is a great paper!",
-            "date": "12-08-2023"
-        }
-    ]);
-    
+    const [newComment, setNewComment] = useState('');
+    const [comments, setComments] = useState(
+        postComments
+    );
+
     const handleAddComment = () => {
-        let localFname= (String)(localStorage.getItem('local_first_name')); 
-    let localLname= (String)(localStorage.getItem('local_last_name'));
+        let localFname = (String)(localStorage.getItem('local_first_name'));
+        let localLname = (String)(localStorage.getItem('local_last_name'));
         if (newComment.trim() !== '') {
-            const currentDate = formatDate(new Date()); 
+            const currentDate = formatDate(new Date());
             const newCommentObj = {
                 "first_name": localFname,
                 "last_name": localLname,
@@ -82,7 +71,7 @@ function PostComment() {
             <div className="comment">
                 <div className="new-comment">
                     <div className="add-comment">
-                        <input type="text" className="comment-box" placeholder="Add new comment" onChange={(e) => setNewComment(e.target.value)}/>
+                        <input type="text" className="comment-box" placeholder="Add new comment" onChange={(e) => setNewComment(e.target.value)} />
                         <i className="fa-solid fa-plus" onClick={handleAddComment}></i>
                     </div>
 
@@ -100,7 +89,7 @@ function PostComment() {
                         <div>{count}</div>
                     </div>
                 </div>
-                <div style={{height: '29vh', overflow:'auto'}}>
+                <div style={{ height: '29vh', overflow: 'auto' }}>
                     {comments.map((item, index) => (
                         <div key={index}>
                             <div className="comment-details">
