@@ -4,7 +4,7 @@ import linkImage from '../assets/file.png';
 import Popup from 'reactjs-popup';
 import CreatePost from './Create_post.tsx';
 
-function PostDetailContainer({ postContent }) {
+function PostDetailContainer({ postContent, cur_user_id }) {
     // let obj = [{
     //     "first_name": "Kunal",
     //     "last_name": "Mahato",
@@ -14,6 +14,8 @@ function PostDetailContainer({ postContent }) {
     //     "date": "12-08-2023"
     // }];
     postContent = [postContent];
+    const local_reg_user_id = localStorage.getItem('local_reg_user_id');
+    const showEdit = (cur_user_id === local_reg_user_id)
     return (
         <div className="post-detail-summary-container">
             {postContent && postContent.map((item, index) => (
@@ -22,16 +24,19 @@ function PostDetailContainer({ postContent }) {
                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%' }}>
                             <h4 style={{ display: 'inline' }}>{item.first_name} {item.last_name}</h4>
                             <div>
-
-                                <Popup trigger={<button className="button-create-post" onClick={() => setShow(!show)}><i className="fa-regular fa-pen-to-square icon" style={{ marginLeft: '10px' }}></i></button>} position="center center">
-
-                                    <div>
-                                        <div><CreatePost postContent={postContent}/></div>
-                                    </div>
-                                </Popup>
-                                <button>
-                                    <i className="fa-solid fa-trash icon" style={{ marginLeft: '10px' }}></i>
-                                </button>
+                                {showEdit && (
+                                    <Popup trigger={<button style={{ "border": "none", "backgroundColor": "white" }} onClick={() => setShow(!show)}><i className="fa-regular fa-pen-to-square icon"></i></button>} position="center center">
+                                        <div>
+                                            <div><CreatePost postContent={postContent} /></div>
+                                        </div>
+                                    </Popup>
+                                )
+                                }
+                                {showEdit && (
+                                    <button style={{ "border": "none", "backgroundColor": "white" }}>
+                                        <i className="fa-solid fa-trash icon"></i>
+                                    </button>
+                                )}
                             </div>
                         </div>
                         <p className="caption">{item.caption}</p>
@@ -44,8 +49,9 @@ function PostDetailContainer({ postContent }) {
                         </div>
                     </div>
                 </div>
-            ))}
-        </div>
+            ))
+            }
+        </div >
     );
 }
 

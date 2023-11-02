@@ -35,6 +35,7 @@ function PostPage() {
         ]
     }
 
+    let cur_user_id = 1;
 
     return (
 
@@ -43,7 +44,7 @@ function PostPage() {
             <div>
                 <div className='postContent'>
                     <div className='postContentDetai postBody'>
-                        <PostDetailContainer postContent={postData.postContent} />
+                        <PostDetailContainer postContent={postData.postContent} cur_user_id={cur_user_id} />
                     </div>
                     <div className='comment postBody'><PostComment postComments={postData.comments} /> </div>
                 </div>
