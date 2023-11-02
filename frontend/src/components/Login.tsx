@@ -48,7 +48,9 @@ function Login() {
    
 
     localStorage.setItem('local_reg_email', email);
-   
+
+    localStorage.setItem('local_reg_user_id', 1);
+
     alert("Registration successfully done.");
     window.location.replace("http://localhost:3000/home");
     console.warn(obj)
