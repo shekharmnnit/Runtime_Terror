@@ -1,4 +1,7 @@
-
+.post-details{
+    position: relative;
+    width: 100%;
+}
 
 .name {
     margin-right: 10px; /* Added margin property */
