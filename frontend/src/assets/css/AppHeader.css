@@ -113,7 +113,7 @@ header {
 
   .header-dropdown li {
     padding: 0.25em 0.5em;
-    color: var(--secondary-background-color);
+    color: var(--secondary-background-color); 
     background-color: #ffffff;  
 }
 .header-dropdown:hover ul {
