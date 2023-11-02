@@ -15,7 +15,7 @@ function PostPage() {
             "first_name": "Kunal",
             "last_name": "Mahato",
             "caption": "Review my paper on Machine Learning & SE from PostPage",
-            "tags": ["C++", "Java", "Python", "C#", "JavaScript"],
+            "tags": ["C++", "Java", "Python", "C#", "OP"],
             "date": "11-02-2023"
         },
         url: "https://www.google.com/",

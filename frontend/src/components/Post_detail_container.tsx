@@ -1,6 +1,8 @@
 import React from 'react';
 import '../assets/css/post_detail.css';
 import linkImage from '../assets/file.png';
+import Popup from 'reactjs-popup';
+import CreatePost from './Create_post.tsx';
 
 function PostDetailContainer({ postContent }) {
     // let obj = [{
@@ -20,8 +22,16 @@ function PostDetailContainer({ postContent }) {
                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%' }}>
                             <h4 style={{ display: 'inline' }}>{item.first_name} {item.last_name}</h4>
                             <div>
-                                <i className="fa-regular fa-pen-to-square icon" style={{ marginLeft: '10px' }}></i>
-                                <i className="fa-solid fa-trash icon" style={{ marginLeft: '10px' }}></i>
+
+                                <Popup trigger={<button className="button-create-post" onClick={() => setShow(!show)}><i className="fa-regular fa-pen-to-square icon" style={{ marginLeft: '10px' }}></i></button>} position="center center">
+
+                                    <div>
+                                        <div><CreatePost postContent={postContent}/></div>
+                                    </div>
+                                </Popup>
+                                <button>
+                                    <i className="fa-solid fa-trash icon" style={{ marginLeft: '10px' }}></i>
+                                </button>
                             </div>
                         </div>
                         <p className="caption">{item.caption}</p>
