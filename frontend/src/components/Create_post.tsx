@@ -16,14 +16,24 @@ import {
     from 'mdb-react-ui-kit';
 import axios from 'axios';
 
-function CreatePost() {
+function CreatePost({ postContent }) {
+
     const [justifyActive, setJustifyActive] = useState('tab1');
-    const [caption, setCaption] = useState('')
-    const [tag1, setTag1] = useState('')
-    const [tag2, setTag2] = useState('')
-    const [tag3, setTag3] = useState('')
-    const [tag4, setTag4] = useState('')
-    const [tag5, setTag5] = useState('')
+
+    let emptyObj = [{
+        "caption": "",
+        "tags": ["", "", "", "", ""],
+    }];
+    if (postContent == null) {
+        postContent = emptyObj;
+    }
+    // console.log(postContent[0]);
+    const [caption, setCaption] = useState(postContent[0].caption)
+    const [tag1, setTag1] = useState(postContent[0].tags[0])
+    const [tag2, setTag2] = useState(postContent[0].tags[1])
+    const [tag3, setTag3] = useState(postContent[0].tags[2])
+    const [tag4, setTag4] = useState(postContent[0].tags[3])
+    const [tag5, setTag5] = useState(postContent[0].tags[4])
     let local_first_name = localStorage.getItem('local_first_name');
     const [selectedFile, setSelectedFile] = useState(null);
     const handleFileChange = (event) => {
