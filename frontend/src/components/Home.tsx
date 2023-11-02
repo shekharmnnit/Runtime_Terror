@@ -9,7 +9,7 @@ function Home() {
     return (
         <section>
             <div style={{ height: '10vh' }}><AppHeader/></div>
-            <div className='feedSection' style={{ backgroundColor: '#E9E9E9',height:'83%', width:'80%', position: 'fixed',margin:'10vh 0vh 0vh 16vh',overflow:'auto' }}>
+            <div className='feedSection' style={{ backgroundColor: '#E9E9E9',height:'83%', width:'100%', position: 'fixed',margin:'10vh 0vh 0vh 0vh', padding:'1vh 20vh 1vh 20vh' ,overflow:'auto' }}>
                 <ShowPostSummary/>
             </div>
             <div><AppFooter/></div>
