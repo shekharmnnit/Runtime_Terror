@@ -1,4 +1,6 @@
 const mongoose = require('mongoose');
+const Notification = require('./Notification').schema
+
 
 const UserSchema = new mongoose.Schema({
   firstName: {
@@ -24,7 +26,10 @@ const UserSchema = new mongoose.Schema({
   },
   skills: [{
     type:String
-  }]
+  }],
+  createdPostIds: [mongoose.Schema.Types.ObjectId],
+  commentedPostIds: [mongoose.Schema.Types.ObjectId],
+  notifications: [Notification]
 });
 
 module.exports = mongoose.model('user', UserSchema);
