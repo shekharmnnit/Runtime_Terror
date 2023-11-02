@@ -13,9 +13,14 @@ function PostComment({ postComments }) {
     const handleUpvote = () => {
         setCount((prevCount) => {
             if (upvoteStyle.color === '#9D9D9D') {
-                setUpvoteStyle({ color: '#710808' });
-                setDownvoteStyle({ color: '#9D9D9D' });
-                return prevCount + 1;
+                if (downvoteStyle.color === '#710808') {
+                    setDownvoteStyle({ color: '#9D9D9D' });
+                    setUpvoteStyle({ color: '#710808' });
+                    return prevCount + 2;
+                } else {
+                    setUpvoteStyle({ color: '#710808' });
+                    return prevCount + 1;
+                }
             } else {
                 setUpvoteStyle({ color: '#9D9D9D' });
                 return prevCount - 1;
@@ -26,9 +31,14 @@ function PostComment({ postComments }) {
     const handleDownvote = () => {
         setCount((prevCount) => {
             if (downvoteStyle.color === '#9D9D9D') {
-                setDownvoteStyle({ color: '#710808' });
-                setUpvoteStyle({ color: '#9D9D9D' });
-                return prevCount - 1;
+                if (upvoteStyle.color === '#710808') {
+                    setUpvoteStyle({ color: '#9D9D9D' });
+                    setDownvoteStyle({ color: '#710808' });
+                    return prevCount - 2;
+                } else {
+                    setDownvoteStyle({ color: '#710808' });
+                    return prevCount - 1;
+                }
             } else {
                 setDownvoteStyle({ color: '#9D9D9D' });
                 return prevCount + 1;
@@ -40,7 +50,7 @@ function PostComment({ postComments }) {
     const [newComment, setNewComment] = useState('');
     const [comments, setComments] = useState(
         postComments
-    );
+        );
 
     const handleAddComment = () => {
         let localFname = (String)(localStorage.getItem('local_first_name'));
@@ -90,7 +100,7 @@ function PostComment({ postComments }) {
                     </div>
                 </div>
                 <div style={{ height: '29vh', overflow: 'auto' }}>
-                    {comments.map((item, index) => (
+                    {comments.slice().reverse().map((item, index) => (
                         <div key={index}>
                             <div className="comment-details">
                                 <div className="comment-user">
