@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import '../assets/css/global.css';
 import '../assets/css/PostComment.css';
 
@@ -47,10 +47,37 @@ function PostComment({ postComments }) {
     }
 
 
-    const [newComment, setNewComment] = useState('');
+    var [newComment, setNewComment] = useState('');
     const [comments, setComments] = useState(
         postComments
         );
+        const inputRef = useRef<HTMLInputElement | null>(null);
+        
+        const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+            if (e.key === 'Enter') {
+                e.preventDefault(); // Prevent form submission
+                handleAddComment(); // Manually call the function
+            }
+        };
+        
+        
+        
+    
+        useEffect(() => {
+            // Attach the event listener to the input field
+            if (inputRef.current) {
+                inputRef.current.addEventListener('keypress', handleKeyPress as any);
+            }
+        
+            // Remove the event listener when the component unmounts
+            return () => {
+                if (inputRef.current) {
+                    inputRef.current.removeEventListener('keypress', handleKeyPress as any);
+                }
+            };
+        }, []);
+        
+    
 
     const handleAddComment = () => {
         let localFname = (String)(localStorage.getItem('local_first_name'));
@@ -66,6 +93,7 @@ function PostComment({ postComments }) {
 
             setComments([...comments, newCommentObj]);
             setNewComment('');
+            
         }
     }
 
@@ -81,7 +109,7 @@ function PostComment({ postComments }) {
             <div className="comment">
                 <div className="new-comment">
                     <div className="add-comment">
-                        <input type="text" className="comment-box" placeholder="Add new comment" onChange={(e) => setNewComment(e.target.value)} />
+                        <input ref={inputRef} type="text" className="comment-box" placeholder="Add new comment" value={newComment} onChange={(e) => setNewComment(e.target.value)} />
                         <i className="fa-solid fa-plus" onClick={handleAddComment}></i>
                     </div>
 
