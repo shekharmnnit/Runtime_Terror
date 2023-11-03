@@ -7,8 +7,11 @@ import Popup from 'reactjs-popup';
 import 'reactjs-popup/dist/index.css';
 import CreatePost from './Create_post.tsx';
 // import Post from './Post';
+import { clearLocalStorage } from './LocalStorageUtils.tsx';
 
-
+function handleLogout() {
+    clearLocalStorage();
+  }
 
 function AppHeader() {
 
@@ -58,9 +61,9 @@ function AppHeader() {
                     <i className={`fa-solid fa-sort-down`}></i>
                 </button>
                 <div className="dropdown-content">
-                    <a href="#">Link 1</a>
-                    <a href="#">Link 2</a>
-                    <a href="#">Link 3</a>
+                    <a href="/profile">Profile</a>
+                    <a href="/" onClick={handleLogout}>Log Out</a>
+                   
                 </div>
             </div>
 
