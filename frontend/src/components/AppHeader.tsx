@@ -45,8 +45,14 @@ function AppHeader() {
                 </Popup>
                 {/* {show ? <Post /> : null} */}
             </div>
-            <div>
-                <i className="fa-solid fa-bell fa-2x"></i>
+            <div className='notification-dropdown'>
+                <i className="fa-solid fa-bell fa-2x notification-icon"></i>
+                <i className="fa-solid fa-circle" style={{"color": "#58ec09"}}></i>
+                <div className="dropdown-content">
+                    <a href="#">Link 1</a>
+                    <a href="#">Link 2</a>
+                    <a href="#">Link 3</a>
+                </div>
             </div>
             {/* <div>
                 <Link to="/">  <button className="button-login">

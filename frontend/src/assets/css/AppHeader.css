@@ -164,6 +164,16 @@ header {
     display: block;
   }
 
+
+  .notification-dropdown {
+    float: left;
+    overflow: hidden;
+  }
+  
+  .notification-dropdown:hover .dropdown-content {
+    display: block;
+  }
+
 /* @media (max-width: 600px) {
     header {
         flex-direction: column;

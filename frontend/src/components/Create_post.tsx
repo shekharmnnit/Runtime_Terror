@@ -39,11 +39,14 @@ function CreatePost({ postContent }) {
     const handleFileChange = (event) => {
         setSelectedFile(event.target.files[0]);
     };
-    const handleFileUpload = () => {
-        if (selectedFile) {
+
+    const handleFileUpload = (postContant) => {
+        if (selectedFile && postContant.tags.length != 0) {
             console.log('Uploading file:', selectedFile);
             const formData = new FormData();
             formData.append('postfile', selectedFile);
+            formData.append('caption', postContant.caption);
+            formData.append('tags', postContant.tags);
             axios.post('YOUR_API_ENDPOINT', formData)
                 .then((response) => {
                     // setLoading(false);
@@ -62,18 +65,23 @@ function CreatePost({ postContent }) {
                 });
 
         } else {
-            console.log('No file selected.');
+            alert('1)File is mandatory \n 2)Atleast one tag is mandatory');
+            console.log('1)File is mandatory \n 2)Atleast one tag is mandatory');
         }
     };
 
     async function postRequest() {
-        handleFileUpload()
-        let obj = [{
-            "caption": caption,
-            "tags": [tag1, tag2, tag3, tag4, tag5]
-        }]
-        alert("Post created successfully.");
-        console.warn(obj)
+        let tags: string[] = [];
+        let obj = {
+            "caption": caption
+        }
+        !!tag1 && tags.push(tag1)
+        !!tag2 && tags.push(tag2)
+        !!tag3 && tags.push(tag3)
+        !!tag4 && tags.push(tag4)
+        !!tag5 && tags.push(tag5)
+        obj['tags']=tags
+        handleFileUpload(obj)
     }
 
     return (
