@@ -12,6 +12,7 @@ import {
   MDBCheckbox
 }
   from 'mdb-react-ui-kit';
+ 
 
 function Login() {
 
@@ -30,7 +31,45 @@ function Login() {
   const [tag4, setTag4] = useState('')
   const [tag5, setTag5] = useState('')
 
+// Validation functions
+const isFieldValid = (value) => value.trim() !== '';
+const isEmailValid = (value) => /\S+@\S+\.\S+/.test(value);
+const isPasswordValid = (value) => value.length >= 6;
+
+// Error states
+const [firstNameError, setFirstNameError] = useState('');
+const [lastNameError, setLastNameError] = useState('');
+const [emailError, setEmailError] = useState('');
+const [passwordError, setPasswordError] = useState('');
+
   async function register() {
+
+    // Initialize an array to collect error messages
+  const errors = [];
+
+  if (!isFieldValid(f_name)) {
+    errors.push('Please enter the first name.');
+  }
+  if (!isFieldValid(l_name)) {
+    errors.push('Please enter the last name.');
+  }
+  if (!isEmailValid(email)) {
+    errors.push('Please enter a valid email address.');
+  }
+  if (!isPasswordValid(password)) {
+    errors.push('Password must be at least 6 characters.');
+  }
+  if (!isFieldValid(tag1)) {
+    errors.push('Please enter at least 1 skill.');
+  }
+  // If there are errors, display them all
+  if (errors.length > 0) {
+    const errorMessage = errors.join('\n');
+    alert(errorMessage);
+    return;
+  }
+
+    
     let obj = [{
       "first_name": f_name,
       "last_name": l_name,
@@ -45,7 +84,8 @@ function Login() {
     // console.log(localFname);
 
     localStorage.setItem('local_last_name', l_name);
-   
+    // let localLname= localStorage.getItem('local_last_name');   
+    // console.log(localLname);
 
     localStorage.setItem('local_reg_email', email);
 
@@ -67,6 +107,23 @@ function Login() {
   }
 
   async function login() {
+
+    const errors = [];
+
+    if (!isEmailValid(log_email)) {
+      errors.push('Please enter a valid email address.');
+    }
+    if (!isPasswordValid(log_password)) {
+      errors.push('Password must be at least 6 characters.');
+    }
+
+    // If there are errors, display them all
+    if (errors.length > 0) {
+      const errorMessage = errors.join('\n');
+      alert(errorMessage);
+      return;
+    }
+
     let obj = [{
       "login_email": log_email,
       "login_password": log_password,
@@ -75,9 +132,10 @@ function Login() {
     localStorage.setItem('Local_login_email', log_email);
     // let localUserEmail= localStorage.getItem('Local_login_email');   
     // console.log(localUserEmail);
-    alert("Successfully loged in.");
+    alert("Successfully logged in.");
     window.location.replace("http://localhost:3000/home");
   }
+
 
   const handleJustifyClick = (value) => {
     if (value === justifyActive) {
@@ -121,22 +179,26 @@ function Login() {
 
           <MDBTabsContent>
             <MDBTabsPane show={justifyActive === 'tab1'}>
+           
               <MDBInput wrapperClass='mb-4' value={log_email} onChange={(e) => setLogEmail(e.target.value)} placeholder='Email address' type='email' style={{ backgroundColor: '#D9D9D9' }} />
               <MDBInput wrapperClass='mb-4' value={log_password} onChange={(e) => setLogPassword(e.target.value)} placeholder='Password' id='form2' type='password' style={{ backgroundColor: '#D9D9D9' }} />
 
               <button className="w-100 btn btn-primary" onClick={login} style={{ backgroundColor: '#710808', borderColor: '#710808' }}>SIGN IN</button>
+             
               <p className="text-left"><a href="#!" style={{ color: '#710808' }}>Continue as Guest</a></p>
 
             </MDBTabsPane>
 
             <MDBTabsPane show={justifyActive === 'tab2'}>
-
-
               <div style={{ height: '53vh', overflow: 'auto' }}>
               <MDBInput wrapperClass='mb-4' value={f_name} onChange={(e) => setFirstName(e.target.value)} placeholder='First Name' type='text' style={{ backgroundColor: '#D9D9D9' }} />
+              {/* {firstNameError && <p className="error-message">{firstNameError}</p>} */}
               <MDBInput wrapperClass='mb-4' value={l_name} onChange={(e) => setLastName(e.target.value)} placeholder='Last Name' type='text' style={{ backgroundColor: '#D9D9D9' }} />
+              
               <MDBInput wrapperClass='mb-4' value={email} onChange={(e) => setEmail(e.target.value)} placeholder='Email' type='email' style={{ backgroundColor: '#D9D9D9' }} />
+              
               <MDBInput wrapperClass='mb-4' value={password} onChange={(e) => setPassword(e.target.value)} placeholder='Password' type='password' style={{ backgroundColor: '#D9D9D9' }} />
+             
               <MDBInput wrapperClass='mb-4' value={password_cnf} onChange={(e) => setCnfPassword(e.target.value)} placeholder='Confirm Password' type='password' style={{ backgroundColor: '#D9D9D9' }} />
 
               <div style={{ display: 'flex', justifyContent: 'space-between' }}>
