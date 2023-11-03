@@ -11,12 +11,13 @@ const checkObjectId = require('../../middleware/checkObjectId');
 const Notification = require('../../models/Notification')
 
 // Create a new post
-router.post('/create', async (req, res) => {
+router.post('/create', auth, async (req, res) => {
   try {
-    console.log("reached /create");
-    console.log("req.body " + req.body);
     const newPost = new Post(req.body);
     const savedPost = await newPost.save();
+    const sessionUser = await User.findById(req.user.id);
+    sessionUser.createdPostIds.unshift(savedPost._id);
+    await sessionUser.save()
     res.status(201).json(savedPost);
   } catch (error) {
     console.error('Error creating post:', error);
@@ -26,21 +27,18 @@ router.post('/create', async (req, res) => {
 
 
 // Update a post by postId
-router.put('/update/:postId', async (req, res) => {
+router.put('/update/:postId', auth, async (req, res) => {
   try {
     const postId = req.params.postId;
     const updateFields = req.body; // This should contain only the fields you want to update
-
     const updatedPost = await Post.findOneAndUpdate(
       { _id: postId },
       { $set: updateFields }, // Use $set to update only specific fields
       { new: true }
     );
-
     if (!updatedPost) {
       return res.status(404).json({ message: 'Post not found' });
     }
-
     res.json(updatedPost);
   } catch (error) {
     console.error('Error updating post:', error);
@@ -50,9 +48,16 @@ router.put('/update/:postId', async (req, res) => {
 
 
 // Delete a post by postId
-router.delete('/delete/:postId', async (req, res) => {
+router.delete('/delete/:postId', auth, async (req, res) => {
   try {
     const deletedPost = await Post.findOneAndDelete({ _id: req.params.postId });
+    const sessionUser = await User.findById(req.user.id);
+    const id_ind = sessionUser.createdPostIds.findIndex(req.params.postId);
+    if (id_ind>-1) {
+      sessionUser.createdPostIds.splice(id_ind, 1);
+    }
+    sessionUser.save()
+
     if (!deletedPost) {
       return res.status(404).json({ message: 'Post not found' });
     }
@@ -172,7 +177,7 @@ router.post(
     }
 
     try {
-      const user = await User.findById(req.user.id).select('-password');
+      const user = await User.findById(req.user.id);
       const post = await Post.findById(req.params.postid);
       const newComment = new Comment({
         commentedUserId: req.user.id,
@@ -180,10 +185,16 @@ router.post(
         commentedByLastName: user.lastName,
         commentString: req.body.text,
         lastUpdatedOn: Date.now()
-      })
+      });
       post.comments.unshift(newComment);
-      await post.save()     
-      res.json(post.comments)
+      await post.save();
+      console.log(user.createdPostIds.indexOf(req.params.postid))
+      if(user.createdPostIds.indexOf(req.params.postid) == -1) {
+        console.log("reached 2")
+        user.commentedPostIds.unshift(req.params.postid);
+      }
+      await user.save();
+      return res.json(post.comments);
     } catch (err) {
       console.error(err.message);
       res.status(500).send('Server Error');
@@ -212,7 +223,7 @@ router.post('/notification/:postid',
       });
       postOwner.notifications.unshift(notification);
       await postOwner.save();
-      res.json(postOwner.notifications);
+      return res.status(201).json(postOwner.notifications);
     } catch(err) {
       console.error(err.message);
       res.status(500).send('Server Error');
