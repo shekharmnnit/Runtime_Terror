@@ -18,3 +18,31 @@
     margin: 9px 6px 0px 6px;
     overflow: auto;
 }
+
+.tabContainer {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    margin: 4px;
+    font-weight: bold;
+}
+
+.tab {
+    width: 50%;
+    background-color: #FFFFFF;
+    color: #710808;
+    padding: 10px 20px;
+    border: 2px solid #710808;
+    cursor: pointer;
+    text-align: center;
+}
+
+.selectedTab {
+    background-color: #710808;
+    color: #FFFFFF;
+}
+
+.unselectedTab {
+    background-color: #FFFFFF;
+    color: #710808;
+}
