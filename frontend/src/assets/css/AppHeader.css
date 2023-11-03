@@ -170,7 +170,7 @@ header {
     overflow: hidden;
   }
   
-  .notification-dropdown:hover .dropdown-content {
+  .notification-dropdown .dropdown-content {
     display: block;
   }
 
