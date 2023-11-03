@@ -27,9 +27,18 @@ const UserSchema = new mongoose.Schema({
   skills: [{
     type:String
   }],
-  createdPostIds: [mongoose.Schema.Types.ObjectId],
-  commentedPostIds: [mongoose.Schema.Types.ObjectId],
-  notifications: [Notification]
+  createdPostIds: {
+    type: [mongoose.Schema.Types.ObjectId],
+    default: []
+  },
+  commentedPostIds: {
+    type: [mongoose.Schema.Types.ObjectId],
+    default: []
+  },
+  notifications: {
+    type: [Notification],
+    default: []
+  }
 });
 
 module.exports = mongoose.model('user', UserSchema);
