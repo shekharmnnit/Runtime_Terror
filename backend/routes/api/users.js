@@ -6,6 +6,7 @@ const config = require('config');
 const { check, validationResult } = require('express-validator');
 
 const User = require('../../models/User');
+const Post = require('../../models/Post');
 const connectMySQL = require('../../mySQL/connectMySQL');
 
 // @route    POST api/register
