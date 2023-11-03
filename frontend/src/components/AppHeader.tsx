@@ -14,7 +14,25 @@ function handleLogout() {
   }
 
 function AppHeader() {
-
+    const [showNotificationDropdown, setShowNotificationDropdown] = useState(false);
+    const [showGreenNotificationIcon, setShowGreenNotificationIcon] = useState(true);
+    function handleNotificationDropdown() {
+        clearLocalStorage();
+        setShowNotificationDropdown(!showNotificationDropdown)
+        setShowGreenNotificationIcon(false)
+      }
+    const [notificationList, setNotificationList] = useState([{
+        name:"apple",
+        url:"post"
+    },
+    {
+        name:"man",
+        url:"www.fb.com"
+    },
+    {
+        name:"cat",
+        url:"https://www.facebook.com/"
+    }]);
     const [show, setShow] = useState(true);
 
     let local_first_name = localStorage.getItem('local_first_name');
@@ -46,13 +64,13 @@ function AppHeader() {
                 {/* {show ? <Post /> : null} */}
             </div>
             <div className='notification-dropdown'>
-                <i className="fa-solid fa-bell fa-2x notification-icon"></i>
-                <i className="fa-solid fa-circle" style={{"color": "#58ec09"}}></i>
-                <div className="dropdown-content">
-                    <a href="#">Link 1</a>
-                    <a href="#">Link 2</a>
-                    <a href="#">Link 3</a>
-                </div>
+                <i onClick={handleNotificationDropdown} className="fa-solid fa-bell fa-2x notification-icon"></i>
+                { showGreenNotificationIcon && <i className="fa-solid fa-circle" style={{"color": "#58ec09"}}></i>}
+                {showNotificationDropdown &&  <div className="dropdown-content">
+                    {notificationList.map((item,index)=>(
+                        <a href={item.url}>{item.name}</a>
+                    ))}
+                </div>}
             </div>
             {/* <div>
                 <Link to="/">  <button className="button-login">
