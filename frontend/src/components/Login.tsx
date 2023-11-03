@@ -45,7 +45,7 @@ const [passwordError, setPasswordError] = useState('');
   async function register() {
 
     // Initialize an array to collect error messages
-  const errors = [];
+  const errors: String[] = [];
 
   if (!isFieldValid(f_name)) {
     errors.push('Please enter the first name.');
@@ -89,7 +89,7 @@ const [passwordError, setPasswordError] = useState('');
 
     localStorage.setItem('local_reg_email', email);
 
-    localStorage.setItem('local_reg_user_id', 1);
+    localStorage.setItem('local_reg_user_id', '1');
 
     alert("Registration successfully done.");
     window.location.replace("http://localhost:3000/home");
@@ -108,7 +108,7 @@ const [passwordError, setPasswordError] = useState('');
 
   async function login() {
 
-    const errors = [];
+    const errors :String[] = [];
 
     if (!isEmailValid(log_email)) {
       errors.push('Please enter a valid email address.');
@@ -186,7 +186,7 @@ const [passwordError, setPasswordError] = useState('');
               <button className="w-100 btn btn-primary" onClick={login} style={{ backgroundColor: '#710808', borderColor: '#710808' }}>SIGN IN</button>
              
               <p className="text-left"><a href="#!" style={{ color: '#710808' }}>Continue as Guest</a></p>
-
+              
             </MDBTabsPane>
 
             <MDBTabsPane show={justifyActive === 'tab2'}>
