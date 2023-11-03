@@ -17,6 +17,7 @@ function ProfilePage() {
    
 
     let obj = [{
+        "user_id":"1",
         "first_name": "Kunal",
         "last_name": "Mahato",
         "caption": "Review my paper on Software Engineering",
@@ -25,6 +26,7 @@ function ProfilePage() {
         "date": "12-08-2023"      
       },
       {
+        "user_id":"2",
         "first_name": "Yo",
         "last_name": "Mahato",
         "caption": "Review my paper on Software Engineering",
@@ -33,6 +35,7 @@ function ProfilePage() {
         "date": "12-08-2023"
       },
       {
+        "user_id":"3",
         "first_name": "Yo",
         "last_name": "Mahato",
         "caption": "Review my paper on Software Engineering",
@@ -42,6 +45,7 @@ function ProfilePage() {
       }]
 
       let obj2 = [{
+        "user_id":"5",
         "first_name": "Laxman",
         "last_name": "Muthe",
         "caption": "Review my paper on Blockchain technology",
@@ -50,6 +54,7 @@ function ProfilePage() {
         "date": "12-08-2023"      
       },
       {
+        "user_id":"6",
         "first_name": "Kunal",
         "last_name": "Mahato",
         "caption": "Review my paper on Data Science",
@@ -58,6 +63,7 @@ function ProfilePage() {
         "date": "12-08-2023"
       },
       {
+        "user_id":"7",
         "first_name": "Yo",
         "last_name": "Mahato",
         "caption": "Review my paper on Software Engineering",
@@ -89,7 +95,7 @@ function ProfilePage() {
             <div style={{ height: '10vh' }}><AppHeader/></div>
             <div>
                 <div className='userProfileSection'>
-                    <div><UserProfileDetail/></div>
+                    <div><UserProfileDetail obj={obj}/></div>
                 </div>
                 <div className='postSection'>
                     

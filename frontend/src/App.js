@@ -22,7 +22,7 @@ function App() {
         <Route path="/upload" element={<FileUpload />}> // To be commented, form to handle file upload
         </Route>
         <Route path="/shekhar" element={<ShowPostContent />}></Route>
-        <Route path="/profile" element={<ProfilePage />}></Route>
+        <Route path="/profile/*" element={<ProfilePage />}></Route>
         <Route path="/post" element={<PostPage />}></Route>
       </Routes>
     </BrowserRouter>
