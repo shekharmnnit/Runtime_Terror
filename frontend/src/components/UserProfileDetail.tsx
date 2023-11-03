@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import '../assets/css/global.css';
 import '../assets/css/UserProfileDetail.css';
-
+import EditProfileDetail from './EditProfileDetail.tsx';
+import Popup from 'reactjs-popup';
 
 function UserProfileDetail({ obj }) {
 
@@ -27,6 +28,17 @@ function UserProfileDetail({ obj }) {
         email: email,
         initials: (firstName[0] + lastName[0]).toUpperCase()
     };
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
+    const handleEditClick = () => {
+        setIsModalOpen(!isModalOpen); // Toggle the modal state
+    };
+
+    const handleClosePopup = () => {
+        setIsModalOpen(false);
+    };
+
+
     return (
         <section>
             <div className="user-detail">
@@ -39,8 +51,28 @@ function UserProfileDetail({ obj }) {
                 <div className="user-profile-details">
                     {profileObj.email}
                 </div>
-                <div className="edit-button">Edit</div>
-            </div>
+                <button className="edit-button" onClick={handleEditClick}>
+                    Edit
+                </button>
+                <Popup
+                    open={isModalOpen}
+                    closeOnDocumentClick
+                    onClose={handleClosePopup} // Close the modal when clicking outside
+                    className="custom-popup-class"
+                >
+                    <EditProfileDetail
+                        userDetails={{
+                            firstName,
+                            lastName,
+                            tags: [], // Add the tags from localStorage or your data source
+                        }}
+                        onSave={() => {
+                            // Handle save logic here
+                            handleClosePopup(); // Close the modal after saving
+                        }}
+                    />
+                </Popup>
+            </div>         
         </section>
     )
 }

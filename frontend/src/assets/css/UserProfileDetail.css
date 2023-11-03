@@ -46,3 +46,12 @@ section {
   .edit-button:active {
     color: #004599;
   }
+
+.custom-popup-class {
+    width: 80% !important; /* Set the width as desired */
+    max-width: 400px !important; /* Limit the maximum width */
+
+    top: 50% !important; /* Center vertically */
+    left: 50% !important; /* Center horizontally */
+    
+}

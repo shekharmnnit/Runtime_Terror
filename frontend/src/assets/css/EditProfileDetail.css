@@ -1,0 +1,34 @@
+.edit-details {
+    padding: 5px;
+    background-color: #f9f9f9;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin: 0 auto;
+  }
+  
+
+.input-group {
+    margin-bottom: 5px;
+  }
+
+  .label {
+    display: block;
+    margin-bottom: 5px;
+  }
+  
+  input[type="text"] {
+    width: 100%;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+  }
+  
+  .skills-tag{
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+  }
+
+  .popup-content{
+    position: absolute !important;
+  }
