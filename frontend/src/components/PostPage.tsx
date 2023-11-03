@@ -4,6 +4,7 @@ import '../assets/css/PostPage.css'
 import AppFooter from './AppFooter.tsx';
 import PostDetailContainer from './Post_detail_container.tsx';
 import PostComment from './PostComment.tsx';
+import DocViewer, { DocViewerRenderers } from "@cyntler/react-doc-viewer";
 
 function PostPage() {
 
@@ -32,6 +33,20 @@ function PostPage() {
                 "comment": "Appreciate that, great work",
                 "date": "12-08-2023"
             }
+        ],
+        docsToView:[
+    
+            { 
+                uri: "https://buffer.com/cdn-cgi/image/w=1000,fit=contain,q=90,f=auto/library/content/images/size/w600/2023/10/free-images.jpg",
+                fileType:'jpg',
+                fileName:'shekhar'
+            },
+            { 
+                uri: "https://drive.google.com/file/d/1URQJCZSDvXz8UQ_ymgn9iXtqbQlStdeN/view",
+                    fileType:'pdf',
+                    fileName:'pdf'
+            }
+            // { uri: require("./example-files/pdf.pdf") }, // Local File
         ]
     }
 
@@ -50,7 +65,9 @@ function PostPage() {
                 </div>
                 <div className='documentsView'>
                     <div className='document'>
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/6/6c/PDF_icon.svg" alt="A beautiful landscape" />
+                        <DocViewer documents={postData.docsToView} pluginRenderers={DocViewerRenderers}
+                        style={{height:'1000px'}} />
+                        {/* <img src="https://upload.wikimedia.org/wikipedia/commons/6/6c/PDF_icon.svg" alt="A beautiful landscape" /> */}
                     </div>
                 </div>
             </div>

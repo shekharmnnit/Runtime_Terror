@@ -15,7 +15,7 @@ function PostDetailContainer({ postContent, cur_user_id }) {
     // }];
     postContent = [postContent];
     const local_reg_user_id = localStorage.getItem('local_reg_user_id');
-    const showEdit = (cur_user_id === local_reg_user_id)
+    const showEdit = ((cur_user_id).toString() === local_reg_user_id)
     return (
         <div className="post-detail-summary-container">
             {postContent && postContent.map((item, index) => (
