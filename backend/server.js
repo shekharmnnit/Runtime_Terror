@@ -7,6 +7,7 @@ const multer = require('multer');
 const {GridFsStorage} = require('multer-gridfs-storage');
 const Grid = require('gridfs-stream')
 const mongoose = require('mongoose')
+const connectMySQL = require('./mySQL/connectMySQL');
 
 const app = express();
 
@@ -22,6 +23,23 @@ const connectDB = async () => {
   };
 
 connectDB();
+
+async function setupDatabase() {
+  try {
+    await connectMySQL.createDatabase();
+    await connectMySQL.createTable();
+    console.log('Database and table created successfully');
+
+    // Start your server here
+    // const PORT = process.env.PORT || 5050;
+    // app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
+  } catch (err) {
+    console.error('Error setting up the database:', err);
+  }
+}
+
+// Call the function to set up the database
+setupDatabase();
 
 const conn = mongoose.createConnection(db);
 conn.on('error', e => {

@@ -6,6 +6,7 @@ const config = require('config');
 const { check, validationResult } = require('express-validator');
 
 const User = require('../../models/User');
+const connectMySQL = require('../../mySQL/connectMySQL');
 
 // @route    POST api/register
 // @desc     Register user
@@ -50,6 +51,18 @@ router.post(
       user.password = await bcrypt.hash(password, salt);
 
       await user.save();
+
+      // Create a new user in MySQL with encrypted password
+      const createUserResult = await connectMySQL.createUser({
+        email,
+        firstName,
+        lastName,
+        password: user.password, // Use the encrypted password
+      });
+
+      if (createUserResult.error) {
+        return res.status(500).json({ error: createUserResult.error });
+      }
 
       const payload = {
         user: {
