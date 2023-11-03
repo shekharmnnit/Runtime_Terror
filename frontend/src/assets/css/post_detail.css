@@ -1,24 +1,6 @@
-/* ShowPostSummary.css */
-.post-summary-container {
-    display: flex;
-    flex-direction: column;
-    height: auto;
-    min-width: 70%;
-}
-
-.post-summary {
-    display: flex;
-    justify-content: space-between;
-    background-color: white;
-    padding: 10px;
-    border-radius: 8px;
-    margin: 1vh;
-}
-
-.post-details {
-    display: flex;
-    flex-direction: column;
-    color: black;
+.post-details{
+    position: relative;
+    width: 100%;
 }
 
 .name {
@@ -26,7 +8,7 @@
 }
 .caption {
     margin-right: 10px; /* Added margin property */
-    height: 2vh;
+    height: 15vh;
 }
 
 .tags {
@@ -61,11 +43,7 @@
     background-color: #f1f1f1;
 }
 
-.link-container {
-    display: flex;
-    align-items: center;
-}
 
-.link-image {
-    width: 20vh;
+.icon {
+    color: #710808;
 }

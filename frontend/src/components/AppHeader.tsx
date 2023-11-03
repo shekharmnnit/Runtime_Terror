@@ -4,7 +4,7 @@ import '../assets/css/global.css'
 import '../assets/css/AppHeader.css';
 import { Link } from 'react-router-dom';
 import Popup from 'reactjs-popup';
-import 'reactjs-popup/dist/index.css'; 
+import 'reactjs-popup/dist/index.css';
 import CreatePost from './Create_post.tsx';
 // import Post from './Post';
 
@@ -13,12 +13,8 @@ import CreatePost from './Create_post.tsx';
 function AppHeader() {
 
     const [show, setShow] = useState(true);
-    const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
-    const toggleDropdown = () => {
-        setIsDropdownOpen(!isDropdownOpen);
-    };
-    let local_first_name= localStorage.getItem('local_first_name');
+    let local_first_name = localStorage.getItem('local_first_name');
     return (
 
         <header className="header">
@@ -38,11 +34,11 @@ function AppHeader() {
             </div>
             <div>
                 <Popup trigger={<button className="button-create-post" onClick={() => setShow(!show)}><i className="fa-solid fa-circle-plus"></i>Create post{/* {show ? "Hide" : "Show"} */}</button>} position="center center">
-                  <div>
-                    Create Post
-                    <div><CreatePost/></div>
-                    {/* <button onClick={() => Popup.close()}>Close</button> */}
-                  </div>
+                    <div>
+                        Create Post
+                        <div><CreatePost /></div>
+                        {/* <button onClick={() => Popup.close()}>Close</button> */}
+                    </div>
                 </Popup>
                 {/* {show ? <Post /> : null} */}
             </div>
@@ -57,21 +53,17 @@ function AppHeader() {
             </div> */}
 
             <div className="header-dropdown">
-                <button className="button-login" onClick={toggleDropdown}>
+                <button className="button-login">
                     {local_first_name}
-                    <i className={`fa-solid fa-sort-${isDropdownOpen ? 'up' : 'down'}`}></i>
-                 
+                    <i className={`fa-solid fa-sort-down`}></i>
                 </button>
-                {isDropdownOpen && (
-                <ul >
-                <li> Profile</li>
-                    <li>Log out</li>
-                    {/* <li> <Link to="/">Profile</Link></li>
-                    <li><Link to="/">Log out</Link></li> */}
-                </ul>
-                  )}
+                <div className="dropdown-content">
+                    <a href="#">Link 1</a>
+                    <a href="#">Link 2</a>
+                    <a href="#">Link 3</a>
+                </div>
             </div>
-            
+
         </header>
     )
 }

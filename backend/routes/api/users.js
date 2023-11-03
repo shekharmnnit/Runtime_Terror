@@ -4,6 +4,8 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const config = require('config');
 const { check, validationResult } = require('express-validator');
+const auth = require('../../middleware/auth');
+const checkObjectId = require('../../middleware/checkObjectId');
 
 const User = require('../../models/User');
 const Post = require('../../models/Post');
@@ -31,6 +33,7 @@ router.post(
     const { firstName, lastName, email, password, skills } = req.body;
 
     try {
+
       let user = await User.findOne({ email });
 
       if (user) {
@@ -86,5 +89,53 @@ router.post(
     }
   }
 );
+
+router.get('/fetchProfile/:userId',
+  auth,
+  checkObjectId('userId'),
+  async (req,res) => {
+    // userId, email, firstname, lastname, commentedposts, createdPosts
+    try {
+      const user = User.findById(req.params.userId).select('-password');
+      const createdPosts = []
+      const commentedPosts = []
+      user.createdPostIds.forEach(async postId => {
+        createdPosts.unshift(await Post.findById(postId));
+      });
+      user.commentedPostIds.forEach(async postId => {
+        commentedPosts.unshift(await Post.findById(postId));
+      })
+      return res.status(201).json({
+        user,
+        commentedPosts,
+        createdPosts
+      });
+    } catch(err) {
+      console.error(err.message);
+      res.status(500).send('Server error');
+    }
+  }
+)
+
+router.post('/updateProfile/:userId',
+  auth,
+  checkObjectId('userId'),
+  async (req,res) => {
+    // userId, email, firstname, lastname, commentedposts, createdPosts
+    try {
+      const user = User.findById(req.params.userId);
+      const updatedUser = await User.findOneAndUpdate(
+        { _id: req.params.userId },
+        { $set: req.body }, // Use $set to update only specific fields
+        { new: true }
+      );
+      await updatedUser.save();
+      return res.status(201).json(updatedUser);
+    } catch(err) {
+      console.error(err.message);
+      res.status(500).send('Server error');
+    }
+  }
+)
 
 module.exports = router;

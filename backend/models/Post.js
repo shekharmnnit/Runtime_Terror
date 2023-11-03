@@ -1,27 +1,6 @@
 const mongoose = require('mongoose');
+const Comment = require('./Comment').schema;
 
-// Define the Comment schema for the comments in the post
-const CommentSchema = new mongoose.Schema({
-  commentedUserId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'User',
-  },
-  commentedByFirstName: {
-    type: String,
-    required: true,
-  },
-  commentedByLastName: {
-    type: String,
-    required: true,
-  },
-  commentString: {
-    type: String,
-  },
-  lastUpdatedOn: {
-    type: Date,
-    default: Date.now,
-  },
-});
 
 // Define the Post schema
 const PostSchema = new mongoose.Schema({
@@ -60,13 +39,13 @@ const PostSchema = new mongoose.Schema({
     maxlength: 1000,
   },
   comments: {
-    type: [CommentSchema], // Array of Comment objects
+    type: [Comment], // Array of Comment objects
   },
   upvotes: {
-    type: [Number]
+    type: [mongoose.Schema.Types.ObjectId]
   },
   downvotes: {
-    type: [Number]
+    type: [mongoose.Schema.Types.ObjectId]
   },
   createdOn: {
     type: Date,

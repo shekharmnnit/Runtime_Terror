@@ -45,12 +45,12 @@ function Login() {
     // console.log(localFname);
 
     localStorage.setItem('local_last_name', l_name);
-    // let localLname= localStorage.getItem('local_last_name');
-    // console.log(localLname);
+   
 
     localStorage.setItem('local_reg_email', email);
-    // let localRegEmail= localStorage.getItem('local_reg_email');   
-    // console.log(localRegEmail);
+
+    localStorage.setItem('local_reg_user_id', 1);
+
     alert("Registration successfully done.");
     window.location.replace("http://localhost:3000/home");
     console.warn(obj)
