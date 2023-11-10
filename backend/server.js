@@ -2,10 +2,10 @@ const express = require('express')
 const config = require('./config/default.json')
 // const connectDB = require('./config/db');
 const db = config.mongoURI
-const path = require('path');
-const multer = require('multer');
-const {GridFsStorage} = require('multer-gridfs-storage');
-const Grid = require('gridfs-stream')
+// const path = require('path');
+// const multer = require('multer');
+// const {GridFsStorage} = require('multer-gridfs-storage');
+// const Grid = require('gridfs-stream')
 const mongoose = require('mongoose')
 const connectMySQL = require('./mySQL/connectMySQL');
 
@@ -41,35 +41,35 @@ async function setupDatabase() {
 // Call the function to set up the database
 setupDatabase();
 
-const conn = mongoose.createConnection(db);
-conn.on('error', e => {
-    throw e;
-})
-let gfs, gridfsBucket;
-conn.once('open', () => {
-    // Init stream
-    gridfsBucket = new mongoose.mongo.GridFSBucket(conn.db, {
-        bucketName: 'uploads'
-    });
-    console.log("MongoDB connected...")
-    gfs = Grid(conn.db, mongoose.mongo);  
-    gfs.collection('uploads');
-});
-const storage = new GridFsStorage({
-    url: db,
-    file: (req, file) => {
-    return new Promise((resolve, reject) => {
-        const filename = Date.now() + path.extname(file.originalname);
-        const fileInfo = {
-            filename: filename,
-            bucketName: 'uploads'
-        };
-        resolve(fileInfo);
-    });
-    }
-});
+// const conn = mongoose.createConnection(db);
+// conn.on('error', e => {
+//     throw e;
+// })
+// let gfs, gridfsBucket;
+// conn.once('open', () => {
+//     // Init stream
+//     gridfsBucket = new mongoose.mongo.GridFSBucket(conn.db, {
+//         bucketName: 'uploads'
+//     });
+//     console.log("MongoDB connected...")
+//     gfs = Grid(conn.db, mongoose.mongo);  
+//     gfs.collection('uploads');
+// });
+// const storage = new GridFsStorage({
+//     url: db,
+//     file: (req, file) => {
+//     return new Promise((resolve, reject) => {
+//         const filename = Date.now() + path.extname(file.originalname);
+//         const fileInfo = {
+//             filename: filename,
+//             bucketName: 'uploads'
+//         };
+//         resolve(fileInfo);
+//     });
+//     }
+// });
 
-const upload = multer({ storage: storage });
+// const upload = multer({ storage: storage });
 
 // Init Middleware
 app.use(express.json());
@@ -79,7 +79,7 @@ app.use('/api/login', require('./routes/api/auth'))
 app.use('/api/posts', require('./routes/api/posts'));
 // To be commented, route to handle file upload
 
-app.post('/upload', upload.single('postfile'), (req, res) => {
+app.post('/upload', (req, res) => {
     res.json({file: req.file})
 })
 
@@ -102,11 +102,6 @@ app.get('/getfiles/:filename', async (req,res) => {
     }
 
 })
-
-
-
-// app.get('/',(req,res) => res.send('API running'))
-
 
 
 const PORT = process.env.PORT || 5000;
