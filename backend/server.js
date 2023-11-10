@@ -76,6 +76,7 @@ app.use(express.json());
 
 app.use('/api/user', require('./routes/api/users'));
 app.use('/api/login', require('./routes/api/auth'))
+app.use('/api/secureLogin', require('./routes/api/authMySQL'))
 app.use('/api/posts', require('./routes/api/posts'));
 // To be commented, route to handle file upload
 

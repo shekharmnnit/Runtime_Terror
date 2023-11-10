@@ -121,6 +121,7 @@ router.post('/updateProfile/:userId',
   auth,
   checkObjectId('userId'),
   async (req,res) => {
+    const { email, firstName, lastName } = req.body;
     // userId, email, firstname, lastname, commentedposts, createdPosts
     try {
       const user = User.findById(req.params.userId);
@@ -129,6 +130,31 @@ router.post('/updateProfile/:userId',
         { $set: req.body }, // Use $set to update only specific fields
         { new: true }
       );
+
+      // Update user attributes based on the request body
+      if (email) {
+        user.email = email; // Update email if provided
+      }
+
+      if (firstName) {
+        user.firstName = firstName; // Update first name if provided
+      }
+
+      if (lastName) {
+        user.lastName = lastName; // Update last name if provided
+      }
+
+      // Update the user in MySQL
+      const updateUserResult = await connectMySQL.updateUser({
+        email: user.email, // Use email to identify the user in MySQL
+        firstName: user.firstName,
+        lastName: user.lastName,
+      });
+
+      if (updateUserResult.error) {
+        return res.status(500).json({ error: updateUserResult.error });
+    }
+
       await updatedUser.save();
       return res.status(201).json(updatedUser);
     } catch(err) {

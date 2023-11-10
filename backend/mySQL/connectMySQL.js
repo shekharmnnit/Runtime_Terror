@@ -81,4 +81,60 @@ const createUser = (userInfo) => {
     });
   };
 
-module.exports = { createDatabase, createTable, createUser};
+  const updateUser = (userInfo) => {
+    return new Promise((resolve, reject) => {
+      const dbConnection = mysql.createConnection({
+        host: 'localhost',
+        user: 'root',
+        password: 'root',
+        database: 'reviewMeSQL',
+      });
+  
+      const query = `
+        UPDATE user_credentials
+        SET firstName = ?, lastName = ?
+        WHERE email = ?`;
+  
+      const { email, firstName, lastName } = userInfo;
+  
+      dbConnection.query(
+        query,
+        [firstName, lastName, email],
+        (err, results) => {
+          if (err) {
+            reject({ error: 'Error updating user in MySQL' });
+          } else {
+            resolve({ success: 'User updated in MySQL' });
+          }
+  
+          dbConnection.end();
+        }
+      );
+    });
+  };
+  
+  const getUserByEmail = (email) => {
+    return new Promise((resolve, reject) => {
+      const dbConnection = mysql.createConnection({
+        host: 'localhost',
+        user: 'root',
+        password: 'root',
+        database: 'reviewMeSQL',
+      });
+  
+      const query = 'SELECT * FROM user_credentials WHERE email = ?';
+  
+      dbConnection.query(query, [email], (err, results) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(results[0]); // Assuming email is unique, so there will be at most one result
+        }
+  
+        dbConnection.end();
+      });
+    });
+  };
+
+  module.exports = { createDatabase, createTable, createUser, updateUser, getUserByEmail };
+  
