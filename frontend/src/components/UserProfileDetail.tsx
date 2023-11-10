@@ -23,10 +23,12 @@ function UserProfileDetail({ obj }) {
             });
         }
     }
+
+
     let profileObj = {
         name: firstName + ' ' + lastName,
         email: email,
-        initials: (firstName[0] + lastName[0]).toUpperCase()
+        initials: (firstName[0] + lastName[0]).toUpperCase(),
     };
     const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -37,7 +39,6 @@ function UserProfileDetail({ obj }) {
     const handleClosePopup = () => {
         setIsModalOpen(false);
     };
-
 
     return (
         <section>

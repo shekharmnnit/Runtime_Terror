@@ -95,6 +95,7 @@ const isPasswordValid = (value) => value.length >= 6;
     localStorage.setItem('local_reg_email', email);
 
     localStorage.setItem('local_reg_user_id', '1');
+    // localStorage.setItem('local_tags', JSON.stringify([tag1, tag2, tag3, tag4, tag5]));
 
 
     try {
@@ -154,6 +155,10 @@ const isPasswordValid = (value) => value.length >= 6;
     // alert('Continuing as Guest');
     window.location.replace('http://localhost:3000/home');
   };
+
+ 
+
+
   return (
     // <MDBContainer >
 
