@@ -17,6 +17,8 @@ function handleLogout() {
 function AppHeader() {
     const [showNotificationDropdown, setShowNotificationDropdown] = useState(false);
     const [showGreenNotificationIcon, setShowGreenNotificationIcon] = useState(true);
+
+
     function handleNotificationDropdown() {
         clearLocalStorage();
         setShowNotificationDropdown(!showNotificationDropdown)
@@ -35,10 +37,14 @@ function AppHeader() {
         url: "https://www.facebook.com/"
     }]);
     const [show, setShow] = useState(true);
+    
 
     let local_first_name = localStorage.getItem('local_first_name');
-
-    
+    if(local_first_name==null || local_first_name==''){
+        localStorage.setItem('local_first_name','Guest')
+        local_first_name='Guest'
+    }
+    const isContinueAsGuest = local_first_name == 'Guest'|| local_first_name == '' ||local_first_name == null ;
 
     return (
 
@@ -54,17 +60,18 @@ function AppHeader() {
                 </div>
             </div>
                 <SearchBar />
-l̥            <div>
-                <Popup trigger={<button className="button-create-post" onClick={() => setShow(!show)}><i className="fa-solid fa-circle-plus"></i>Create post{/* {show ? "Hide" : "Show"} */}</button>} position="center center">
+            {!isContinueAsGuest && (
+            <div>
+                    <Popup trigger={<button className="button-create-post" onClick={() => setShow(!show)}><i className="fa-solid fa-circle-plus"></i>Create post</button>} position="center center">
                     <div>
                         Create Post
                         <div><CreatePost /></div>
-                        {/* <button onClick={() => Popup.close()}>Close</button> */}
                     </div>
-                </Popup>
-                {/* {show ? <Post /> : null} */}
+                    </Popup>
             </div>
-            <div className='notification-dropdown'>
+            )}
+         {!isContinueAsGuest && (
+          <div className='notification-dropdown'>
                 <i onClick={handleNotificationDropdown} className="fa-solid fa-bell fa-2x notification-icon"></i>
                 {showGreenNotificationIcon && <i className="fa-solid fa-circle" style={{ "color": "#58ec09" }}></i>}
                 {showNotificationDropdown && <div className="dropdown-content">
@@ -73,27 +80,24 @@ l̥            <div>
                     ))}
                 </div>}
             </div>
-            {/* <div>
-                <Link to="/">  <button className="button-login">
-                    Kunal
-                    <i class="fa-solid fa-sort-down"></i>
-                </button> </Link>
-            </div> */}
+            )}
 
             <div className="header-dropdown">
                 <button className="button-login">
                     {local_first_name}
                     <i className={`fa-solid fa-sort-down`}></i>
                 </button>
-                <div className="dropdown-content">
+                {!isContinueAsGuest && <div className="dropdown-content">
                     <a href="/profile">Profile</a>
                     <a href="/" onClick={handleLogout}>Log Out</a>
+                </div>}
+                {isContinueAsGuest && <div className="dropdown-content">
+                    <a href="/">Login</a>
+                </div>}
 
-                </div>
             </div>
 
         </header>
     )
 }
 export default AppHeader;
-

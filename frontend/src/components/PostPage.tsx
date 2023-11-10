@@ -16,6 +16,22 @@ function PostPage() {
         const id = path.match(/\d+/g);
         console.log(id)
     }
+
+    const isContinueAsGuest = local_first_name == 'Guest'|| local_first_name == '' ||local_first_name == null ;
+    if (isContinueAsGuest) {
+        return (
+          <section>
+            <div style={{ height: '10vh' }}><AppHeader /></div>
+            <div style={{ padding: '20px', textAlign: 'center' }}>
+              <h2>Please <a href="/" style={{ color: 'blue' }}>Login</a> to continue browsing.</h2>
+            </div>
+            <div><AppFooter /></div>
+          </section>
+        );
+      }
+    
+    // let path = window.location.pathname;
+    // console.log(path)
     //fetch call with ID here
     let postData = {
         postContent: {
@@ -62,6 +78,7 @@ function PostPage() {
 
         <section>
             <div style={{ height: '10vh' }}><AppHeader /></div>
+            {!isContinueAsGuest && (
             <div>
                 <div className='postContent'>
                     <div className='postContentDetai postBody'>
@@ -77,6 +94,7 @@ function PostPage() {
                     </div>
                 </div>
             </div>
+             )}
             <div><AppFooter /></div>
         </section>
     )

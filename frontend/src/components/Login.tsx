@@ -31,10 +31,12 @@ function Login() {
   const [tag4, setTag4] = useState('')
   const [tag5, setTag5] = useState('')
 
-  // Validation functions
-  const isFieldValid = (value) => value.trim() !== '';
-  const isEmailValid = (value) => /\S+@\S+\.\S+/.test(value);
-  const isPasswordValid = (value) => value.length >= 6;
+
+
+// Validation functions
+const isFieldValid = (value) => value.trim() !== '';
+const isEmailValid = (value) => /\S+@\S+\.\S+/.test(value);
+const isPasswordValid = (value) => value.length >= 6;
 
   // Error states
   const [firstNameError, setFirstNameError] = useState('');
@@ -47,27 +49,31 @@ function Login() {
     // Initialize an array to collect error messages
     const errors: String[] = [];
 
-    if (!isFieldValid(f_name)) {
-      errors.push('Please enter the first name.');
-    }
-    if (!isFieldValid(l_name)) {
-      errors.push('Please enter the last name.');
-    }
-    if (!isEmailValid(email)) {
-      errors.push('Please enter a valid email address.');
-    }
-    if (!isPasswordValid(password)) {
-      errors.push('Password must be at least 6 characters.');
-    }
-    if (!isFieldValid(tag1)) {
-      errors.push('Please enter at least 1 skill.');
-    }
-    // If there are errors, display them all
-    if (errors.length > 0) {
-      const errorMessage = errors.join('\n');
-      alert(errorMessage);
-      return;
-    }
+
+  if (!isFieldValid(f_name)) {
+    errors.push('Please enter the first name.');
+  }
+  if (!isFieldValid(l_name)) {
+    errors.push('Please enter the last name.');
+  }
+  if (!isEmailValid(email)) {
+    errors.push('Please enter a valid email address.');
+  }
+  if (!isPasswordValid(password)) {
+    errors.push('Password must be at least 6 characters.');
+  }
+  if (!isFieldValid(tag1)) {
+    errors.push('Please enter at least 1 skill.');
+  }
+  if (password !== password_cnf) {
+    errors.push('Password and confirm password do not match.');
+}
+  // If there are errors, display them all
+  if (errors.length > 0) {
+    const errorMessage = errors.join('\n');
+    alert(errorMessage);
+    return;
+  }
 
 
     let register_obj = {
@@ -90,25 +96,6 @@ function Login() {
 
     localStorage.setItem('local_reg_user_id', '1');
 
-    // console.warn(obj)
-    // let result = fetch("http://localhost:8000/api/regsiter", {
-    //   method:'POST',
-    //   body:JSON.stringify(obj),
-    //   headers: {
-    //     "Content-type":'application/json',
-    //     "Accept": 'application/json'
-    //   }
-    // })
-    // result = (await result).json()
-    // console.warn("registeration result", result)
-    // axios.post('http://localhost:5000/api/user')
-    //         .then((result) => {
-    //             console.log(result)
-    //             let x=1
-    //         })
-    //         .catch((err)=>{
-    //           alert("Registration failed. Please try again." + error.message);
-    //         });
 
     try {
       const response = await axios.post("http://localhost:5000/api/user", register_obj);
@@ -145,6 +132,7 @@ function Login() {
     }]
 
     localStorage.setItem('Local_login_email', log_email);
+    localStorage.setItem('local_first_name', log_email);
     // let localUserEmail= localStorage.getItem('Local_login_email');   
     // console.log(localUserEmail);
     alert("Successfully logged in.");
@@ -160,52 +148,57 @@ function Login() {
     setJustifyActive(value);
   };
 
+  const handleContinueAsGuest = () => {
+    localStorage.setItem('continueAsGuest', 'true');
+    localStorage.setItem('local_first_name', 'Guest');
+    // alert('Continuing as Guest');
+    window.location.replace('http://localhost:3000/home');
+  };
   return (
     // <MDBContainer >
-    <div className='' style={{}}>
-      <div style={{ backgroundColor: '#F5F5F5', height: '100%', width: '50%', position: 'fixed', left: '0', padding: '5% 3% 0vh 3%' }}>
-        <MDBTabs pills justify className='mb-3 d-flex flex-row justify-content-between'>
-          <MDBTabsItem>
 
-            <MDBTabsLink
-              onClick={() => handleJustifyClick('tab1')}
-              active={justifyActive === 'tab1'}
-              style={{
-                backgroundColor: justifyActive === 'tab1' ? '#710808' : '#FFFFFF',
-                color: justifyActive === 'tab1' ? 'white' : '#710808',
-              }}
-            >
-              LOGIN
-            </MDBTabsLink>
-          </MDBTabsItem>
-          <MDBTabsItem>
-            <MDBTabsLink
-              onClick={() => handleJustifyClick('tab2')}
-              active={justifyActive === 'tab2'}
-              style={{
-                backgroundColor: justifyActive === 'tab2' ? '#710808' : '#FFFFFF',
-                color: justifyActive === 'tab2' ? 'white' : '#710808',
-              }}
-            >
-              REGISTER
-            </MDBTabsLink>
-          </MDBTabsItem>
-        </MDBTabs>
+      <div className='' style={{  }}>
+        <div  style={{ backgroundColor: '#F5F5F5',height:'100%', width:'50%', position: 'fixed', left: '0',padding:'5% 3% 0vh 3%' }}>
+          <MDBTabs pills justify className='mb-3 d-flex flex-row justify-content-between'>
+            <MDBTabsItem>
 
-        <MDBTabsContent>
-          <MDBTabsPane show={justifyActive === 'tab1'}>
+              <MDBTabsLink
+                onClick={() => handleJustifyClick('tab1')}
+                active={justifyActive === 'tab1'}
+                style={{
+                  backgroundColor: justifyActive === 'tab1' ? '#710808' : '#FFFFFF',
+                  color: justifyActive === 'tab1' ? 'white' : '#710808',
+                }}
+              >
+                LOGIN
+              </MDBTabsLink>
+            </MDBTabsItem>
+            <MDBTabsItem>
+              <MDBTabsLink
+                onClick={() => handleJustifyClick('tab2')}
+                active={justifyActive === 'tab2'}
+                style={{
+                  backgroundColor: justifyActive === 'tab2' ? '#710808' : '#FFFFFF',
+                  color: justifyActive === 'tab2' ? 'white' : '#710808',
+                }}
+              >
+                REGISTER
+              </MDBTabsLink>
+            </MDBTabsItem>
+          </MDBTabs>
 
-            <MDBInput wrapperClass='mb-4' value={log_email} onChange={(e) => setLogEmail(e.target.value)} placeholder='Email address' type='email' style={{ backgroundColor: '#D9D9D9' }} />
-            <MDBInput wrapperClass='mb-4' value={log_password} onChange={(e) => setLogPassword(e.target.value)} placeholder='Password' id='form2' type='password' style={{ backgroundColor: '#D9D9D9' }} />
+          <MDBTabsContent>
+            <MDBTabsPane show={justifyActive === 'tab1'}>
+           
+              <MDBInput wrapperClass='mb-4' value={log_email} onChange={(e) => setLogEmail(e.target.value)} placeholder='Email address' type='email' style={{ backgroundColor: '#D9D9D9' }} />
+              <MDBInput wrapperClass='mb-4' value={log_password} onChange={(e) => setLogPassword(e.target.value)} placeholder='Password' id='form2' type='password' style={{ backgroundColor: '#D9D9D9' }} />
 
-            <button className="w-100 btn btn-primary" onClick={login} style={{ backgroundColor: '#710808', borderColor: '#710808' }}>SIGN IN</button>
+              <button className="w-100 btn btn-primary" onClick={login} style={{ backgroundColor: '#710808', borderColor: '#710808' }}>SIGN IN</button>
+              <button className="text-left" onClick={handleContinueAsGuest} style={{ border: 'none', padding: 0, background: 'none' }}><a href="/home" style={{ color: '#710808' }} >Continue as Guest</a></button>
+                            
+            </MDBTabsPane>
 
-            <p className="text-left"><a href="#!" style={{ color: '#710808' }}>Continue as Guest</a></p>
-
-          </MDBTabsPane>
-
-          <MDBTabsPane show={justifyActive === 'tab2'}>
-            <form >
+            <MDBTabsPane show={justifyActive === 'tab2'}>
               <div style={{ height: '53vh', overflow: 'auto' }}>
                 <MDBInput wrapperClass='mb-4' value={f_name} onChange={(e) => setFirstName(e.target.value)} placeholder='First Name' type='text' style={{ backgroundColor: '#D9D9D9' }} />
                 {/* {firstNameError && <p className="error-message">{firstNameError}</p>} */}
