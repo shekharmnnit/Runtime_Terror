@@ -34,9 +34,12 @@ const PostSchema = new mongoose.Schema({
       },
     ],
   },
-  captions: {
+  caption: {
     type: String,
     maxlength: 1000,
+  },
+  fileName: {
+    type:String,
   },
   comments: {
     type: [Comment], // Array of Comment objects

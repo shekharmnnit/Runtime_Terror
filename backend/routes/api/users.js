@@ -92,11 +92,17 @@ router.post(
 
 router.get('/fetchProfile/:userId',
   auth,
-  checkObjectId('userId'),
   async (req,res) => {
     // userId, email, firstname, lastname, commentedposts, createdPosts
     try {
-      const user = User.findById(req.params.userId).select('-password');
+      let user;
+      console.log(req.user.id)
+      if (req.params.userId != 1){
+        user = await User.findById(req.params.userId).select('-password');
+      } else {
+        user = await User.findById(req.user.id).select('-password');
+      }
+      console.log(user.createdPostIds)
       const createdPosts = []
       const commentedPosts = []
       user.createdPostIds.forEach(async postId => {
@@ -119,14 +125,20 @@ router.get('/fetchProfile/:userId',
 
 router.post('/updateProfile/:userId',
   auth,
-  checkObjectId('userId'),
   async (req,res) => {
     // userId, email, firstname, lastname, commentedposts, createdPosts
     try {
-      const user = User.findById(req.params.userId);
+      let profileId;
+      if (req.params.userId != 1) {
+        profileId = req.params.userId
+      } else {
+        profileId = req.user.id;
+      }
+      const {firstName, lastName, skills} = req.body;
+      const updatedFields = {firstName, lastName, skills}
       const updatedUser = await User.findOneAndUpdate(
-        { _id: req.params.userId },
-        { $set: req.body }, // Use $set to update only specific fields
+        { _id: profileId },
+        { $set: updatedFields }, // Use $set to update only specific fields
         { new: true }
       );
       await updatedUser.save();

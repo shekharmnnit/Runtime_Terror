@@ -10,12 +10,65 @@ const checkObjectId = require('../../middleware/checkObjectId');
 
 const Notification = require('../../models/Notification')
 
+const mongoose = require('mongoose')
+const path = require('path');
+const multer = require('multer');
+const {GridFsStorage} = require('multer-gridfs-storage');
+const Grid = require('gridfs-stream');
+const db = "mongodb://127.0.0.1:27017/reviewme"
+const conn = mongoose.createConnection(db);
+
+conn.on('error', e => {
+    throw e;
+})
+
+let gfs, gridfsBucket;
+conn.once('open', () => {
+    // Init stream
+    gridfsBucket = new mongoose.mongo.GridFSBucket(conn.db, {
+        bucketName: 'uploads'
+    });
+    console.log("MongoDB connected...")
+    gfs = Grid(conn.db, mongoose.mongo);  
+    gfs.collection('uploads');
+});
+const storage = new GridFsStorage({
+    url: db,
+    file: (req, file) => {
+    return new Promise((resolve, reject) => {
+        const filename = Date.now() + path.extname(file.originalname);
+        req.fileName = filename;
+        const fileInfo = {
+            filename: filename,
+            bucketName: 'uploads'
+        };
+        resolve(fileInfo);
+    });
+    }
+});
+
+const upload = multer({ storage: storage });
+
 // Create a new post
-router.post('/create', auth, async (req, res) => {
+router.post('/create', 
+              auth, 
+              upload.single('postfile'), 
+  async (req, res) => {
   try {
-    const newPost = new Post(req.body);
+    const sessionUser = User.findById(req.user.id).select('-password');
+    console.log(sessionUser)
+    const skills = req.body.skills.split(',');
+    const newPost = new Post({
+      userId: sessionUser._id,
+      email: sessionUser.email,
+      firstName: sessionUser.firstName,
+      lastName: sessionUser.lastName,
+      skills: skills,
+      caption: req.caption,
+      fileName: req.fileName,
+    });
+    // const newPost = new Post();
     const savedPost = await newPost.save();
-    const sessionUser = await User.findById(req.user.id);
     sessionUser.createdPostIds.unshift(savedPost._id);
     await sessionUser.save()
     res.status(201).json(savedPost);
@@ -30,7 +83,10 @@ router.post('/create', auth, async (req, res) => {
 router.put('/update/:postId', auth, async (req, res) => {
   try {
     const postId = req.params.postId;
-    const updateFields = req.body; // This should contain only the fields you want to update
+    // const updateFields = req.body; // This should contain only the fields you want to update
+    const skills = req.params.skills.split(',');
+    const caption = req.params.caption
+    const updateFields = {skills, caption}
     const updatedPost = await Post.findOneAndUpdate(
       { _id: postId },
       { $set: updateFields }, // Use $set to update only specific fields
@@ -230,5 +286,19 @@ router.post('/notification/:postid',
     }
   }
 )
+
+router.get('/getFile/:fileName', async (req, res) => {
+  gfs.files.findOne({ filename: req.params.fileName }, (err, file) => {
+    // Check if file
+    if (!file || file.length === 0) {
+      return res.status(404).json({
+        err: 'No file exists'
+      });
+    }
+    // File exists
+    const readStream = gridfsBucket.openDownloadStream(file._id);
+    readStream.pipe(res)
+  });
+});
 
 module.exports = router;
