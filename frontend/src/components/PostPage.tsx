@@ -9,8 +9,13 @@ import DocViewer, { DocViewerRenderers } from "@cyntler/react-doc-viewer";
 function PostPage() {
 
     let local_first_name = localStorage.getItem('local_first_name');
-    // let path = window.location.pathname;
-    // console.log(path)
+    let path = window.location.pathname;
+    console.log(path)
+    const hasDigits = /\d/.test(path);
+    if (hasDigits) {
+        const id = path.match(/\d+/g);
+        console.log(id)
+    }
     //fetch call with ID here
     let postData = {
         postContent: {
