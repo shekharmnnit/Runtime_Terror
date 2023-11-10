@@ -31,6 +31,7 @@ function Login() {
   const [tag4, setTag4] = useState('')
   const [tag5, setTag5] = useState('')
 
+
 // Validation functions
 const isFieldValid = (value) => value.trim() !== '';
 const isEmailValid = (value) => /\S+@\S+\.\S+/.test(value);
@@ -62,6 +63,9 @@ const [passwordError, setPasswordError] = useState('');
   if (!isFieldValid(tag1)) {
     errors.push('Please enter at least 1 skill.');
   }
+  if (password !== password_cnf) {
+    errors.push('Password and confirm password do not match.');
+}
   // If there are errors, display them all
   if (errors.length > 0) {
     const errorMessage = errors.join('\n');
@@ -130,6 +134,7 @@ const [passwordError, setPasswordError] = useState('');
     }]
 
     localStorage.setItem('Local_login_email', log_email);
+    localStorage.setItem('local_first_name', log_email);
     // let localUserEmail= localStorage.getItem('Local_login_email');   
     // console.log(localUserEmail);
     alert("Successfully logged in.");
@@ -145,6 +150,12 @@ const [passwordError, setPasswordError] = useState('');
     setJustifyActive(value);
   };
 
+  const handleContinueAsGuest = () => {
+    localStorage.setItem('continueAsGuest', 'true');
+    localStorage.setItem('local_first_name', 'Guest');
+    // alert('Continuing as Guest');
+    window.location.replace('http://localhost:3000/home');
+  };
   return (
     // <MDBContainer >
       <div className='' style={{  }}>
@@ -184,9 +195,8 @@ const [passwordError, setPasswordError] = useState('');
               <MDBInput wrapperClass='mb-4' value={log_password} onChange={(e) => setLogPassword(e.target.value)} placeholder='Password' id='form2' type='password' style={{ backgroundColor: '#D9D9D9' }} />
 
               <button className="w-100 btn btn-primary" onClick={login} style={{ backgroundColor: '#710808', borderColor: '#710808' }}>SIGN IN</button>
-             
-              <p className="text-left"><a href="#!" style={{ color: '#710808' }}>Continue as Guest</a></p>
-              
+              <button className="text-left" onClick={handleContinueAsGuest} style={{ border: 'none', padding: 0, background: 'none' }}><a href="/home" style={{ color: '#710808' }} >Continue as Guest</a></button>
+                            
             </MDBTabsPane>
 
             <MDBTabsPane show={justifyActive === 'tab2'}>
