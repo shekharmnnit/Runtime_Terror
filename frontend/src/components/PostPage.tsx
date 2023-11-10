@@ -9,7 +9,8 @@ import DocViewer, { DocViewerRenderers } from "@cyntler/react-doc-viewer";
 function PostPage() {
 
     let local_first_name = localStorage.getItem('local_first_name');
-
+    // let path = window.location.pathname;
+    // console.log(path)
     //fetch call with ID here
     let postData = {
         postContent: {
