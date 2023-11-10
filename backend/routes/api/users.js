@@ -126,10 +126,10 @@ router.get('/fetchProfile/:userId',
 router.post('/updateProfile/:userId',
   auth,
   async (req,res) => {
-    const { email, firstName, lastName } = req.body;
     // userId, email, firstname, lastname, commentedposts, createdPosts
     try {
       let profileId;
+      const user = User.findById(req.params.userId);
       if (req.params.userId != 1) {
         profileId = req.params.userId
       } else {
@@ -142,11 +142,6 @@ router.post('/updateProfile/:userId',
         { $set: updatedFields }, // Use $set to update only specific fields
         { new: true }
       );
-
-      // Update user attributes based on the request body
-      if (email) {
-        user.email = email; // Update email if provided
-      }
 
       if (firstName) {
         user.firstName = firstName; // Update first name if provided
