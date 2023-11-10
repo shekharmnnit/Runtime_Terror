@@ -13,10 +13,10 @@ function UserProfileDetail({ obj }) {
     console.log(path);
     const hasDigits = /\d/.test(path);
     if (hasDigits) {
-        const digits = path.match(/\d+/g);
+        const id = path.match(/\d+/g);
         if (obj) {
             obj.map((item, index) => {
-                if (parseInt(item.user_id) === parseInt(digits)) {
+                if (parseInt(item.user_id) === parseInt(id)) {
                     firstName = item.first_name;
                     lastName = item.last_name;
                 }
