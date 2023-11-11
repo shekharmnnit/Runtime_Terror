@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import '../assets/css/post_detail.css';
 import linkImage from '../assets/file.png';
 import Popup from 'reactjs-popup';
 import CreatePost from './Create_post.tsx';
+import _ from 'lodash';
+
 
 function PostDetailContainer({ postContent, cur_user_id }) {
     // let obj = [{
@@ -13,9 +15,19 @@ function PostDetailContainer({ postContent, cur_user_id }) {
     //     "tags": ["C++", "tag2", "tag3", "tag4", "tag5"],
     //     "date": "12-08-2023"
     // }];
-    postContent = [postContent];
+    postContent = [_.cloneDeep(postContent)];
+    if(!!postContent[0]){
+        postContent[0]['isEdit']=true
+    }
     const local_reg_user_id = localStorage.getItem('local_reg_user_id');
     const showEdit = ((cur_user_id).toString() === local_reg_user_id)
+
+    const [editMode, setEditMode] = useState(false);
+
+    const handleEditClick = () => {
+        setShow(!show);
+    };
+
     return (
         <div className="post-detail-summary-container">
             {postContent && postContent.map((item, index) => (
@@ -25,9 +37,9 @@ function PostDetailContainer({ postContent, cur_user_id }) {
                             <h4 style={{ display: 'inline' }}>{item.first_name} {item.last_name}</h4>
                             <div>
                                 {showEdit && (
-                                    <Popup trigger={<button style={{ "border": "none", "backgroundColor": "white" }} onClick={() => setShow(!show)}><i className="fa-regular fa-pen-to-square icon"></i></button>} position="center center">
+                                    <Popup trigger={<button style={{ "border": "none", "backgroundColor": "white" }} onClick={() => handleEditClick()}><i className="fa-regular fa-pen-to-square icon"></i></button>} position="center center">
                                         <div>
-                                            <div><CreatePost postContent={postContent} /></div>
+                                            <div><CreatePost postContent={postContent} editMode={editMode}/></div>
                                         </div>
                                     </Popup>
                                 )

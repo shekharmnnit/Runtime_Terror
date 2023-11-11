@@ -16,7 +16,7 @@ import {
     from 'mdb-react-ui-kit';
 import axios from 'axios';
 
-function CreatePost({ postContent }) {
+function CreatePost({ postContent, editMode }) {
 
     const [justifyActive, setJustifyActive] = useState('tab1');
 
@@ -39,7 +39,7 @@ function CreatePost({ postContent }) {
     const handleFileChange = (event) => {
         setSelectedFile(event.target.files[0]);
     };
-
+    let isUploadbuttonVisible=!!!postContent[0]['isEdit']
     const handleFileUpload = (postContant) => {
         if (selectedFile && postContant.tags.length != 0) {
             console.log('Uploading file:', selectedFile);
@@ -84,6 +84,7 @@ function CreatePost({ postContent }) {
         handleFileUpload(obj)
     }
 
+
     return (
         <div>
             <div>
@@ -103,7 +104,7 @@ function CreatePost({ postContent }) {
                     </div>
                     <MDBInput wrapperClass='mb-4' value={tag5} onChange={(e) => setTag5(e.target.value)} placeholder='Tag 5' type='text' style={{ backgroundColor: '#D9D9D9' }} />
                 </div>
-                <MDBInput wrapperClass='mb-4' type='file' style={{ backgroundColor: '#D9D9D9' }} onChange={handleFileChange} />
+                {isUploadbuttonVisible && <MDBInput wrapperClass='mb-4' type='file' style={{ backgroundColor: '#D9D9D9' }} onChange={handleFileChange} />}
                 <div className="text-center">
                     <button className="btn btn-primary" onClick={postRequest} style={{ backgroundColor: '#710808', borderColor: '#710808' }}>POST</button>
                 </div>

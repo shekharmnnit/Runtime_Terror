@@ -98,7 +98,8 @@ function Login() {
 
     localStorage.setItem('local_reg_user_id', '1');
     // localStorage.setItem('local_tags', JSON.stringify([tag1, tag2, tag3, tag4, tag5]));
-
+    let skillsString = JSON.stringify(register_obj.skills);
+    localStorage.setItem("local_user_skills", skillsString);
 
     try {
       const response = await axios.post("https://s5bljcgv-5000.use2.devtunnels.ms/api/user", register_obj);
