@@ -129,7 +129,7 @@ router.post('/updateProfile/:userId',
     // userId, email, firstname, lastname, commentedposts, createdPosts
     try {
       let profileId;
-      const user = User.findById(req.params.userId);
+      const user = await User.findById(req.params.userId);
       if (req.params.userId != 1) {
         profileId = req.params.userId
       } else {
