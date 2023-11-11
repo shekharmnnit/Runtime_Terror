@@ -13,6 +13,7 @@ import {
 }
   from 'mdb-react-ui-kit';
 import axios from "axios";
+import { useNavigate } from 'react-router-dom';
 
 function Login() {
 
@@ -43,6 +44,7 @@ function Login() {
   const [lastNameError, setLastNameError] = useState('');
   const [emailError, setEmailError] = useState('');
   const [passwordError, setPasswordError] = useState('');
+  const navigate = useNavigate();
 
   async function register() {
 
@@ -99,10 +101,10 @@ function Login() {
 
 
     try {
-      const response = await axios.post("http://localhost:5000/api/user", register_obj);
+      const response = await axios.post("https://s5bljcgv-5000.use2.devtunnels.ms/api/user", register_obj);
       alert("Registration successfully done.");
       console.log(response)
-      window.location.replace("http://localhost:3000/home");
+      navigate('/home');
     } catch (error) {
       console.error("Error during registration:", error.message);
       alert("Registration failed. Please try again." + error.message);
@@ -204,7 +206,7 @@ function Login() {
             </MDBTabsPane>
 
             <MDBTabsPane show={justifyActive === 'tab2'}>
-              <form>
+              {/* <form> */}
               <div style={{ height: '53vh', overflow: 'auto' }}>
                 <MDBInput wrapperClass='mb-4' value={f_name} onChange={(e) => setFirstName(e.target.value)} placeholder='First Name' type='text' style={{ backgroundColor: '#D9D9D9' }} />
                 {/* {firstNameError && <p className="error-message">{firstNameError}</p>} */}
@@ -234,7 +236,7 @@ function Login() {
               </div>
 
               <button className="w-100 btn btn-primary" onClick={register} style={{ backgroundColor: '#710808', borderColor: '#710808' }}>SIGN UP</button>
-            </form>
+            {/* </form> */}
 
           </MDBTabsPane>
         </MDBTabsContent>
