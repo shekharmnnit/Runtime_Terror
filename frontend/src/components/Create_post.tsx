@@ -17,7 +17,7 @@ import {
 import axios from 'axios';
 
 function CreatePost({ postContent, editMode }) {
-
+    
     const [justifyActive, setJustifyActive] = useState('tab1');
 
     let emptyObj = [{
@@ -39,9 +39,21 @@ function CreatePost({ postContent, editMode }) {
     const handleFileChange = (event) => {
         setSelectedFile(event.target.files[0]);
     };
+    function checkError(isUploadbuttonVisible,selectedFile,postContant){
+        let errorList: string[]=[];
+        if(isUploadbuttonVisible && selectedFile == null){
+            errorList.push('Please upload a file.');
+        }
+        if(postContant.tags.length==0){
+            errorList.push('Please enter atleast one tag. Atleast one tag is mandatory.');
+        }
+        return errorList
+    }
     let isUploadbuttonVisible=!!!postContent[0]['isEdit']
     const handleFileUpload = (postContant) => {
-        if (selectedFile && postContant.tags.length != 0) {
+
+        let errorList= checkError(isUploadbuttonVisible,selectedFile,postContant);
+        if (errorList.length==0) {
             console.log('Uploading file:', selectedFile);
             const formData = new FormData();
             formData.append('postfile', selectedFile);
@@ -65,8 +77,10 @@ function CreatePost({ postContent, editMode }) {
                 });
 
         } else {
-            alert('1)File is mandatory \n 2)Atleast one tag is mandatory');
-            console.log('1)File is mandatory \n 2)Atleast one tag is mandatory');
+            // alert('1)File is mandatory \n 2)Atleast one tag is mandatory');
+            // console.log('1)File is mandatory \n 2)Atleast one tag is mandatory');
+            const errorMessage = errorList.join('\n');
+            alert(errorMessage);
         }
     };
 
@@ -87,8 +101,8 @@ function CreatePost({ postContent, editMode }) {
 
     return (
         <div>
-            <div>
-                <textarea className='w-100' value={caption} onChange={(e) => setCaption(e.target.value)} placeholder='Enter Caption' style={{ backgroundColor: '#D9D9D9' }} />
+            <div style={{margin: '10px'}}>
+                <textarea className='w-100' value={caption} onChange={(e) => setCaption(e.target.value)} placeholder='Enter Caption' style={{ backgroundColor: '#D9D9D9', marginBottom: '10px', border: 'none' }} />
                 <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                     <div style={{ marginRight: '10px' }}>
                         <MDBInput wrapperClass='mb-4' value={tag1} onChange={(e) => setTag1(e.target.value)} type='text' placeholder='Tag 1' style={{ backgroundColor: '#D9D9D9' }} />

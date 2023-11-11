@@ -27,7 +27,7 @@ function EditProfileDetail({ userDetails, onSave }) {
     <div className='edit-details'>
       <h4>Edit User Details</h4>
       <div className='input-group'>
-      <label>First Name:</label>
+      {/* <label>First Name:</label> */}
       <input
         type="text"
         value={firstName}
@@ -37,7 +37,7 @@ function EditProfileDetail({ userDetails, onSave }) {
       <br />
       </div>
       <div className='input-group'>
-      <label>Last Name:</label>
+      {/* <label>Last Name:</label> */}
       <input
         type="text"
         value={lastName}
@@ -48,7 +48,7 @@ function EditProfileDetail({ userDetails, onSave }) {
       </div>
       <div className = 'skills-tag'>
       <div className='input-group'>
-      <label>Tag 1:</label>
+      {/* <label>Tag 1:</label> */}
       <input
         type="text"
         value={tag1}
@@ -58,7 +58,7 @@ function EditProfileDetail({ userDetails, onSave }) {
       <br />
       </div>
       <div className='input-group'>
-      <label>Tag 2:</label>
+      {/* <label>Tag 2:</label> */}
       <input
         type="text"
         value={tag2}
@@ -68,7 +68,7 @@ function EditProfileDetail({ userDetails, onSave }) {
       <br />
       </div>
       <div className='input-group'>
-      <label>Tag 3:</label>
+      {/* <label>Tag 3:</label> */}
       <input
         type="text"
         value={tag3}
@@ -78,7 +78,7 @@ function EditProfileDetail({ userDetails, onSave }) {
       <br />
       </div>
       <div className='input-group'>
-      <label>Tag 4:</label>
+      {/* <label>Tag 4:</label> */}
       <input
         type="text"
         value={tag4}
@@ -88,7 +88,7 @@ function EditProfileDetail({ userDetails, onSave }) {
       <br />
       </div>
       <div className='input-group'>
-      <label>Tag 5:</label>
+      {/* <label>Tag 5:</label> */}
       <input
         type="text"
         value={tag5}

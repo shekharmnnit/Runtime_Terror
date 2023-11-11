@@ -64,7 +64,7 @@ function AppHeader() {
             <div>
                     <Popup trigger={<button className="button-create-post" onClick={() => setShow(!show)}><i className="fa-solid fa-circle-plus"></i>Create post</button>} position="center center">
                     <div>
-                        Create Post
+                        <h5 className="create-post">CREATE POST</h5>
                         <div><CreatePost /></div>
                     </div>
                     </Popup>

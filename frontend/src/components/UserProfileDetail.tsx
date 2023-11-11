@@ -47,8 +47,9 @@ function UserProfileDetail({ obj }) {
         <section>
             <div className="user-detail">
                 <div className="user-image" >
-                    {profileObj.initials}
+                    <div className="user-initials"> {profileObj.initials}</div>    
                 </div>
+                <div>
                 <div className="user-profile-details">
                     {profileObj.name} <br></br>
                 </div>
@@ -61,6 +62,7 @@ function UserProfileDetail({ obj }) {
                 <button className="edit-button" onClick={handleEditClick}>
                     Edit
                 </button>
+                </div>
                 <Popup
                     open={isModalOpen}
                     closeOnDocumentClick
