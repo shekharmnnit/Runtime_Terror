@@ -33,10 +33,10 @@ function Login() {
 
 
 
-// Validation functions
-const isFieldValid = (value) => value.trim() !== '';
-const isEmailValid = (value) => /\S+@\S+\.\S+/.test(value);
-const isPasswordValid = (value) => value.length >= 6;
+  // Validation functions
+  const isFieldValid = (value) => value.trim() !== '';
+  const isEmailValid = (value) => /\S+@\S+\.\S+/.test(value);
+  const isPasswordValid = (value) => value.length >= 6;
 
   // Error states
   const [firstNameError, setFirstNameError] = useState('');
@@ -50,30 +50,30 @@ const isPasswordValid = (value) => value.length >= 6;
     const errors: String[] = [];
 
 
-  if (!isFieldValid(f_name)) {
-    errors.push('Please enter the first name.');
-  }
-  if (!isFieldValid(l_name)) {
-    errors.push('Please enter the last name.');
-  }
-  if (!isEmailValid(email)) {
-    errors.push('Please enter a valid email address.');
-  }
-  if (!isPasswordValid(password)) {
-    errors.push('Password must be at least 6 characters.');
-  }
-  if (!isFieldValid(tag1)) {
-    errors.push('Please enter at least 1 skill.');
-  }
-  if (password !== password_cnf) {
-    errors.push('Password and confirm password do not match.');
-}
-  // If there are errors, display them all
-  if (errors.length > 0) {
-    const errorMessage = errors.join('\n');
-    alert(errorMessage);
-    return;
-  }
+    if (!isFieldValid(f_name)) {
+      errors.push('Please enter the first name.');
+    }
+    if (!isFieldValid(l_name)) {
+      errors.push('Please enter the last name.');
+    }
+    if (!isEmailValid(email)) {
+      errors.push('Please enter a valid email address.');
+    }
+    if (!isPasswordValid(password)) {
+      errors.push('Password must be at least 6 characters.');
+    }
+    if (!isFieldValid(tag1)) {
+      errors.push('Please enter at least 1 skill.');
+    }
+    if (password !== password_cnf) {
+      errors.push('Password and confirm password do not match.');
+    }
+    // If there are errors, display them all
+    if (errors.length > 0) {
+      const errorMessage = errors.join('\n');
+      alert(errorMessage);
+      return;
+    }
 
 
     let register_obj = {
@@ -156,7 +156,7 @@ const isPasswordValid = (value) => value.length >= 6;
     window.location.replace('http://localhost:3000/home');
   };
 
- 
+
 
 
   return (
@@ -204,6 +204,7 @@ const isPasswordValid = (value) => value.length >= 6;
             </MDBTabsPane>
 
             <MDBTabsPane show={justifyActive === 'tab2'}>
+              <form>
               <div style={{ height: '53vh', overflow: 'auto' }}>
                 <MDBInput wrapperClass='mb-4' value={f_name} onChange={(e) => setFirstName(e.target.value)} placeholder='First Name' type='text' style={{ backgroundColor: '#D9D9D9' }} />
                 {/* {firstNameError && <p className="error-message">{firstNameError}</p>} */}
@@ -232,7 +233,6 @@ const isPasswordValid = (value) => value.length >= 6;
                 </div>
               </div>
 
-              {/* <MDBBtn className="mb-4 w-100"  style={{ backgroundColor: '#710808', borderColor: '#710808' }}>SIGN UP</MDBBtn> */}
               <button className="w-100 btn btn-primary" onClick={register} style={{ backgroundColor: '#710808', borderColor: '#710808' }}>SIGN UP</button>
             </form>
 
@@ -251,7 +251,7 @@ const isPasswordValid = (value) => value.length >= 6;
           </div>
         </div>
       </div>
-    </div>
+    </div >
     // </MDBContainer>
 
   );
