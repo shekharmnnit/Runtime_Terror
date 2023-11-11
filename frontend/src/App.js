@@ -12,6 +12,7 @@ import ShowPostSummary from "./components/Post_summary.tsx";
 import ShowPostContent from "./components/Post_detail_container.tsx";
 import PostPage from './components/PostPage.tsx'
 function App() {
+  localStorage.setItem('apiServerURL', 'https://s5bljcgv-5000.use2.devtunnels.ms/');
   return (
     <BrowserRouter>
       <Routes>
