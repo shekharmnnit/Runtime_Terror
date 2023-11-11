@@ -1,12 +1,17 @@
 const mysql = require('mysql2');
 
-const createDatabase = () => {
-  return new Promise((resolve, reject) => {
-    const connection = mysql.createConnection({
+const getConnection = () => {
+    return mysql.createConnection({
       host: 'localhost',
       user: 'root',
       password: 'root',
+      database: 'reviewMeSQL',
     });
+  };
+
+const createDatabase = () => {
+  return new Promise((resolve, reject) => {
+    const connection = getConnection();
 
     connection.query('CREATE DATABASE IF NOT EXISTS reviewMeSQL', (err, results) => {
       if (err) {
@@ -22,12 +27,7 @@ const createDatabase = () => {
 
 const createTable = () => {
   return new Promise((resolve, reject) => {
-    const dbConnection = mysql.createConnection({
-      host: 'localhost',
-      user: 'root',
-      password: 'root',
-      database: 'reviewMeSQL',
-    });
+    const dbConnection = getConnection();
 
     const query = `
       CREATE TABLE IF NOT EXISTS user_credentials (
@@ -52,12 +52,7 @@ const createTable = () => {
 
 const createUser = (userInfo) => {
     return new Promise((resolve, reject) => {
-      const dbConnection = mysql.createConnection({
-        host: 'localhost',
-        user: 'root',
-        password: 'root',
-        database: 'reviewMeSQL',
-      });
+      const dbConnection = getConnection();
   
       const query = `
         INSERT INTO user_credentials (email, firstName, lastName, password)
@@ -83,12 +78,7 @@ const createUser = (userInfo) => {
 
   const updateUser = (userInfo) => {
     return new Promise((resolve, reject) => {
-      const dbConnection = mysql.createConnection({
-        host: 'localhost',
-        user: 'root',
-        password: 'root',
-        database: 'reviewMeSQL',
-      });
+      const dbConnection = getConnection();
   
       const query = `
         UPDATE user_credentials
@@ -115,12 +105,7 @@ const createUser = (userInfo) => {
   
   const getUserByEmail = (email) => {
     return new Promise((resolve, reject) => {
-      const dbConnection = mysql.createConnection({
-        host: 'localhost',
-        user: 'root',
-        password: 'root',
-        database: 'reviewMeSQL',
-      });
+      const dbConnection = getConnection();
   
       const query = 'SELECT * FROM user_credentials WHERE email = ?';
   
