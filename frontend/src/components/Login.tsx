@@ -131,16 +131,34 @@ function Login() {
     }
 
     let obj = [{
-      "login_email": log_email,
-      "login_password": log_password,
+      "email": log_email,
+      "password": log_password,
     }]
 
-    localStorage.setItem('Local_login_email', log_email);
-    localStorage.setItem('local_first_name', log_email);
-    // let localUserEmail= localStorage.getItem('Local_login_email');   
-    // console.log(localUserEmail);
-    alert("Successfully logged in.");
-    window.location.replace("http://localhost:3000/home");
+    try {
+      const loginResponse = await axios.post("https://s5bljcgv-5000.use2.devtunnels.ms/api/secureLogin", login_cred);
+      alert("Successfully logged in");
+      console.log(loginResponse.data)
+      navigate("/home");
+      localStorage.setItem('local_login_email', email);
+      localStorage.setItem('local_login_token', loginResponse.data.token);
+      console.log(loginResponse.data.token)
+      let localToken = (String)(localStorage.getItem('local_login_token'));
+      //fetch logged in profile details
+      const profileResponse = await axios.get("https://s5bljcgv-5000.use2.devtunnels.ms/api/user/fetchProfile/1", {
+        headers: {
+          'x-auth-token': localToken,
+          'Content-Type': 'application/json'
+        },
+      });
+      localStorage.setItem('local_first_name', profileResponse.data.firstName);
+      localStorage.setItem('local_last_name', profileResponse.data.lastName);
+      console.log(profileResponse)
+
+    } catch (error) {
+      console.error("Error during Login:", error.message);
+      alert("Login failed. Please try again" + error.message);
+    }
   }
 
 
