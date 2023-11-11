@@ -9,6 +9,9 @@ function UserProfileDetail({ obj }) {
     let firstName = String(localStorage.getItem('local_first_name'));
     let lastName = String(localStorage.getItem('local_last_name'));
     let email = String(localStorage.getItem('local_reg_email'));
+    let storedSkillsString = String(localStorage.getItem("local_user_skills"));
+    let storedSkills = JSON.parse(storedSkillsString) || [];
+    
     let path = window.location.pathname;
     console.log(path);
     const hasDigits = /\d/.test(path);
@@ -51,6 +54,9 @@ function UserProfileDetail({ obj }) {
                 </div>
                 <div className="user-profile-details">
                     {profileObj.email}
+                </div>
+                <div className="user-profile-details">
+                    Skills: {storedSkills.filter(skill => skill.trim() !== '').join(', ')}
                 </div>
                 <button className="edit-button" onClick={handleEditClick}>
                     Edit
