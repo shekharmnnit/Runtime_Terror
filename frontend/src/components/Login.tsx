@@ -102,7 +102,7 @@ function Login() {
     localStorage.setItem("local_user_skills", skillsString);
 
     try {
-      const response = await axios.post("https://s5bljcgv-5000.use2.devtunnels.ms/api/user", register_obj);
+      const response = await axios.post(localStorage.getItem('apiServerURL')+"api/user", register_obj);
       alert("Registration successfully done.");
       console.log(response)
       navigate('/home');
