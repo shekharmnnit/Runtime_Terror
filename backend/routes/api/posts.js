@@ -55,7 +55,7 @@ router.post('/create',
               upload.single('postfile'), 
   async (req, res) => {
   try {
-    const sessionUser = User.findById(req.user.id).select('-password');
+    const sessionUser = await User.findById(req.user.id).select('-password');
     console.log(sessionUser)
     const skills = req.body.skills.split(',');
     const newPost = new Post({
@@ -64,7 +64,7 @@ router.post('/create',
       firstName: sessionUser.firstName,
       lastName: sessionUser.lastName,
       skills: skills,
-      caption: req.caption,
+      caption: req.body.caption,
       fileName: req.fileName,
     });
     // const newPost = new Post();
@@ -80,13 +80,22 @@ router.post('/create',
 
 
 // Update a post by postId
-router.put('/update/:postId', auth, async (req, res) => {
+router.post('/update/:postId', 
+auth,
+checkObjectId('postId'),
+async (req, res) => {
   try {
     const postId = req.params.postId;
     // const updateFields = req.body; // This should contain only the fields you want to update
-    const skills = req.params.skills.split(',');
-    const caption = req.params.caption
-    const updateFields = {skills, caption}
+    const updateFields = {}
+    let skills = req.body.skills;
+    const caption = req.body.caption;
+    if (skills.length != 0){
+      updateFields.skills = skills.split(',')
+    } 
+    if (caption.length != 0){
+      updateFields.caption=caption;
+    }
     const updatedPost = await Post.findOneAndUpdate(
       { _id: postId },
       { $set: updateFields }, // Use $set to update only specific fields
@@ -108,7 +117,9 @@ router.delete('/delete/:postId', auth, async (req, res) => {
   try {
     const deletedPost = await Post.findOneAndDelete({ _id: req.params.postId });
     const sessionUser = await User.findById(req.user.id);
-    const id_ind = sessionUser.createdPostIds.findIndex(req.params.postId);
+    console.log(req.params.postId)
+    console.log(sessionUser.createdPostIds)
+    const id_ind = sessionUser.createdPostIds.findIndex(postid => postid.id == req.params.postId);
     if (id_ind>-1) {
       sessionUser.createdPostIds.splice(id_ind, 1);
     }
@@ -288,17 +299,22 @@ router.post('/notification/:postid',
 )
 
 router.get('/getFile/:fileName', async (req, res) => {
-  gfs.files.findOne({ filename: req.params.fileName }, (err, file) => {
-    // Check if file
-    if (!file || file.length === 0) {
+  console.log("reached route");
+  const file = await gfs.files.findOne({filename:req.params.fileName});
+  if (!file || file.length === 0) {
       return res.status(404).json({
-        err: 'No file exists'
+          err: 'No file exists'
       });
-    }
-    // File exists
-    const readStream = gridfsBucket.openDownloadStream(file._id);
-    readStream.pipe(res)
-  });
+  }
+
+  if(file.contentType === 'image/jpeg' || file.contentType === 'image/png' || file.contentType === 'image/jpeg'){
+      const readStream = gridfsBucket.openDownloadStream(file._id);
+      readStream.pipe(res)
+  } else {
+      const readStream = gridfsBucket.openDownloadStream(file._id);
+      readStream.pipe(res)
+      // res.json('yet to be handled')
+  }
 });
 
 module.exports = router;
