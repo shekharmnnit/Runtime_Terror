@@ -102,7 +102,7 @@ function Login() {
     localStorage.setItem("local_user_skills", skillsString);
 
     try {
-      const response = await axios.post(localStorage.getItem('apiServerURL')+"api/user", register_obj);
+      const response = await axios.post(localStorage.getItem('apiServerURL') + "api/user", register_obj);
       alert("Registration successfully done.");
       console.log(response)
       navigate('/home');
@@ -136,7 +136,7 @@ function Login() {
     }]
 
     try {
-      const loginResponse = await axios.post("https://s5bljcgv-5000.use2.devtunnels.ms/api/secureLogin", login_cred);
+      const loginResponse = await axios.post(localStorage.getItem('apiServerURL') + "api/secureLogin", login_cred);
       alert("Successfully logged in");
       console.log(loginResponse.data)
       navigate("/home");
@@ -145,7 +145,7 @@ function Login() {
       console.log(loginResponse.data.token)
       let localToken = (String)(localStorage.getItem('local_login_token'));
       //fetch logged in profile details
-      const profileResponse = await axios.get("https://s5bljcgv-5000.use2.devtunnels.ms/api/user/fetchProfile/1", {
+      const profileResponse = await axios.get(localStorage.getItem('apiServerURL') + "api/user/fetchProfile/1", {
         headers: {
           'x-auth-token': localToken,
           'Content-Type': 'application/json'
@@ -183,78 +183,78 @@ function Login() {
   return (
     // <MDBContainer >
 
-      <div className='' style={{  }}>
-        <div  style={{ backgroundColor: '#F5F5F5',height:'100%', width:'50%', position: 'fixed', left: '0',padding:'5% 3% 0vh 3%' }}>
-          <MDBTabs pills justify className='mb-3 d-flex flex-row justify-content-between'>
-            <MDBTabsItem>
+    <div className='' style={{}}>
+      <div style={{ backgroundColor: '#F5F5F5', height: '100%', width: '50%', position: 'fixed', left: '0', padding: '5% 3% 0vh 3%' }}>
+        <MDBTabs pills justify className='mb-3 d-flex flex-row justify-content-between'>
+          <MDBTabsItem>
 
-              <MDBTabsLink
-                onClick={() => handleJustifyClick('tab1')}
-                active={justifyActive === 'tab1'}
-                style={{
-                  backgroundColor: justifyActive === 'tab1' ? '#710808' : '#FFFFFF',
-                  color: justifyActive === 'tab1' ? 'white' : '#710808',
-                }}
-              >
-                LOGIN
-              </MDBTabsLink>
-            </MDBTabsItem>
-            <MDBTabsItem>
-              <MDBTabsLink
-                onClick={() => handleJustifyClick('tab2')}
-                active={justifyActive === 'tab2'}
-                style={{
-                  backgroundColor: justifyActive === 'tab2' ? '#710808' : '#FFFFFF',
-                  color: justifyActive === 'tab2' ? 'white' : '#710808',
-                }}
-              >
-                REGISTER
-              </MDBTabsLink>
-            </MDBTabsItem>
-          </MDBTabs>
+            <MDBTabsLink
+              onClick={() => handleJustifyClick('tab1')}
+              active={justifyActive === 'tab1'}
+              style={{
+                backgroundColor: justifyActive === 'tab1' ? '#710808' : '#FFFFFF',
+                color: justifyActive === 'tab1' ? 'white' : '#710808',
+              }}
+            >
+              LOGIN
+            </MDBTabsLink>
+          </MDBTabsItem>
+          <MDBTabsItem>
+            <MDBTabsLink
+              onClick={() => handleJustifyClick('tab2')}
+              active={justifyActive === 'tab2'}
+              style={{
+                backgroundColor: justifyActive === 'tab2' ? '#710808' : '#FFFFFF',
+                color: justifyActive === 'tab2' ? 'white' : '#710808',
+              }}
+            >
+              REGISTER
+            </MDBTabsLink>
+          </MDBTabsItem>
+        </MDBTabs>
 
-          <MDBTabsContent>
-            <MDBTabsPane show={justifyActive === 'tab1'}>
-           
-              <MDBInput wrapperClass='mb-4' value={log_email} onChange={(e) => setLogEmail(e.target.value)} placeholder='Email address' type='email' style={{ backgroundColor: '#D9D9D9' }} />
-              <MDBInput wrapperClass='mb-4' value={log_password} onChange={(e) => setLogPassword(e.target.value)} placeholder='Password' id='form2' type='password' style={{ backgroundColor: '#D9D9D9' }} />
+        <MDBTabsContent>
+          <MDBTabsPane show={justifyActive === 'tab1'}>
 
-              <button className="w-100 btn btn-primary" onClick={login} style={{ backgroundColor: '#710808', borderColor: '#710808' }}>SIGN IN</button>
-              <button className="text-left" onClick={handleContinueAsGuest} style={{ border: 'none', padding: 0, background: 'none' }}><a href="/home" style={{ color: '#710808' }} >Continue as Guest</a></button>
-                            
-            </MDBTabsPane>
+            <MDBInput wrapperClass='mb-4' value={log_email} onChange={(e) => setLogEmail(e.target.value)} placeholder='Email address' type='email' style={{ backgroundColor: '#D9D9D9' }} />
+            <MDBInput wrapperClass='mb-4' value={log_password} onChange={(e) => setLogPassword(e.target.value)} placeholder='Password' id='form2' type='password' style={{ backgroundColor: '#D9D9D9' }} />
 
-            <MDBTabsPane show={justifyActive === 'tab2'}>
-              {/* <form> */}
-              <div style={{ height: '53vh', overflow: 'auto' }}>
-                <MDBInput wrapperClass='mb-4' value={f_name} onChange={(e) => setFirstName(e.target.value)} placeholder='First Name' type='text' style={{ backgroundColor: '#D9D9D9' }} />
-                {/* {firstNameError && <p className="error-message">{firstNameError}</p>} */}
-                <MDBInput wrapperClass='mb-4' value={l_name} onChange={(e) => setLastName(e.target.value)} placeholder='Last Name' type='text' style={{ backgroundColor: '#D9D9D9' }} />
+            <button className="w-100 btn btn-primary" onClick={login} style={{ backgroundColor: '#710808', borderColor: '#710808' }}>SIGN IN</button>
+            <button className="text-left" onClick={handleContinueAsGuest} style={{ border: 'none', padding: 0, background: 'none' }}><a href="/home" style={{ color: '#710808' }} >Continue as Guest</a></button>
 
-                <MDBInput wrapperClass='mb-4' value={email} onChange={(e) => setEmail(e.target.value)} placeholder='Email' type='email' style={{ backgroundColor: '#D9D9D9' }} />
+          </MDBTabsPane>
 
-                <MDBInput wrapperClass='mb-4' value={password} onChange={(e) => setPassword(e.target.value)} placeholder='Password' type='password' style={{ backgroundColor: '#D9D9D9' }} />
+          <MDBTabsPane show={justifyActive === 'tab2'}>
+            {/* <form> */}
+            <div style={{ height: '53vh', overflow: 'auto' }}>
+              <MDBInput wrapperClass='mb-4' value={f_name} onChange={(e) => setFirstName(e.target.value)} placeholder='First Name' type='text' style={{ backgroundColor: '#D9D9D9' }} />
+              {/* {firstNameError && <p className="error-message">{firstNameError}</p>} */}
+              <MDBInput wrapperClass='mb-4' value={l_name} onChange={(e) => setLastName(e.target.value)} placeholder='Last Name' type='text' style={{ backgroundColor: '#D9D9D9' }} />
 
-                <MDBInput wrapperClass='mb-4' value={password_cnf} onChange={(e) => setCnfPassword(e.target.value)} placeholder='Confirm Password' type='password' style={{ backgroundColor: '#D9D9D9' }} />
+              <MDBInput wrapperClass='mb-4' value={email} onChange={(e) => setEmail(e.target.value)} placeholder='Email' type='email' style={{ backgroundColor: '#D9D9D9' }} />
 
-                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                  <div style={{ marginRight: '10px' }}>
-                    <MDBInput wrapperClass='mb-4' value={tag1} onChange={(e) => setTag1(e.target.value)} type='text' placeholder='Tag 1' style={{ backgroundColor: '#D9D9D9' }} />
-                  </div>
-                  <div style={{ marginRight: '10px' }}>
-                    <MDBInput wrapperClass='mb-4' value={tag2} onChange={(e) => setTag2(e.target.value)} placeholder='Tag 2' type='text' style={{ backgroundColor: '#D9D9D9' }} />
-                  </div>
-                  <div style={{ marginRight: '10px' }}>
-                    <MDBInput wrapperClass='mb-4' value={tag3} onChange={(e) => setTag3(e.target.value)} placeholder='Tag 3' type='text' style={{ backgroundColor: '#D9D9D9' }} />
-                  </div>
-                  <div style={{ marginRight: '10px' }}>
-                    <MDBInput wrapperClass='mb-4' value={tag4} onChange={(e) => setTag4(e.target.value)} placeholder='Tag 4' type='text' style={{ backgroundColor: '#D9D9D9' }} />
-                  </div>
-                  <MDBInput wrapperClass='mb-4' value={tag5} onChange={(e) => setTag5(e.target.value)} placeholder='Tag 5' type='text' style={{ backgroundColor: '#D9D9D9' }} />
+              <MDBInput wrapperClass='mb-4' value={password} onChange={(e) => setPassword(e.target.value)} placeholder='Password' type='password' style={{ backgroundColor: '#D9D9D9' }} />
+
+              <MDBInput wrapperClass='mb-4' value={password_cnf} onChange={(e) => setCnfPassword(e.target.value)} placeholder='Confirm Password' type='password' style={{ backgroundColor: '#D9D9D9' }} />
+
+              <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                <div style={{ marginRight: '10px' }}>
+                  <MDBInput wrapperClass='mb-4' value={tag1} onChange={(e) => setTag1(e.target.value)} type='text' placeholder='Tag 1' style={{ backgroundColor: '#D9D9D9' }} />
                 </div>
+                <div style={{ marginRight: '10px' }}>
+                  <MDBInput wrapperClass='mb-4' value={tag2} onChange={(e) => setTag2(e.target.value)} placeholder='Tag 2' type='text' style={{ backgroundColor: '#D9D9D9' }} />
+                </div>
+                <div style={{ marginRight: '10px' }}>
+                  <MDBInput wrapperClass='mb-4' value={tag3} onChange={(e) => setTag3(e.target.value)} placeholder='Tag 3' type='text' style={{ backgroundColor: '#D9D9D9' }} />
+                </div>
+                <div style={{ marginRight: '10px' }}>
+                  <MDBInput wrapperClass='mb-4' value={tag4} onChange={(e) => setTag4(e.target.value)} placeholder='Tag 4' type='text' style={{ backgroundColor: '#D9D9D9' }} />
+                </div>
+                <MDBInput wrapperClass='mb-4' value={tag5} onChange={(e) => setTag5(e.target.value)} placeholder='Tag 5' type='text' style={{ backgroundColor: '#D9D9D9' }} />
               </div>
+            </div>
 
-              <button className="w-100 btn btn-primary" onClick={register} style={{ backgroundColor: '#710808', borderColor: '#710808' }}>SIGN UP</button>
+            <button className="w-100 btn btn-primary" onClick={register} style={{ backgroundColor: '#710808', borderColor: '#710808' }}>SIGN UP</button>
             {/* </form> */}
 
           </MDBTabsPane>
