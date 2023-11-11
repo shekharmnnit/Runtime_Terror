@@ -116,6 +116,8 @@ async (req, res) => {
 router.delete('/delete/:postId', auth, async (req, res) => {
   try {
     const deletedPost = await Post.findOneAndDelete({ _id: req.params.postId });
+    console.log('deleted post obj')
+    console.log(deletedPost)
     const sessionUser = await User.findById(req.user.id);
     console.log(req.params.postId)
     console.log(sessionUser.createdPostIds)
@@ -128,6 +130,8 @@ router.delete('/delete/:postId', auth, async (req, res) => {
     if (!deletedPost) {
       return res.status(404).json({ message: 'Post not found' });
     }
+    // const gridstore = await gfs.files.remove({ filename: deletedPost.fileName, root: 'uploads' });
+    // console.log(gridstore)
     res.json({ message: 'Post deleted successfully' });
   } catch (error) {
     console.error('Error deleting post:', error);
@@ -163,10 +167,14 @@ router.get('/fetchAll', async (req, res) => {
 // Fetch posts by a specific skill from the request body
 router.post('/searchBySkill', async (req, res) => {
   const skillToSearch = req.body.skill; // Get the skill from the request body
-
   try {
-    const posts = await Post.find({ skills: skillToSearch });
-    res.json(posts);
+    const filteredPosts = []
+    const posts = await Post.find();
+    posts.forEach(post => {
+      if(post.skills.findIndex(skillToSearch) != -1)
+        filteredPosts.push(post);
+    })
+    res.json(filteredPosts);
   } catch (error) {
     console.error(`Error fetching posts with skill '${skillToSearch}':`, error);
     res.status(500).json({ message: `Failed to fetch posts with skill '${skillToSearch}'` });
@@ -179,19 +187,34 @@ router.post('/searchBySkill', async (req, res) => {
 router.put('/downvote/:postid', auth, checkObjectId('postid'), async (req, res) => {
   try {
     const post = await Post.findById(req.params.postid);
-
     // Check if the post has already been liked
     const indexI = post.upvotes.indexOf(req.user.id);
     const indexD = post.downvotes.indexOf(req.user.id);
+    let downvoted = 0;
     if (indexD > -1){
       post.downvotes.splice(indexI,1)
     } else if (indexI > -1){
+      downvoted = 1
       post.downvotes.unshift(req.user.id);
       post.upvotes.splice(indexD, 1);
     } else {
+      downvoted = 1;
       post.downvotes.unshift(req.user.id);
     }
     await post.save();
+    if (downvoted) {
+      const postOwner = await User.findById(post.userId);
+      const sessionUser = await User.findById(req.user.id)
+      const notification = new Notification({
+        postOwnerUserId: post.userId,
+        postOwnerFullName: sessionUser.firstName + " " + sessionUser.lastName,
+        operation: "downvote",
+        postId: post._id,
+        postCaption: post.captions
+      });
+      postOwner.notifications.unshift(notification);
+      await postOwner.save();
+    }
     return res.json(post.downvotes);
   } catch (err) {
     console.error(err.message);
@@ -205,22 +228,34 @@ router.put('/downvote/:postid', auth, checkObjectId('postid'), async (req, res) 
 router.put('/upvote/:postid', auth, checkObjectId('postid'), async (req, res) => {
   try {
     const post = await Post.findById(req.params.postid);
-
+    let upvoted = 0;
     // Check if the post has already been liked
     const indexI = post.upvotes.indexOf(req.user.id)
     const indexD = post.downvotes.indexOf(req.user.id)
-    if (indexI > -1){
+    if (indexI > -1) {
       post.upvotes.splice(indexI,1)
-    } else if (indexD > -1){
+    } else if (indexD > -1) {
+      upvoted = 1
       post.upvotes.unshift(req.user.id);
       post.downvotes.splice(indexD, 1);
     } else {
-      console.log("reached the last else")
+      upvoted=1
       post.upvotes.unshift(req.user.id);
     }
-
     await post.save();
-
+    if (upvoted) {
+      const postOwner = await User.findById(post.userId);
+      const sessionUser = await User.findById(req.user.id);
+      const notification = new Notification({
+        postOwnerUserId: post.userId,
+        postOwnerFullName: sessionUser.firstName + " " + sessionUser.lastName,
+        operation: "upvote",
+        postId: post._id,
+        postCaption: post.captions
+      });
+      postOwner.notifications.unshift(notification);
+      await postOwner.save();
+    }
     return res.json(post.upvotes);
   } catch (err) {
     console.error(err.message);
@@ -242,56 +277,36 @@ router.post(
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
     }
-
     try {
-      const user = await User.findById(req.user.id);
+      const sessionUser = await User.findById(req.user.id);
       const post = await Post.findById(req.params.postid);
+      const postOwner = await User.findById(post.userId);
       const newComment = new Comment({
         commentedUserId: req.user.id,
-        commentedByFirstName: user.firstName,
-        commentedByLastName: user.lastName,
+        commentedByFirstName: sessionUser.firstName,
+        commentedByLastName: sessionUser.lastName,
         commentString: req.body.text,
         lastUpdatedOn: Date.now()
       });
       post.comments.unshift(newComment);
       await post.save();
-      console.log(user.createdPostIds.indexOf(req.params.postid))
-      if(user.createdPostIds.indexOf(req.params.postid) == -1) {
+      console.log(sessionUser.createdPostIds.indexOf(req.params.postid))
+      if(sessionUser.createdPostIds.indexOf(req.params.postid) == -1) {
         console.log("reached 2")
-        user.commentedPostIds.unshift(req.params.postid);
+        sessionUser.commentedPostIds.unshift(req.params.postid);
       }
-      await user.save();
-      return res.json(post.comments);
-    } catch (err) {
-      console.error(err.message);
-      res.status(500).send('Server Error');
-    }
-  }
-)
-
-router.post('/notification/:postid',
-  auth,
-  checkObjectId('postid'),
-  async (req, res) => {
-    try{
-      const errors = validationResult(req);
-      if (!errors.isEmpty()) {
-        return res.status(400).json({ errors: errors.array() });
-      }
-      const post = await Post.findById(req.params.postid);
-      const postOwner = await User.findById(post.userId);
-      const sessionUser = await User.findById(req.user.id)
+      await sessionUser.save();
       const notification = new Notification({
         postOwnerUserId: post.userId,
         postOwnerFullName: sessionUser.firstName + " " + sessionUser.lastName,
-        operation: req.body.operation,
+        operation: "comment",
         postId: post._id,
         postCaption: post.captions
       });
       postOwner.notifications.unshift(notification);
       await postOwner.save();
-      return res.status(201).json(postOwner.notifications);
-    } catch(err) {
+      return res.json(post.comments);
+    } catch (err) {
       console.error(err.message);
       res.status(500).send('Server Error');
     }
