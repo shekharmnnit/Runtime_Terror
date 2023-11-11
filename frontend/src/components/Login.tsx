@@ -130,17 +130,16 @@ function Login() {
       return;
     }
 
-    let obj = [{
+    let login_cred = {
       "email": log_email,
       "password": log_password,
-    }]
+    }
 
     try {
-      const loginResponse = await axios.post(localStorage.getItem('apiServerURL') + "api/secureLogin", login_cred);
+      const loginResponse = await axios.post(localStorage.getItem('apiServerURL') + "api/login", login_cred);
       alert("Successfully logged in");
       console.log(loginResponse.data)
       navigate("/home");
-      localStorage.setItem('local_login_email', email);
       localStorage.setItem('local_login_token', loginResponse.data.token);
       console.log(loginResponse.data.token)
       let localToken = (String)(localStorage.getItem('local_login_token'));
@@ -151,9 +150,9 @@ function Login() {
           'Content-Type': 'application/json'
         },
       });
-      localStorage.setItem('local_first_name', profileResponse.data.firstName);
-      localStorage.setItem('local_last_name', profileResponse.data.lastName);
-      console.log(profileResponse)
+      localStorage.setItem('local_login_email', profileResponse.data.user.email);
+      localStorage.setItem('local_first_name', profileResponse.data.user.firstName);
+      localStorage.setItem('local_last_name', profileResponse.data.user.lastName);
 
     } catch (error) {
       console.error("Error during Login:", error.message);
