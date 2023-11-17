@@ -29,6 +29,10 @@ header {
     display: flex;
 }
 
+.logo-and-title > div {
+  margin-left: 10px; /* Adds space below each div element inside button-bell-login-div */
+}
+
 .text-logo {
     font-family: var(--title-font-family);
     font-size: 1.5em;
@@ -88,12 +92,17 @@ header {
     font-weight: bold;
 }
 
+.fa-user-pen{
+  margin-left: 5px;
+}
+
 .fa-search{
     color: var(--secondary-background-color);
 }
 
 .fa-bell{
     color: var(--icons-background-color);
+    cursor: pointer;
 }
 
 .fa-circle-plus{
@@ -194,3 +203,12 @@ header {
     color: #710808;
     margin: 10px;
   }
+
+  .button-bell-login-div{
+    display: inline-flex;
+  }
+
+  .button-bell-login-div > div {
+    margin-right: 40px; /* Adds space below each div element inside button-bell-login-div */
+  }
+  

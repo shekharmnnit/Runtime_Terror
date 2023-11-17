@@ -20,7 +20,7 @@ function AppHeader() {
 
 
     function handleNotificationDropdown() {
-        clearLocalStorage();
+        // clearLocalStorage();
         setShowNotificationDropdown(!showNotificationDropdown)
         setShowGreenNotificationIcon(false)
     }
@@ -60,43 +60,44 @@ function AppHeader() {
                 </div>
             </div>
                 <SearchBar />
-            {!isContinueAsGuest && (
-            <div>
-                    <Popup trigger={<button className="button-create-post" onClick={() => setShow(!show)}><i className="fa-solid fa-circle-plus"></i>Create post</button>} position="center center">
-                    <div>
-                        <h5 className="create-post">CREATE POST</h5>
-                        <div><CreatePost /></div>
+                 <div className='button-bell-login-div'>
+                        {!isContinueAsGuest && (
+                        <div>
+                                <Popup trigger={<button className="button-create-post" onClick={() => setShow(!show)}><i className="fa-solid fa-circle-plus"></i>Create post</button>} position="center center">
+                                <div>
+                                    <h5 className="create-post">CREATE POST</h5>
+                                    <div><CreatePost /></div>
+                                </div>
+                                </Popup>
+                        </div>
+                        )}
+                        {!isContinueAsGuest && (
+                        <div className='notification-dropdown'>
+                                <i onClick={handleNotificationDropdown} className="fa-solid fa-bell fa-2x notification-icon"></i>
+                                {showGreenNotificationIcon && <i className="fa-solid fa-circle" style={{ "color": "#58ec09" }}></i>}
+                                {showNotificationDropdown && <div className="dropdown-content">
+                                    {notificationList.map((item, index) => (
+                                        <a href={item.url}>{item.name}</a>
+                                    ))}
+                                </div>}
+                            </div>
+                            )}
+
+                        <div className="header-dropdown">
+                            <button className="button-login">
+                                {local_first_name}
+                                <i className={`fa-solid fa-sort-down`}></i>
+                            </button>
+                            {!isContinueAsGuest && <div className="dropdown-content">
+                                <a href="/profile">Profile</a>
+                                <a href="/" onClick={handleLogout}>Log Out</a>
+                            </div>}
+                            {isContinueAsGuest && <div className="dropdown-content">
+                                <a href="/">Login</a>
+                            </div>}
+
+                        </div>
                     </div>
-                    </Popup>
-            </div>
-            )}
-         {!isContinueAsGuest && (
-          <div className='notification-dropdown'>
-                <i onClick={handleNotificationDropdown} className="fa-solid fa-bell fa-2x notification-icon"></i>
-                {showGreenNotificationIcon && <i className="fa-solid fa-circle" style={{ "color": "#58ec09" }}></i>}
-                {showNotificationDropdown && <div className="dropdown-content">
-                    {notificationList.map((item, index) => (
-                        <a href={item.url}>{item.name}</a>
-                    ))}
-                </div>}
-            </div>
-            )}
-
-            <div className="header-dropdown">
-                <button className="button-login">
-                    {local_first_name}
-                    <i className={`fa-solid fa-sort-down`}></i>
-                </button>
-                {!isContinueAsGuest && <div className="dropdown-content">
-                    <a href="/profile">Profile</a>
-                    <a href="/" onClick={handleLogout}>Log Out</a>
-                </div>}
-                {isContinueAsGuest && <div className="dropdown-content">
-                    <a href="/">Login</a>
-                </div>}
-
-            </div>
-
         </header>
     )
 }
