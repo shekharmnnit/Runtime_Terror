@@ -59,12 +59,12 @@ function PostPage() {
         docsToView:[
     
             { 
-                uri: "https://buffer.com/cdn-cgi/image/w=1000,fit=contain,q=90,f=auto/library/content/images/size/w600/2023/10/free-images.jpg",
+                uri: localStorage.getItem('apiServerURL')+"api/posts/getFile/1700250920907.png",
                 fileType:'jpg',
                 fileName:'shekhar'
             },
             { 
-                uri: "https://drive.google.com/file/d/1URQJCZSDvXz8UQ_ymgn9iXtqbQlStdeN/view",
+                uri: localStorage.getItem('apiServerURL')+"api/posts/getFile/1700251725026.pdf",
                     fileType:'pdf',
                     fileName:'pdf'
             }

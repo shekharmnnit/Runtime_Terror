@@ -103,6 +103,8 @@ function Login() {
 
     try {
       const response = await axios.post(localStorage.getItem('apiServerURL') + "api/user", register_obj);
+      localStorage.setItem('local_login_token', response.data.token);
+      await getProfileDetails()
       alert("Registration successfully done.");
       console.log(response)
       navigate('/home');
@@ -110,6 +112,19 @@ function Login() {
       console.error("Error during registration:", error.message);
       alert("Registration failed. Please try again." + error.message);
     }
+  }
+
+  async function getProfileDetails(){
+    let localToken = (String)(localStorage.getItem('local_login_token'));
+    const profileResponse = await axios.get(localStorage.getItem('apiServerURL') + "api/user/fetchProfile/1", {
+      headers: {
+        'x-auth-token': localToken,
+        'Content-Type': 'application/json'
+      },
+    });
+    localStorage.setItem('local_login_email', profileResponse.data.user.email);
+    localStorage.setItem('local_first_name', profileResponse.data.user.firstName);
+    localStorage.setItem('local_last_name', profileResponse.data.user.lastName);
   }
 
   async function login() {
@@ -137,23 +152,14 @@ function Login() {
 
     try {
       const loginResponse = await axios.post(localStorage.getItem('apiServerURL') + "api/login", login_cred);
-      alert("Successfully logged in");
       console.log(loginResponse.data)
-      navigate("/home");
       localStorage.setItem('local_login_token', loginResponse.data.token);
       console.log(loginResponse.data.token)
-      let localToken = (String)(localStorage.getItem('local_login_token'));
+      
       //fetch logged in profile details
-      const profileResponse = await axios.get(localStorage.getItem('apiServerURL') + "api/user/fetchProfile/1", {
-        headers: {
-          'x-auth-token': localToken,
-          'Content-Type': 'application/json'
-        },
-      });
-      localStorage.setItem('local_login_email', profileResponse.data.user.email);
-      localStorage.setItem('local_first_name', profileResponse.data.user.firstName);
-      localStorage.setItem('local_last_name', profileResponse.data.user.lastName);
-
+      await getProfileDetails()
+      alert("Successfully logged in");
+      navigate("/home");
     } catch (error) {
       console.error("Error during Login:", error.message);
       alert("Login failed. Please try again" + error.message);
