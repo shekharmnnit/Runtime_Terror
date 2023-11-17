@@ -13,7 +13,7 @@ const app = express();
 
 // Export the 'app' object
 module.exports = { app };
-
+const cors = require('cors')
 const connectDB = async () => {
     try {
       await mongoose.connect(db);
@@ -75,6 +75,14 @@ setupDatabase();
 // const upload = multer({ storage: storage });
 
 // Init Middleware
+
+app.use(cors({
+  origin: '*',
+  methods:'*',
+  credentials:true,
+  allowedHeaders:'*'
+}))
+
 app.use(express.json());
 
 app.use('/api/user', require('./routes/api/users'));
