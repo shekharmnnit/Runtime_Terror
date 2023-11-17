@@ -2,6 +2,7 @@ import React, { useState,useEffect } from 'react';
 import '../assets/css/post_summary.css'
 import linkImage from '../assets/file.png';
 import axios from "axios";
+import DocViewer, { DocViewerRenderers } from "@cyntler/react-doc-viewer";
 function ShowPostSummary({ feedPost}) {
 
     if (feedPost == null) {
@@ -47,6 +48,18 @@ function ShowPostSummary({ feedPost}) {
               let posts=[{}]
               posts.pop()
               response.data.forEach((post)=>{
+                let fileTypeHandel= ['PNG','JPEG','JPG', 'PNG', 'GIF', 'TIFF']
+                let file= !!post.fileName &&  fileTypeHandel.includes((post.fileName.split('.')[1]).toUpperCase()
+                )? [{
+                  uri: localStorage.getItem('apiServerURL')+"api/posts/getFile/"+post.fileName,
+                  fileType:post.fileName.split('.')[1],
+                  fileName:'file'
+                }]
+                :[{
+                  uri: localStorage.getItem('apiServerURL')+"api/posts/getFile/1700250920907.png",
+                  fileType:'png',
+                  fileName:'no file'
+                }]
                 posts.push({
                 "user_id": post.userId,
                 "first_name": post.firstName,
@@ -55,7 +68,8 @@ function ShowPostSummary({ feedPost}) {
                 "caption": post.caption,
                 "link": "https://www.google.com/",
                 "tags": post.skills,
-                "date": convertDate(post.lastUpdatedOn)
+                "date": convertDate(post.lastUpdatedOn),
+                "docsToView":file
                 })
               });
             //   feedPost=posts
@@ -113,10 +127,9 @@ function ShowPostSummary({ feedPost}) {
                                 <div className="date">{item.date}</div>
                             </div>
                         </div>
-                        <div className="link-container">
-                            <a href={item.link} className="link">
-                                <img src={localStorage.getItem('apiServerURL')+"api/posts/getFile/1700250920907.png"} alt="link" className="link-image" />
-                            </a>
+                        <div className="link-container" style={{height:'29vh', width: '29vh'}}>
+                          <DocViewer documents={item.docsToView} pluginRenderers={DocViewerRenderers}
+                        style={{height:'auto'}} />
                         </div>
                     </div>
                 </a>
