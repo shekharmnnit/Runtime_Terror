@@ -11,6 +11,9 @@ const connectMySQL = require('./mySQL/connectMySQL');
 
 const app = express();
 
+// Export the 'app' object
+module.exports = { app };
+
 const connectDB = async () => {
     try {
       await mongoose.connect(db);
