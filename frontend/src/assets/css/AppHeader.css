@@ -189,3 +189,8 @@ header {
   .popup-overlay {
     background: rgba(0, 0, 0, 0.5);
   }
+
+  .create-post{
+    color: #710808;
+    margin: 10px;
+  }

@@ -39,6 +39,7 @@ function PostDetailContainer({ postContent, cur_user_id }) {
                                 {showEdit && (
                                     <Popup trigger={<button style={{ "border": "none", "backgroundColor": "white" }} onClick={() => handleEditClick()}><i className="fa-regular fa-pen-to-square icon"></i></button>} position="center center">
                                         <div>
+                                        <h5 className="edit-post">EDIT POST</h5>
                                             <div><CreatePost postContent={postContent} editMode={editMode}/></div>
                                         </div>
                                     </Popup>
