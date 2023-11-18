@@ -4,6 +4,7 @@ import '../assets/css/ProfilePage.css'
 import AppFooter from './AppFooter.tsx';
 import ShowPostSummary from './Post_summary.tsx';
 import UserProfileDetail from './UserProfileDetail.tsx';
+import axios from "axios";
 
 function ProfilePage() {
 
@@ -75,19 +76,65 @@ function ProfilePage() {
       }]
 
       const [feedPost, setFeedPost] = useState<{
-        first_name: string;
-        last_name: string;
-        caption: string;
-        link: string;
-        tags: string[];
-        date: string;
+       
       }[]>([]);
-
+      
+      
       useEffect(() => {
+        const getPost = async (tabType) => {
+          try {
+            let localToken = (String)(localStorage.getItem('local_login_token'));
+            const response =  await axios.get(localStorage.getItem('apiServerURL') + "api/user/fetchProfile/1", {
+              headers: {
+                  'Content-Type': 'application/json',
+                  'x-auth-token': localToken
+              },
+          },);
+            
+            if (!response.data) {
+              throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            let posts=[{}]
+            posts.pop()
+            let showPostData= tabType =='tab1' ? response.data.createdPosts : response.data.commentedPosts
+            showPostData.forEach((post)=>{
+              let fileTypeHandel= ['PNG','JPEG','JPG', 'PNG', 'GIF', 'TIFF']
+              let file= !!post.fileName &&  fileTypeHandel.includes((post.fileName.split('.')[1]).toUpperCase()
+              )? [{
+                uri: localStorage.getItem('apiServerURL')+"api/posts/getFile/"+post.fileName,
+                fileType:post.fileName.split('.')[1],
+                fileName:'file'
+              }]
+              :[{
+                uri: localStorage.getItem('apiServerURL')+"api/posts/getFile/1700250920907.png",
+                fileType:'png',
+                fileName:'no file'
+              }]
+              posts.push({
+              "user_id": post.userId,
+              "first_name": tabType+"-"+post.firstName,
+              "last_name": post.lastName,
+              "post_id":post._id,
+              "caption": post.caption,
+              "link": "https://www.google.com/",
+              "tags": post.skills,
+              "date": '17-11-2023',
+              "docsToView":file
+              })
+            });
+            setFeedPost(posts.reverse())
+          } catch (error) {
+          } finally {
+          }
+        };
+
         if (selectedTab === 'posts') {
-            setFeedPost(obj);
+          
+          getPost('tab1')
+            // setFeedPost(obj);
         } else if (selectedTab === 'commentedPosts') {
-            setFeedPost(obj2);
+          getPost('tab2')  
+          // setFeedPost(obj2);
         }
     }, [selectedTab]);
 
