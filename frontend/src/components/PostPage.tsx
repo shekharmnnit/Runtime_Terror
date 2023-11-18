@@ -50,7 +50,8 @@ function PostPage() {
                             "last_name": response.data.lastName,
                             "caption": response.data.caption,
                             "tags": response.data.skills,
-                            "date": convertDate(response.data.lastUpdatedOn)
+                            "date": convertDate(response.data.lastUpdatedOn),
+                            "userid": response.data.userId
                         },
                         comments: response.data.comments,
                         docsToView: file
