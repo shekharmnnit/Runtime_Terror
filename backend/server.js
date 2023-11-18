@@ -14,7 +14,6 @@ const app = express();
 
 // Export the 'app' object
 module.exports = { app };
-const cors = require('cors')
 const connectDB = async () => {
     try {
       await mongoose.connect(db);
