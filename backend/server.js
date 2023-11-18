@@ -1,5 +1,6 @@
 const express = require('express')
 const config = require('./config/default.json')
+const cors = require('cors')
 // const connectDB = require('./config/db');
 const db = config.mongoURI
 // const path = require('path');
@@ -84,6 +85,13 @@ app.use(cors({
 }))
 
 app.use(express.json());
+app.use(cors({
+  origin: '*',
+  methods:'*',
+  credentials:true,
+  allowedHeaders:'*'
+}))
+
 
 app.use('/api/user', require('./routes/api/users'));
 app.use('/api/login', require('./routes/api/auth'))

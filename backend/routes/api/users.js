@@ -103,14 +103,10 @@ router.get('/fetchProfile/:userId',
         user = await User.findById(req.user.id).select('-password');
       }
       console.log(user.createdPostIds)
-      const createdPosts = []
-      const commentedPosts = []
-      user.createdPostIds.forEach(async postId => {
-        createdPosts.unshift(await Post.findById(postId));
-      });
-      user.commentedPostIds.forEach(async postId => {
-        commentedPosts.unshift(await Post.findById(postId));
-      })
+      let createdPosts = await Post.find({_id: user.createdPostIds})
+      let commentedPosts = await Post.find({_id: user.commentedPostIds})
+      console.log(createdPosts)
+      console.log(commentedPosts)
       return res.status(201).json({
         user,
         commentedPosts,
@@ -123,18 +119,12 @@ router.get('/fetchProfile/:userId',
   }
 )
 
-router.post('/updateProfile/:userId',
+router.post('/updateProfile/',
   auth,
   async (req,res) => {
     // userId, email, firstname, lastname, commentedposts, createdPosts
     try {
-      let profileId;
-      const user = await User.findById(req.params.userId);
-      if (req.params.userId != 1) {
-        profileId = req.params.userId
-      } else {
-        profileId = req.user.id;
-      }
+      const user = await User.findById(req.user.id);
       const {firstName, lastName, skills} = req.body;
       const updatedFields = {firstName, lastName, skills}
       const updatedUser = await User.findOneAndUpdate(
