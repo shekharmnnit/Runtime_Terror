@@ -119,7 +119,7 @@ router.get('/fetchProfile/:userId',
   }
 )
 
-router.post('/updateProfile/',
+router.post('/updateProfile',
   auth,
   async (req,res) => {
     // userId, email, firstname, lastname, commentedposts, createdPosts

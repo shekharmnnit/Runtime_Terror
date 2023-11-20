@@ -179,24 +179,40 @@ router.post('/searchBySkill', async (req, res) => {
 router.put('/downvote/:postid', auth, checkObjectId('postid'), async (req, res) => {
   try {
     const post = await Post.findById(req.params.postid);
-
+    let flag=0;
     // Check if the post has already been liked
-    const indexI = post.upvotes.indexOf(req.user.id);
+    const indexU = post.upvotes.indexOf(req.user.id);
     const indexD = post.downvotes.indexOf(req.user.id);
     if (indexD > -1){
-      post.downvotes.splice(indexI,1)
-    } else if (indexI > -1){
+      post.downvotes.splice(indexU,1)
+    } else if (indexU > -1){
       post.downvotes.unshift(req.user.id);
       post.upvotes.splice(indexD, 1);
+      flag=1;
     } else {
       post.downvotes.unshift(req.user.id);
+      flag=1;
     }
     await post.save();
+    console.log("value flag: ",flag)
+    if (flag==1){
+      const postOwner = await User.findById(post.userId);
+      postOwner.notifications.unshift(new Notification({
+        postOwnerUserId: postOwner._id,
+        postOwnerFullName: postOwner.firstName+" "+postOwner.lastName,
+        operation: "downvote",
+        postId: post._id,
+        postCaption: post.caption,
+        createdOn: Date.now()
+      }))
+      await postOwner.save();
+    }
     return res.json(post.downvotes);
   } catch (err) {
     console.error(err.message);
     res.status(500).send('Server Error');
   }
+
 });
 
 // @route    PUT api/posts/downvote/:postid
@@ -207,20 +223,34 @@ router.put('/upvote/:postid', auth, checkObjectId('postid'), async (req, res) =>
     const post = await Post.findById(req.params.postid);
 
     // Check if the post has already been liked
-    const indexI = post.upvotes.indexOf(req.user.id)
+    const indexU = post.upvotes.indexOf(req.user.id)
     const indexD = post.downvotes.indexOf(req.user.id)
-    if (indexI > -1){
-      post.upvotes.splice(indexI,1)
-    } else if (indexD > -1){
+    let flag = 0;
+    if (indexU > -1){
+      post.upvotes.splice(indexU,1)
+      console.log('reached non flag if')
+    } 
+    if (indexD > -1){
       post.upvotes.unshift(req.user.id);
       post.downvotes.splice(indexD, 1);
+      flag=1;
     } else {
-      console.log("reached the last else")
+      flag=1;
       post.upvotes.unshift(req.user.id);
     }
-
     await post.save();
-
+    if (flag==1){
+      const postOwner = await User.findById(post.userId);
+      postOwner.notifications.unshift(new Notification({
+        postOwnerUserId: postOwner._id,
+        postOwnerFullName: postOwner.firstName+" "+postOwner.lastName,
+        operation: "upvote",
+        postId: post._id,
+        postCaption: post.caption,
+        createdOn: Date.now()
+      }))
+      await postOwner.save();
+    }
     return res.json(post.upvotes);
   } catch (err) {
     console.error(err.message);
@@ -255,9 +285,18 @@ router.post(
       });
       post.comments.unshift(newComment);
       await post.save();
-      console.log(user.createdPostIds.indexOf(req.params.postid))
+      const postOwner = await User.findById(post.userId);
       user.commentedPostIds.unshift(req.params.postid);
+      postOwner.notifications.unshift(new Notification({
+        postOwnerUserId: postOwner._id,
+        postOwnerFullName: postOwner.firstName+" "+postOwner.lastName,
+        operation: "comment",
+        postId: post._id,
+        postCaption: post.caption,
+        createdOn: Date.now()
+      }))
       await user.save();
+      await postOwner.save();
       return res.json(post.comments);
     } catch (err) {
       console.error(err.message);
@@ -266,28 +305,21 @@ router.post(
   }
 )
 
-router.post('/notification/:postid',
+router.get('/notifications',
   auth,
-  checkObjectId('postid'),
   async (req, res) => {
     try{
-      const errors = validationResult(req);
-      if (!errors.isEmpty()) {
-        return res.status(400).json({ errors: errors.array() });
+      const sessionUser = await User.findById(req.user.id);
+      let notificationsRemaining = 0;
+      if (sessionUser.notificationsShowedTillNow < sessionUser.notifications.length) {
+        notificationsRemaining = sessionUser.notifications.length - sessionUser.notificationsShowedTillNow;
       }
-      const post = await Post.findById(req.params.postid);
-      const postOwner = await User.findById(post.userId);
-      const sessionUser = await User.findById(req.user.id)
-      const notification = new Notification({
-        postOwnerUserId: post.userId,
-        postOwnerFullName: sessionUser.firstName + " " + sessionUser.lastName,
-        operation: req.body.operation,
-        postId: post._id,
-        postCaption: post.captions
+      sessionUser.notificationsShowedTillNow = sessionUser.notifications.length
+      await sessionUser.save();
+      return res.status(201).json({
+        notifications:sessionUser.notifications,
+        notificationsRemaining
       });
-      postOwner.notifications.unshift(notification);
-      await postOwner.save();
-      return res.status(201).json(postOwner.notifications);
     } catch(err) {
       console.error(err.message);
       res.status(500).send('Server Error');
