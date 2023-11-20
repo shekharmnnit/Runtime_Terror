@@ -5,7 +5,6 @@ import Popup from 'reactjs-popup';
 import CreatePost from './Create_post.tsx';
 import _ from 'lodash';
 
-
 function PostDetailContainer({ postContent, cur_user_id }) {
     // let obj = [{
     //     "first_name": "Kunal",
@@ -16,11 +15,12 @@ function PostDetailContainer({ postContent, cur_user_id }) {
     //     "date": "12-08-2023"
     // }];
     postContent = [_.cloneDeep(postContent)];
-    if(!!postContent[0]){
-        postContent[0]['isEdit']=true
+    if (!!postContent[0]) {
+        postContent[0]['isEdit'] = true
     }
-    const local_reg_user_id = localStorage.getItem('local_reg_user_id');
-    const showEdit = ((cur_user_id).toString() === local_reg_user_id)
+    const local_reg_user_id = localStorage.getItem('local_loggedin_userid');
+
+    const showEdit = local_reg_user_id === postContent[0].userid
 
     const [editMode, setEditMode] = useState(false);
 
@@ -39,8 +39,8 @@ function PostDetailContainer({ postContent, cur_user_id }) {
                                 {showEdit && (
                                     <Popup trigger={<button style={{ "border": "none", "backgroundColor": "white" }} onClick={() => handleEditClick()}><i className="fa-regular fa-pen-to-square icon"></i></button>} position="center center">
                                         <div>
-                                        <h5 className="edit-post">EDIT POST</h5>
-                                            <div><CreatePost postContent={postContent} editMode={editMode}/></div>
+                                            <h5 className="edit-post">EDIT POST</h5>
+                                            <div><CreatePost postContent={postContent} editMode={editMode} /></div>
                                         </div>
                                     </Popup>
                                 )

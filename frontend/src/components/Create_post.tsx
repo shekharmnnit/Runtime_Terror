@@ -58,14 +58,22 @@ function CreatePost({ postContent, editMode }) {
             const formData = new FormData();
             formData.append('postfile', selectedFile);
             formData.append('caption', postContant.caption);
-            formData.append('tags', postContant.tags);
-            axios.post('YOUR_API_ENDPOINT', formData)
+            formData.append('skills', postContant.tags);
+            let localToken = (String)(localStorage.getItem('local_login_token'));
+            axios.post(localStorage.getItem('apiServerURL') + "api/posts/create", formData,{
+                headers: {
+                    'x-auth-token': localToken
+                },
+              })
                 .then((response) => {
                     // setLoading(false);
-                    if (response.status === 200) {
+                    if (response.status === 201) {
+                        window.alert('File uploaded successfully')
                         console.log('File uploaded successfully.');
+                        window.location.reload();
                         // Handle the API's response here, if needed.
                     } else {
+                        window.alert('File upload failed')
                         console.error('File upload failed.');
                         // Handle error cases here.
                     }

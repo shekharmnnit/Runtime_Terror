@@ -256,10 +256,7 @@ router.post(
       post.comments.unshift(newComment);
       await post.save();
       console.log(user.createdPostIds.indexOf(req.params.postid))
-      if(user.createdPostIds.indexOf(req.params.postid) == -1) {
-        console.log("reached 2")
-        user.commentedPostIds.unshift(req.params.postid);
-      }
+      user.commentedPostIds.unshift(req.params.postid);
       await user.save();
       return res.json(post.comments);
     } catch (err) {

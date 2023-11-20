@@ -1,9 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react';
 import '../assets/css/global.css';
 import '../assets/css/PostComment.css';
-
-
-function PostComment({ postComments }) {
+import axios from 'axios';
+import { convertDate } from '../utils.js';
+function PostComment({ postComments, postId }) {
 
 
     const [count, setCount] = useState(25);
@@ -50,59 +50,82 @@ function PostComment({ postComments }) {
     var [newComment, setNewComment] = useState('');
     const [comments, setComments] = useState(
         postComments
-        );
-        const inputRef = useRef<HTMLInputElement | null>(null);
-        
-        const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
-            if (e.key === 'Enter') {
-                e.preventDefault(); // Prevent form submission
-                handleAddComment(); // Manually call the function
+    );
+    const inputRef = useRef<HTMLInputElement | null>(null);
+
+    const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+        if (e.key === 'Enter') {
+            e.preventDefault(); // Prevent form submission
+            handleAddComment(); // Manually call the function
+        }
+    };
+
+
+
+
+    useEffect(() => {
+        // Attach the event listener to the input field
+        if (inputRef.current) {
+            inputRef.current.addEventListener('keypress', handleKeyPress as any);
+        }
+
+        // Remove the event listener when the component unmounts
+        return () => {
+            if (inputRef.current) {
+                inputRef.current.removeEventListener('keypress', handleKeyPress as any);
             }
         };
-        
-        
-        
-    
-        useEffect(() => {
-            // Attach the event listener to the input field
-            if (inputRef.current) {
-                inputRef.current.addEventListener('keypress', handleKeyPress as any);
-            }
-        
-            // Remove the event listener when the component unmounts
-            return () => {
-                if (inputRef.current) {
-                    inputRef.current.removeEventListener('keypress', handleKeyPress as any);
-                }
-            };
-        }, []);
-        
-    
+    }, []);
+
+
 
     const handleAddComment = () => {
         let localFname = (String)(localStorage.getItem('local_first_name'));
         let localLname = (String)(localStorage.getItem('local_last_name'));
+
+
         if (newComment.trim() !== '') {
             const currentDate = formatDate(new Date());
+            // const commentsOnPost = {
+            //     "first_name": localFname,
+            //     "last_name": localLname,
+            //     "comment": newComment,
+            //     "date": currentDate,
+            // };
             const newCommentObj = {
-                "first_name": localFname,
-                "last_name": localLname,
-                "comment": newComment,
-                "date": currentDate,
+                "text": newComment,
             };
 
-            setComments([...comments, newCommentObj]);
+            // setComments([...comments, newCommentObj]);
+
+            let localToken = (String)(localStorage.getItem('local_login_token'));
+            // console.log(newCommentObj)
+            // console.log(postId)
+            // console.log(postComments)
+            axios.post(localStorage.getItem('apiServerURL') + `api/posts/comment/${postId}`, newCommentObj, {
+                headers: {
+                    'x-auth-token': localToken
+                },
+            })
+                .then((response) => {
+                    // setLoading(false);
+                    if (response.status === 201) {
+                        console.log('Commented successfully.');
+                        window.location.reload();
+                    } else {
+                        console.error('Comment failed');
+                    }
+                })
+                .catch((error) => {
+                    // setLoading(false);
+                    console.error('File upload failed:', error);
+                    // Handle network or other errors here.
+                });
+            window.location.reload();
             setNewComment('');
-            
         }
     }
 
-    function formatDate(date) {
-        const day = date.getDate().toString().padStart(2, '0');
-        const month = (date.getMonth() + 1).toString().padStart(2, '0');
-        const year = date.getFullYear();
-        return `${day}-${month}-${year}`;
-    }
 
     return (
         <section>
@@ -132,11 +155,11 @@ function PostComment({ postComments }) {
                         <div key={index}>
                             <div className="comment-details">
                                 <div className="comment-user">
-                                    <div>  <h6>{item.first_name} {item.last_name}</h6> </div>
-                                    <div className="comment-date">{item.date}</div>
+                                    <div>  <h6>{item.commentedByFirstName} {item.commentedByLastName}</h6> </div>
+                                    <div className="comment-date">{convertDate(item.lastUpdatedOn)}</div>
                                 </div>
                                 <div className="comment-text">
-                                    <p>{item.comment}</p>
+                                    <p>{item.commentString}</p>
                                 </div>
 
                             </div>
