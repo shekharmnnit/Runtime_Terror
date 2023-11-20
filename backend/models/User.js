@@ -38,6 +38,10 @@ const UserSchema = new mongoose.Schema({
   notifications: {
     type: [Notification],
     default: []
+  },
+  notificationsShowedTillNow:{
+    type: Number,
+    default: 0
   }
 });
 

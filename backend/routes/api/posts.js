@@ -196,6 +196,7 @@ router.post('/downvote/:postid', auth, checkObjectId('postid'), async (req, res)
       flag=1;
     }
     await post.save();
+    const sessionUser = await User.findById(req.user.id);
     console.log("value flag: ",flag)
     if (flag==1){
       const postOwner = await User.findById(post.userId);
@@ -203,6 +204,7 @@ router.post('/downvote/:postid', auth, checkObjectId('postid'), async (req, res)
         postOwnerUserId: postOwner._id,
         postOwnerFullName: postOwner.firstName+" "+postOwner.lastName,
         operation: "downvote",
+        operationBy: sessionUser.firstName+" "+sessionUser.lastName,
         postId: post._id,
         postCaption: post.caption,
         createdOn: Date.now()
@@ -240,12 +242,14 @@ router.post('/upvote/:postid', auth, checkObjectId('postid'), async (req, res) =
       post.upvotes.unshift(req.user.id);
     }
     await post.save();
+    const sessionUser = await User.findById(req.user.id);
     if (flag==1){
       const postOwner = await User.findById(post.userId);
       postOwner.notifications.unshift(new Notification({
         postOwnerUserId: postOwner._id,
         postOwnerFullName: postOwner.firstName+" "+postOwner.lastName,
         operation: "upvote",
+        operationBy: sessionUser.firstName+" "+sessionUser.lastName,
         postId: post._id,
         postCaption: post.caption,
         createdOn: Date.now()
@@ -274,7 +278,7 @@ router.post(
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
     }
-
+    const sessionUser = await User.findById(req.user.id);
     try {
       const user = await User.findById(req.user.id);
       const post = await Post.findById(req.params.postid);
@@ -293,6 +297,7 @@ router.post(
         postOwnerUserId: postOwner._id,
         postOwnerFullName: postOwner.firstName+" "+postOwner.lastName,
         operation: "comment",
+        operationBy: sessionUser.firstName+" "+sessionUser.lastName,
         postId: post._id,
         postCaption: post.caption,
         createdOn: Date.now()
