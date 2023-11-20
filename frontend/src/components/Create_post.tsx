@@ -93,24 +93,7 @@ function CreatePost({ postContent, postId, editMode }) {
                     headers: {
                         'x-auth-token': localToken
                     }
-                        .then((response) => {
-                            // setLoading(false);
-                            if (response.status === 201) {
-                                window.alert('File uploaded successfully')
-                                console.log('File uploaded successfully.');
-                                window.location.reload();
-                                // Handle the API's response here, if needed.
-                            } else {
-                                window.alert('File upload failed')
-                                console.error('File upload failed.');
-                                // Handle error cases here.
-                            }
-                        })
-                        .catch((error) => {
-                            // setLoading(false);
-                            console.error('File upload failed:', error);
-                            // Handle network or other errors here.
-                        })
+                        
                 })
                     .then((response) => {
                         // setLoading(false);
