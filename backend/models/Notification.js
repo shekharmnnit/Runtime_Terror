@@ -14,6 +14,10 @@ const NotificationSchema = new mongoose.Schema({
       enum: ['comment','upvote','downvote'],
       required: true,
     },
+    operationBy: {
+      type: String,
+      required: true,
+    },
     postId: {
       type: String,
     },
