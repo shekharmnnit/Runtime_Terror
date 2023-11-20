@@ -178,7 +178,7 @@ router.post('/searchBySkill', async (req, res) => {
 // @route    PUT api/posts/upvote/:postid
 // @desc     Like a post
 // @access   Private
-router.put('/downvote/:postid', auth, checkObjectId('postid'), async (req, res) => {
+router.post('/downvote/:postid', auth, checkObjectId('postid'), async (req, res) => {
   try {
     const post = await Post.findById(req.params.postid);
     let flag=0;
@@ -220,7 +220,7 @@ router.put('/downvote/:postid', auth, checkObjectId('postid'), async (req, res) 
 // @route    PUT api/posts/downvote/:postid
 // @desc     Like a post
 // @access   Private
-router.put('/upvote/:postid', auth, checkObjectId('postid'), async (req, res) => {
+router.post('/upvote/:postid', auth, checkObjectId('postid'), async (req, res) => {
   try {
     const post = await Post.findById(req.params.postid);
 
@@ -231,8 +231,7 @@ router.put('/upvote/:postid', auth, checkObjectId('postid'), async (req, res) =>
     if (indexU > -1){
       post.upvotes.splice(indexU,1)
       console.log('reached non flag if')
-    } 
-    if (indexD > -1){
+    } else if (indexD > -1){
       post.upvotes.unshift(req.user.id);
       post.downvotes.splice(indexD, 1);
       flag=1;
@@ -253,6 +252,7 @@ router.put('/upvote/:postid', auth, checkObjectId('postid'), async (req, res) =>
       }))
       await postOwner.save();
     }
+    await post.save();
     return res.json(post.upvotes);
   } catch (err) {
     console.error(err.message);
