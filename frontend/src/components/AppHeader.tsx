@@ -9,6 +9,7 @@ import CreatePost from './Create_post.tsx';
 import SearchBar from './SearchBar.tsx';
 // import Post from './Post';
 import { clearLocalStorage } from './LocalStorageUtils.tsx';
+import axios from "axios";
 
 function handleLogout() {
     clearLocalStorage();
@@ -17,25 +18,60 @@ function handleLogout() {
 function AppHeader() {
     const [showNotificationDropdown, setShowNotificationDropdown] = useState(false);
     const [showGreenNotificationIcon, setShowGreenNotificationIcon] = useState(true);
+    const [newNotificationCount, setNewNotificationCount] = useState(0);
+    
+    async function getProfileDetails(){
+        let localToken = (String)(localStorage.getItem('local_login_token'));
+        const profileResponse = await axios.get(localStorage.getItem('apiServerURL') + "api/user/fetchProfile/1", {
+          headers: {
+            'x-auth-token': localToken,
+            'Content-Type': 'application/json'
+          },
+        });
+        let newNotificationCount = profileResponse.data.user.notifications.length-profileResponse.data.user.notificationsShowedTillNow
+        setNewNotificationCount(newNotificationCount)
+      }
 
-
-    function handleNotificationDropdown() {
+    async function getNotification(){
+        let localToken = (String)(localStorage.getItem('local_login_token'));
+        axios.get(localStorage.getItem('apiServerURL') + `api/posts/notifications`, {
+            headers: {
+                'x-auth-token': localToken
+            },
+        }).then((response) => {
+                console.log("PC " + response.status)
+                if (response.status === 201) {
+                    console.log(' successfully.');
+                    let notificationsRemaining= response.data.notificationsRemaining
+                    response.data.notifications.map((notif)=>{
+                        notif['message']= 'commenterName'+' '+notif.operation +" on "+ notif.postCaption+ " " + 'post'
+                        notif['url']= 'post/'+notif.postId
+                        if(notificationsRemaining>0){
+                            notif['color']='red'
+                            notificationsRemaining--
+                        }else notif['color']='black'
+                    })
+                    setNotificationList(response.data.notifications)
+                } else {
+                    console.error(' failed');
+                }
+            }).catch((error) => {
+                console.error('failed:', error);
+            });
+    }
+    async function handleNotificationDropdown() {
         // clearLocalStorage();
+        await getNotification()
         setShowNotificationDropdown(!showNotificationDropdown)
         setShowGreenNotificationIcon(false)
     }
     const [notificationList, setNotificationList] = useState([{
         name: "apple",
-        url: "post"
+        url: "post",
+        message:"",
+        color:""
     },
-    {
-        name: "man",
-        url: "www.fb.com"
-    },
-    {
-        name: "cat",
-        url: "https://www.facebook.com/"
-    }]);
+    ]);
     const [show, setShow] = useState(true);
     
 
@@ -45,7 +81,7 @@ function AppHeader() {
         local_first_name='Guest'
     }
     const isContinueAsGuest = local_first_name == 'Guest'|| local_first_name == '' ||local_first_name == null ;
-
+    getProfileDetails()
     return (
 
         <header className="header">
@@ -74,10 +110,11 @@ function AppHeader() {
                         {!isContinueAsGuest && (
                         <div className='notification-dropdown'>
                                 <i onClick={handleNotificationDropdown} className="fa-solid fa-bell fa-2x notification-icon"></i>
-                                {showGreenNotificationIcon && <i className="fa-solid fa-circle" style={{ "color": "#58ec09" }}></i>}
+                                {/* {showGreenNotificationIcon && <i className="fa-solid fa-circle" style={{ "color": "#58ec09" }}></i>} */}
+                                {newNotificationCount>0 && <b style={{color:'white'}}>{newNotificationCount}</b>}
                                 {showNotificationDropdown && <div className="dropdown-content">
                                     {notificationList.map((item, index) => (
-                                        <a href={item.url}>{item.name}</a>
+                                        <a href={item.url} style={{color:item.color}}>{item.message}</a>
                                     ))}
                                 </div>}
                             </div>

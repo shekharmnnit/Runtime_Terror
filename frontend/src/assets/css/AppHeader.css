@@ -181,6 +181,10 @@ header {
   
   .notification-dropdown .dropdown-content {
     display: block;
+    max-height: 47vh;
+    overflow: auto;
+    width: 50vh;
+    left: 63%;
   }
 
 /* @media (max-width: 600px) {
