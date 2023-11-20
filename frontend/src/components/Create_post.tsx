@@ -16,8 +16,8 @@ import {
     from 'mdb-react-ui-kit';
 import axios from 'axios';
 
-function CreatePost({ postContent, editMode }) {
-    
+function CreatePost({ postContent, postId, editMode }) {
+
     const [justifyActive, setJustifyActive] = useState('tab1');
 
     let emptyObj = [{
@@ -39,51 +39,98 @@ function CreatePost({ postContent, editMode }) {
     const handleFileChange = (event) => {
         setSelectedFile(event.target.files[0]);
     };
-    function checkError(isUploadbuttonVisible,selectedFile,postContant){
-        let errorList: string[]=[];
-        if(isUploadbuttonVisible && selectedFile == null){
+    function checkError(isUploadbuttonVisible, selectedFile, postContant) {
+        let errorList: string[] = [];
+        if (isUploadbuttonVisible && selectedFile == null) {
             errorList.push('Please upload a file.');
         }
-        if(postContant.tags.length==0){
+        if (postContant.tags.length == 0) {
             errorList.push('Please enter atleast one tag. Atleast one tag is mandatory.');
+        }
+        if (postContant.caption === '') {
+            errorList.push('Please enter the caption. Caption is mandatory.');
         }
         return errorList
     }
-    let isUploadbuttonVisible=!!!postContent[0]['isEdit']
+    let isUploadbuttonVisible = !!!postContent[0]['isEdit']
     const handleFileUpload = (postContant) => {
 
-        let errorList= checkError(isUploadbuttonVisible,selectedFile,postContant);
-        if (errorList.length==0) {
+        let errorList = checkError(isUploadbuttonVisible, selectedFile, postContant);
+        if (errorList.length == 0) {
             console.log('Uploading file:', selectedFile);
             const formData = new FormData();
             formData.append('postfile', selectedFile);
             formData.append('caption', postContant.caption);
             formData.append('skills', postContant.tags);
             let localToken = (String)(localStorage.getItem('local_login_token'));
-            axios.post(localStorage.getItem('apiServerURL') + "api/posts/create", formData,{
-                headers: {
-                    'x-auth-token': localToken
-                },
-              })
-                .then((response) => {
-                    // setLoading(false);
-                    if (response.status === 201) {
-                        window.alert('File uploaded successfully')
-                        console.log('File uploaded successfully.');
-                        window.location.reload();
-                        // Handle the API's response here, if needed.
-                    } else {
-                        window.alert('File upload failed')
-                        console.error('File upload failed.');
-                        // Handle error cases here.
-                    }
-                })
-                .catch((error) => {
-                    // setLoading(false);
-                    console.error('File upload failed:', error);
-                    // Handle network or other errors here.
-                });
 
+            if (selectedFile == null) {
+
+                formData.delete('postfile');
+                axios.post(localStorage.getItem('apiServerURL') + `api/posts/update/${postId}`, formData, {
+                    headers: {
+                        'x-auth-token': localToken,
+                        'Content-Type': 'application/json'
+                    },
+                })
+                    .then((response) => {
+                        console.log("PC " + response.status)
+                        if (response.status === 200) {
+                            console.log('Post updated successfully.');
+                            window.location.reload();
+                        } else {
+                            console.error('Post update failed');
+                        }
+                    })
+                    .catch((error) => {
+                        // setLoading(false);
+                        console.error('File upload failed:', error);
+                        // Handle network or other errors here.
+                    });
+            }
+            else {
+                axios.post(localStorage.getItem('apiServerURL') + "api/posts/create", formData, {
+                    headers: {
+                        'x-auth-token': localToken
+                    }
+                        .then((response) => {
+                            // setLoading(false);
+                            if (response.status === 201) {
+                                window.alert('File uploaded successfully')
+                                console.log('File uploaded successfully.');
+                                window.location.reload();
+                                // Handle the API's response here, if needed.
+                            } else {
+                                window.alert('File upload failed')
+                                console.error('File upload failed.');
+                                // Handle error cases here.
+                            }
+                        })
+                        .catch((error) => {
+                            // setLoading(false);
+                            console.error('File upload failed:', error);
+                            // Handle network or other errors here.
+                        })
+                })
+                    .then((response) => {
+                        // setLoading(false);
+                        if (response.status === 201) {
+                            window.alert('File uploaded successfully')
+                            console.log('File uploaded successfully.');
+                            window.location.reload();
+                            // Handle the API's response here, if needed.
+                        } else {
+                            window.alert('File upload failed')
+                            console.error('File upload failed.');
+                            // Handle error cases here.
+                        }
+                    })
+                    .catch((error) => {
+                        // setLoading(false);
+                        console.error('File upload failed:', error);
+                        // Handle network or other errors here.
+                    });
+            }
         } else {
             // alert('1)File is mandatory \n 2)Atleast one tag is mandatory');
             // console.log('1)File is mandatory \n 2)Atleast one tag is mandatory');
@@ -102,14 +149,14 @@ function CreatePost({ postContent, editMode }) {
         !!tag3 && tags.push(tag3)
         !!tag4 && tags.push(tag4)
         !!tag5 && tags.push(tag5)
-        obj['tags']=tags
+        obj['tags'] = tags
         handleFileUpload(obj)
     }
 
 
     return (
         <div>
-            <div style={{margin: '10px'}}>
+            <div style={{ margin: '10px' }}>
                 <textarea className='w-100' value={caption} onChange={(e) => setCaption(e.target.value)} placeholder='Enter Caption' style={{ backgroundColor: '#D9D9D9', marginBottom: '10px', border: 'none' }} />
                 <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                     <div style={{ marginRight: '10px' }}>

@@ -29,6 +29,8 @@ function PostDetailContainer({ postContent, postId }) {
 
     const handleEditClick = () => {
         // setShow(!show);
+
+
     };
 
     const handleDeleteClick = () => {
@@ -46,13 +48,12 @@ function PostDetailContainer({ postContent, postId }) {
             .then((response) => {
                 // setLoading(false);
                 console.log("PDC " + response.status)
-                if (response.status === 201) {
+                if (response.status === 200) {
                     console.log('Deleted successfully.');
-                    window.location.reload();
+                    navigate("/home");
                 } else {
                     console.error('Delete failed');
                 }
-                navigate("/home");
             })
             .catch((error) => {
                 // setLoading(false);
@@ -75,7 +76,7 @@ function PostDetailContainer({ postContent, postId }) {
                                     <Popup trigger={<button style={{ "border": "none", "backgroundColor": "white" }} onClick={() => handleEditClick()}><i className="fa-regular fa-pen-to-square icon"></i></button>} position="center center">
                                         <div>
                                             <h5 className="edit-post">EDIT POST</h5>
-                                            <div><CreatePost postContent={postContent} editMode={editMode} /></div>
+                                            <div><CreatePost postContent={postContent} postId={postId} editMode={editMode} /></div>
                                         </div>
                                     </Popup>
                                 )
