@@ -132,27 +132,30 @@ router.post('/updateProfile',
         { $set: updatedFields }, // Use $set to update only specific fields
         { new: true }
       );
-
       if (firstName) {
         user.firstName = firstName; // Update first name if provided
       }
-
       if (lastName) {
         user.lastName = lastName; // Update last name if provided
       }
-
       // Update the user in MySQL
       const updateUserResult = await connectMySQL.updateUser({
         email: user.email, // Use email to identify the user in MySQL
         firstName: user.firstName,
         lastName: user.lastName,
       });
-
       if (updateUserResult.error) {
         return res.status(500).json({ error: updateUserResult.error });
-    }
-
+      }
       await updatedUser.save();
+      const postsByUser = await Post.find({userId: req.user.id})
+      postsByUser.forEach(async post => {
+        if(firstName!=undefined)
+          post.firstName = firstName
+        if(lastName!=undefined)
+          post.lastName = lastName
+        await post.save();
+      })
       return res.status(201).json(updatedUser);
     } catch(err) {
       console.error(err.message);
