@@ -44,7 +44,7 @@ function AppHeader() {
                     console.log(' successfully.');
                     let notificationsRemaining= response.data.notificationsRemaining
                     response.data.notifications.map((notif)=>{
-                        notif['message']= 'commenterName'+' '+notif.operation +" on "+ notif.postCaption+ " " + 'post'
+                        notif['message']= notif.operationBy+' '+notif.operation +" on "+ notif.postCaption+ " " + 'post'
                         notif['url']= 'post/'+notif.postId
                         if(notificationsRemaining>0){
                             notif['color']='red'
