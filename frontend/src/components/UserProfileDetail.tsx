@@ -6,34 +6,23 @@ import Popup from 'reactjs-popup';
 
 function UserProfileDetail({ obj }) {
 
-    let firstName = String(localStorage.getItem('local_first_name'));
-    let lastName = String(localStorage.getItem('local_last_name'));
-    let email = String(localStorage.getItem('local_login_email'));
-    let storedSkillsString = String(localStorage.getItem("local_user_skills"));
-
+    // let firstName = String(localStorage.getItem('local_first_name'));
+    // let lastName = String(localStorage.getItem('local_last_name'));
+    // let email = String(localStorage.getItem('local_reg_email'));
+    // let storedSkillsString = String(localStorage.getItem("local_user_skills"));
     // let storedSkills = JSON.parse(storedSkillsString) || [];
+    
 
-    let path = window.location.pathname;
-    console.log(path);
-    const hasDigits = /\d/.test(path);
-    if (hasDigits) {
-        const id = path.match(/\d+/g);
-        if (obj) {
-            obj.map((item, index) => {
-                if (parseInt(item.user_id) === parseInt(id)) {
-                    firstName = item.first_name;
-                    lastName = item.last_name;
-                }
-            });
-        }
-    }
 
 
     let profileObj = {
-        name: firstName + ' ' + lastName,
-        email: email,
-        initials: (firstName[0] + lastName[0]).toUpperCase(),
-        skills: storedSkillsString,
+        name: obj.firstName +' '+obj.lastName,
+        firstName: obj.firstName,
+        lastName: obj.lastName,
+        email: obj.email,
+        skills: obj.skills,
+        isEditable: obj.isEditable,
+        initials: (obj.firstName[0] + obj.lastName[0]),
     };
     const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -58,16 +47,12 @@ function UserProfileDetail({ obj }) {
                 <div className="user-profile-details">
                     {profileObj.email}
                 </div>
-                {/* <div className="user-profile-details">
-                    Skills: {storedSkills.filter(skill => skill.trim() !== '').join(', ')}
-
-                </div> */}
                 <div className="user-profile-details">
-                    Skills: {profileObj.skills.split(",").map(skill => skill.trim()).filter(Boolean).join(', ')}
+                    Skills: {profileObj.skills.filter(skill => skill.trim() !== '').join(', ')}
                 </div>
-                <button className="edit-button" onClick={handleEditClick}>
+                {profileObj.isEditable &&<button className="edit-button" onClick={handleEditClick}>
                     Edit
-                </button>
+                </button>}
                 </div>
                 <Popup
                     open={isModalOpen}
@@ -77,9 +62,9 @@ function UserProfileDetail({ obj }) {
                 >
                     <EditProfileDetail
                         userDetails={{
-                            firstName,
-                            lastName,
-                            tags: [], // Add the tags from localStorage or your data source
+                            firstName:profileObj.firstName,
+                            lastName:profileObj.lastName,
+                            tags: profileObj.skills, // Add the tags from localStorage or your data source
                         }}
                         onSave={() => {
                             // Handle save logic here

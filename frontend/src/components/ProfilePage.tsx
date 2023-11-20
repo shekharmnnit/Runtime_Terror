@@ -8,8 +8,14 @@ import axios from "axios";
 
 function ProfilePage() {
 
-    let local_first_name= localStorage.getItem('local_first_name');
+    let path = window.location.pathname;
+    console.log(path)
+    const alphanumericAfterSlash = /profile\/([a-zA-Z0-9]+)/;
+    let match = path.match(alphanumericAfterSlash);
+    const profileID= !!match && !!match[1]?match[1]:'1'
 
+    let local_first_name= localStorage.getItem('local_first_name');
+    let local_loggedin_userid= localStorage.getItem('local_loggedin_userid');
    
     const [selectedTab, setSelectedTab] = useState('posts');
 
@@ -78,13 +84,28 @@ function ProfilePage() {
       const [feedPost, setFeedPost] = useState<{
        
       }[]>([]);
-      
+      const [userProfileBasicDetail, setuserProfileBasicDetail] = useState({
+        firstName:'',
+        lastName:'',
+        email: '',
+        skills: [],
+        isEditable: true
+      });
+      function setBasicDetail(userDetails){
+        setuserProfileBasicDetail({
+          firstName:userDetails.firstName,
+          lastName:userDetails.lastName,
+          email: userDetails.email,
+          skills: userDetails.skills,
+          isEditable: local_loggedin_userid == userDetails._id || profileID == '1' ? true : false
+        })
+      }
       
       useEffect(() => {
         const getPost = async (tabType) => {
           try {
             let localToken = (String)(localStorage.getItem('local_login_token'));
-            const response =  await axios.get(localStorage.getItem('apiServerURL') + "api/user/fetchProfile/1", {
+            const response =  await axios.get(localStorage.getItem('apiServerURL') + "api/user/fetchProfile/"+profileID, {
               headers: {
                   'Content-Type': 'application/json',
                   'x-auth-token': localToken
@@ -96,6 +117,7 @@ function ProfilePage() {
             }
             let posts=[{}]
             posts.pop()
+            setBasicDetail(response.data.user)
             let showPostData= tabType =='tab1' ? response.data.createdPosts : response.data.commentedPosts
             showPostData.forEach((post)=>{
               let fileTypeHandel= ['PNG','JPEG','JPG', 'PNG', 'GIF', 'TIFF']
@@ -159,7 +181,7 @@ function ProfilePage() {
             {!isContinueAsGuest && (
             <div>
                 <div className='userProfileSection'>
-                    <div><UserProfileDetail obj={obj}/></div>
+                    <div><UserProfileDetail obj={userProfileBasicDetail}/></div>
                 </div>
                 <div className='postSection'>
                     
