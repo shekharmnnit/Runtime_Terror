@@ -4,8 +4,10 @@ import linkImage from '../assets/file.png';
 import Popup from 'reactjs-popup';
 import CreatePost from './Create_post.tsx';
 import _ from 'lodash';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
-function PostDetailContainer({ postContent, cur_user_id }) {
+function PostDetailContainer({ postContent, postId }) {
     // let obj = [{
     //     "first_name": "Kunal",
     //     "last_name": "Mahato",
@@ -14,6 +16,7 @@ function PostDetailContainer({ postContent, cur_user_id }) {
     //     "tags": ["C++", "tag2", "tag3", "tag4", "tag5"],
     //     "date": "12-08-2023"
     // }];
+    const navigate = useNavigate();
     postContent = [_.cloneDeep(postContent)];
     if (!!postContent[0]) {
         postContent[0]['isEdit'] = true
@@ -25,7 +28,39 @@ function PostDetailContainer({ postContent, cur_user_id }) {
     const [editMode, setEditMode] = useState(false);
 
     const handleEditClick = () => {
-        setShow(!show);
+        // setShow(!show);
+    };
+
+    const handleDeleteClick = () => {
+
+        let localToken = (String)(localStorage.getItem('local_login_token'));
+        // console.log(newCommentObj)
+        // console.log(postId)
+        // console.log(postComments)
+
+        axios.delete(localStorage.getItem('apiServerURL') + `api/posts/delete/${postId}`, {
+            headers: {
+                'x-auth-token': localToken
+            },
+        })
+            .then((response) => {
+                // setLoading(false);
+                console.log("PDC " + response.status)
+                if (response.status === 201) {
+                    console.log('Deleted successfully.');
+                    window.location.reload();
+                } else {
+                    console.error('Delete failed');
+                }
+                navigate("/home");
+            })
+            .catch((error) => {
+                // setLoading(false);
+                console.error('File upload failed:', error);
+                // Handle network or other errors here.
+            });
+
+        // setShow(!show);
     };
 
     return (
@@ -46,7 +81,7 @@ function PostDetailContainer({ postContent, cur_user_id }) {
                                 )
                                 }
                                 {showEdit && (
-                                    <button style={{ "border": "none", "backgroundColor": "white" }}>
+                                    <button style={{ "border": "none", "backgroundColor": "white" }} onClick={() => handleDeleteClick()}>
                                         <i className="fa-solid fa-trash icon"></i>
                                     </button>
                                 )}

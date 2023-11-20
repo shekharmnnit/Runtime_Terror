@@ -105,7 +105,7 @@ function PostPage() {
                 <div>
                     <div className='postContent'>
                         <div className='postContentDetai postBody'>
-                            <PostDetailContainer postContent={postData.postContent} cur_user_id={cur_user_id} />
+                            <PostDetailContainer postContent={postData.postContent} postId={postId} />
                         </div>
                         <div className='comment postBody'><PostComment postComments={postData.comments} postId={postId} /> </div>
                     </div>
