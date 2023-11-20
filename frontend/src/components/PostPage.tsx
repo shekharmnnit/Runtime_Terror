@@ -54,8 +54,11 @@ function PostPage() {
                             "userid": response.data.userId
                         },
                         comments: response.data.comments,
+                        upvotes: response.data.upvotes,
+                        downvotes: response.data.downvotes,
                         docsToView: file
                     }
+                    // console.log(postDataResponse.upvotes)
                     setPostData(postDataResponse)
                     // { uri: require("./example-files/pdf.pdf") }, // Local File
                 } catch (error) {
@@ -107,7 +110,7 @@ function PostPage() {
                         <div className='postContentDetai postBody'>
                             <PostDetailContainer postContent={postData.postContent} postId={postId} />
                         </div>
-                        <div className='comment postBody'><PostComment postComments={postData.comments} postId={postId} /> </div>
+                        <div className='comment postBody'><PostComment postComments={postData.comments} postId={postId} upvotes={postData.upvotes} downvotes={postData.downvotes} /> </div>
                     </div>
                     <div className='documentsView'>
                         <div className='document'>

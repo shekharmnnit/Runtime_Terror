@@ -3,13 +3,14 @@ import '../assets/css/global.css';
 import '../assets/css/PostComment.css';
 import axios from 'axios';
 import { convertDate } from '../utils.js';
-function PostComment({ postComments, postId }) {
+function PostComment({ postComments, postId, upvotes, downvotes }) {
 
-
-    const [count, setCount] = useState(25);
+    // let count = upvotes.length - downvotes.length
+    const [count, setCount] = useState(upvotes.length - downvotes.length);
+    // console.log(count)
     const [upvoteStyle, setUpvoteStyle] = useState({ color: '#9D9D9D' });
     const [downvoteStyle, setDownvoteStyle] = useState({ color: '#9D9D9D' });
-
+    let localToken = (String)(localStorage.getItem('local_login_token'));
     const handleUpvote = () => {
         setCount((prevCount) => {
             if (upvoteStyle.color === '#9D9D9D') {
@@ -19,6 +20,27 @@ function PostComment({ postComments, postId }) {
                     return prevCount + 2;
                 } else {
                     setUpvoteStyle({ color: '#710808' });
+
+                    axios.get(localStorage.getItem('apiServerURL') + `api/posts/upvote/${postId}`, {
+                        headers: {
+                            'x-auth-token': localToken,
+                            'Content-Type': 'application/json'
+                        },
+                    })
+                        .then((response) => {
+                            console.log("Upvote " + response.status)
+                            if (response.status === 200) {
+                                console.log('Upvoted successfully.');
+                                // window.location.reload();
+                            } else {
+                                console.error('Upvote failed');
+                            }
+                        })
+                        .catch((error) => {
+                            // setLoading(false);
+                            console.error('File upload failed:', error);
+                            // Handle network or other errors here.
+                        });
                     return prevCount + 1;
                 }
             } else {
@@ -108,7 +130,7 @@ function PostComment({ postComments, postId }) {
                 },
             })
                 .then((response) => {
-                    console.log("PC "+response.status)
+                    console.log("PC " + response.status)
                     if (response.status === 200) {
                         console.log('Commented successfully.');
                         window.location.reload();
