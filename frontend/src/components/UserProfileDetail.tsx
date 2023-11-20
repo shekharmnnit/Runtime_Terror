@@ -3,17 +3,9 @@ import '../assets/css/global.css';
 import '../assets/css/UserProfileDetail.css';
 import EditProfileDetail from './EditProfileDetail.tsx';
 import Popup from 'reactjs-popup';
+import axios from 'axios';
 
 function UserProfileDetail({ obj }) {
-
-    // let firstName = String(localStorage.getItem('local_first_name'));
-    // let lastName = String(localStorage.getItem('local_last_name'));
-    // let email = String(localStorage.getItem('local_reg_email'));
-    // let storedSkillsString = String(localStorage.getItem("local_user_skills"));
-    // let storedSkills = JSON.parse(storedSkillsString) || [];
-    
-
-
 
     let profileObj = {
         name: obj.firstName +' '+obj.lastName,
@@ -28,7 +20,40 @@ function UserProfileDetail({ obj }) {
 
     const handleEditClick = () => {
         setIsModalOpen(!isModalOpen); // Toggle the modal state
+
     };
+
+    function saveProfile(param){
+        let localToken = (String)(localStorage.getItem('local_login_token'));
+        let userID = (String)(localStorage.getItem('local_loggedin_userid'));
+
+        const editProfileObj = {
+            "firstName": param.firstName,
+            "lastName": param.lastName,
+            "skills": param.tags,
+        };
+
+        axios.post(localStorage.getItem('apiServerURL') + `api/user/updateProfile`, editProfileObj, {
+          headers: {
+              'x-auth-token': localToken,
+              'Content-Type': 'application/json',
+          },
+          })
+          .then((response) => {
+              console.log("PC "+response.status)
+              if (response.status === 201) {
+                  console.log('Edit Profile Updated successfully.');
+                  window.location.reload();
+              } else {
+                  console.error('Edit Profile failed');
+              }
+          })
+          .catch((error) => {
+              // setLoading(false);
+              console.error('Edit Profile failed:', error);
+              // Handle network or other errors here.
+          });
+    }
 
     const handleClosePopup = () => {
         setIsModalOpen(false);
@@ -66,9 +91,10 @@ function UserProfileDetail({ obj }) {
                             lastName:profileObj.lastName,
                             tags: profileObj.skills, // Add the tags from localStorage or your data source
                         }}
-                        onSave={() => {
+                        onSave={(param) => {
                             // Handle save logic here
                             handleClosePopup(); // Close the modal after saving
+                            saveProfile(param)
                         }}
                     />
                 </Popup>
