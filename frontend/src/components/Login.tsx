@@ -128,6 +128,7 @@ function Login() {
     localStorage.setItem('local_first_name', profileResponse.data.user.firstName);
     localStorage.setItem('local_last_name', profileResponse.data.user.lastName);
     localStorage.setItem('local_loggedin_userid', profileResponse.data.user._id);
+    localStorage.setItem("local_user_skills", profileResponse.data.user.skills);
   }
 
   async function login() {

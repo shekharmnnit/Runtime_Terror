@@ -9,9 +9,10 @@ function UserProfileDetail({ obj }) {
     let firstName = String(localStorage.getItem('local_first_name'));
     let lastName = String(localStorage.getItem('local_last_name'));
     let email = String(localStorage.getItem('local_login_email'));
-    // let storedSkillsString = String(localStorage.getItem("local_user_skills"));
+    let storedSkillsString = String(localStorage.getItem("local_user_skills"));
+
     // let storedSkills = JSON.parse(storedSkillsString) || [];
-    
+
     let path = window.location.pathname;
     console.log(path);
     const hasDigits = /\d/.test(path);
@@ -32,6 +33,7 @@ function UserProfileDetail({ obj }) {
         name: firstName + ' ' + lastName,
         email: email,
         initials: (firstName[0] + lastName[0]).toUpperCase(),
+        skills: storedSkillsString,
     };
     const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -58,7 +60,11 @@ function UserProfileDetail({ obj }) {
                 </div>
                 {/* <div className="user-profile-details">
                     Skills: {storedSkills.filter(skill => skill.trim() !== '').join(', ')}
+
                 </div> */}
+                <div className="user-profile-details">
+                    Skills: {profileObj.skills.split(",").map(skill => skill.trim()).filter(Boolean).join(', ')}
+                </div>
                 <button className="edit-button" onClick={handleEditClick}>
                     Edit
                 </button>
