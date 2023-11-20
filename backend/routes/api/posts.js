@@ -58,12 +58,13 @@ router.post('/create',
     const sessionUser = await User.findById(req.user.id).select('-password');
     console.log(sessionUser)
     const skills = req.body.skills.split(',');
+    const lowerCaseSkills = skills.map(skill => skill.toLowerCase());
     const newPost = new Post({
       userId: sessionUser._id,
       email: sessionUser.email,
       firstName: sessionUser.firstName,
       lastName: sessionUser.lastName,
-      skills: skills,
+      skills: lowerCaseSkills,
       caption: req.body.caption,
       fileName: req.fileName,
     });
@@ -93,7 +94,7 @@ async (req, res) => {
     const caption = req.body.caption;
     console.log(req.body)
     if (skills != undefined && skills.length != 0){
-      updateFields.skills = skills.split(',')
+      updateFields.skills = skills.split(',').map(skill => skill.toLowerCase());
     } 
     if (caption != undefined && caption.length != 0){
       updateFields.caption=caption;
@@ -167,6 +168,7 @@ router.post('/searchBySkill', async (req, res) => {
   const skillToSearch = req.body.skill; // Get the skill from the request body
 
   try {
+    skillToSearch = skillToSearch.toLowerCase();
     const posts = await Post.find({ skills: skillToSearch });
     res.json(posts);
   } catch (error) {
