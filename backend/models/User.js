@@ -42,7 +42,7 @@ const UserSchema = new mongoose.Schema({
   notificationsShowedTillNow:{
     type: Number,
     default: 0
-  }
-});
+  },
+},{versionKey: false});
 
 module.exports = mongoose.model('user', UserSchema);
