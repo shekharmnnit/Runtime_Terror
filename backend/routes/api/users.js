@@ -154,6 +154,14 @@ router.post('/updateProfile',
           post.firstName = firstName
         if(lastName!=undefined)
           post.lastName = lastName
+        post.comments.forEach(comment => {
+          if (comment.commentedUserId == req.user.id){
+            if(firstName!=undefined)
+              comment.commentedByFirstName = firstName
+            if(lastName!=undefined)
+              comment.commentedByLastName = lastName
+          }
+        })
         await post.save();
       })
       return res.status(201).json(updatedUser);
