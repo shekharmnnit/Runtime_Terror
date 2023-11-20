@@ -20,7 +20,7 @@ const CommentSchema = new mongoose.Schema({
       type: Date,
       default: Date.now,
     },
-  });
+  }, {versionKey:false});
 
 const Comment = mongoose.model('Comment', CommentSchema);
 

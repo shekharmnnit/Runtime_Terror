@@ -57,7 +57,7 @@ const PostSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
-});
+},{versionKey: false});
 
 // Create the Post model
 const Post = mongoose.model('Post', PostSchema);
