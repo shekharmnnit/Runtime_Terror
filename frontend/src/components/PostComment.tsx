@@ -85,7 +85,7 @@ function PostComment({ postComments, postId }) {
 
 
         if (newComment.trim() !== '') {
-            const currentDate = formatDate(new Date());
+            const currentDate = convertDate(new Date());
             // const commentsOnPost = {
             //     "first_name": localFname,
             //     "last_name": localLname,
@@ -108,7 +108,7 @@ function PostComment({ postComments, postId }) {
                 },
             })
                 .then((response) => {
-                    // setLoading(false);
+                    console.log("PC "+response.status)
                     if (response.status === 201) {
                         console.log('Commented successfully.');
                         window.location.reload();
