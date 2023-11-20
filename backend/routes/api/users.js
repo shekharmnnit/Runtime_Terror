@@ -128,7 +128,7 @@ router.post('/updateProfile',
       const {firstName, lastName, skills} = req.body;
       const updatedFields = {firstName, lastName, skills}
       const updatedUser = await User.findOneAndUpdate(
-        { _id: profileId },
+        { _id: req.user.id },
         { $set: updatedFields }, // Use $set to update only specific fields
         { new: true }
       );
