@@ -176,7 +176,7 @@ function PostComment({ postComments, postId, upvotes, downvotes }) {
                         <div key={index}>
                             <div className="comment-details">
                                 <div className="comment-user">
-                                    <div>  <h6>{item.commentedByFirstName} {item.commentedByLastName}</h6> </div>
+                                    <div>  <a href={`/profile/${item.commentedUserId}`}><h6>{item.commentedByFirstName} {item.commentedByLastName}</h6></a> </div>
                                     <div className="comment-date">{convertDate(item.lastUpdatedOn)}</div>
                                 </div>
                                 <div className="comment-text">
