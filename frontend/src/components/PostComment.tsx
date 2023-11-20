@@ -109,7 +109,7 @@ function PostComment({ postComments, postId }) {
             })
                 .then((response) => {
                     console.log("PC "+response.status)
-                    if (response.status === 201) {
+                    if (response.status === 200) {
                         console.log('Commented successfully.');
                         window.location.reload();
                     } else {
@@ -121,7 +121,6 @@ function PostComment({ postComments, postId }) {
                     console.error('File upload failed:', error);
                     // Handle network or other errors here.
                 });
-            window.location.reload();
             setNewComment('');
         }
     }
@@ -151,7 +150,7 @@ function PostComment({ postComments, postId }) {
                     </div>
                 </div>
                 <div style={{ height: '29vh', overflow: 'auto' }}>
-                    {comments.slice().reverse().map((item, index) => (
+                    {comments.slice().map((item, index) => (
                         <div key={index}>
                             <div className="comment-details">
                                 <div className="comment-user">
