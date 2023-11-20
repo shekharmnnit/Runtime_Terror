@@ -94,7 +94,9 @@ function Login() {
     // let localLname= localStorage.getItem('local_last_name');   
     // console.log(localLname);
 
-    localStorage.setItem('local_reg_email', email);
+   // localStorage.setItem('local_reg_email', email);
+
+   localStorage.setItem('local_login_email', email);
 
     localStorage.setItem('local_reg_user_id', '1');
     // localStorage.setItem('local_tags', JSON.stringify([tag1, tag2, tag3, tag4, tag5]));
@@ -126,6 +128,7 @@ function Login() {
     localStorage.setItem('local_first_name', profileResponse.data.user.firstName);
     localStorage.setItem('local_last_name', profileResponse.data.user.lastName);
     localStorage.setItem('local_loggedin_userid', profileResponse.data.user._id);
+    localStorage.setItem("local_user_skills", profileResponse.data.user.skills);
   }
 
   async function login() {
