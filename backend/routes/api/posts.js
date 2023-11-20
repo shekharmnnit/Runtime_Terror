@@ -88,12 +88,14 @@ async (req, res) => {
     const postId = req.params.postId;
     // const updateFields = req.body; // This should contain only the fields you want to update
     const updateFields = {}
+    console.log(req)
     let skills = req.body.skills;
     const caption = req.body.caption;
-    if (skills.length != 0){
+    console.log(req.body)
+    if (skills != undefined && skills.length != 0){
       updateFields.skills = skills.split(',')
     } 
-    if (caption.length != 0){
+    if (caption != undefined && caption.length != 0){
       updateFields.caption=caption;
     }
     const updatedPost = await Post.findOneAndUpdate(
