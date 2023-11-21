@@ -35,14 +35,18 @@ function PostPage() {
                     let temp = response.data
                     console.log(temp);
                     // let cur_user_id = response.data.userId
-                    let fileTypeHandel = ['PNG', 'JPEG', 'JPG', 'PNG', 'GIF', 'TIFF', 'PDF']
+                    let fileTypeHandel = ['PNG', 'JPEG', 'JPG', 'PNG', 'GIF', 'TIFF', 'PDF','TXT','DOCX']
                     let fileName = response.data.fileName;
                     let file = !!fileName && fileTypeHandel.includes((fileName.split('.')[1]).toUpperCase()) ? [{
                         uri: localStorage.getItem('apiServerURL') + "api/posts/getFile/" + fileName,
                         fileType: fileName.split('.')[1],
-                        fileName: fileName
+                        fileName: fileName,
+                        fileHandel:true
                     }] : [{
-                        fileName: 'no_file'
+                        uri: localStorage.getItem('apiServerURL') + "api/posts/getFile/" + fileName,
+                        fileType: fileName.split('.')[1],
+                        fileName: fileName,
+                        fileHandel:false
                     }]
                     let postDataResponse = {
                         postContent: {
@@ -113,9 +117,10 @@ function PostPage() {
                         <div className='comment postBody'><PostComment postComments={postData.comments} postId={postId} upvotes={postData.upvotes} downvotes={postData.downvotes} /> </div>
                     </div>
                     <div className='documentsView'>
-                        <div className='document'>
-                            <DocViewer documents={postData.docsToView} pluginRenderers={DocViewerRenderers}
-                                style={{ height: '1000px' }} />
+                        <div className='document' style={{ height: '78vh', width: '98%'  }}>
+                            {postData.docsToView[0].fileHandel && <DocViewer documents={postData.docsToView} pluginRenderers={DocViewerRenderers}
+                                style={{ height: '10px' }} />}
+                                {!postData.docsToView[0].fileHandel && <iframe src={postData.docsToView[0].uri} style={{ height: '78vh', width: '98%'  }}></iframe>}
                             {/* <img src="https://upload.wikimedia.org/wikipedia/commons/6/6c/PDF_icon.svg" alt="A beautiful landscape" /> */}
                         </div>
                     </div>

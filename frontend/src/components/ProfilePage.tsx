@@ -128,7 +128,7 @@ function ProfilePage() {
                 fileName:'file'
               }]
               :[{
-                uri: localStorage.getItem('apiServerURL')+"api/posts/getFile/1700250920907.png",
+                uri: localStorage.getItem('apiServerURL')+"api/posts/getFile/1700604011453.gif",
                 fileType:'png',
                 fileName:'no file'
               }]
