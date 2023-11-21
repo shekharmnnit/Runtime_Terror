@@ -3,43 +3,112 @@ import CreatePost from './Create_post.tsx';
 import AppHeader from './AppHeader.tsx';
 import AppFooter from './AppFooter.tsx';
 import ShowPostSummary from './Post_summary.tsx';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import '../assets/css/AppHeader.css';
+import axios from "axios";
+import { convertDate } from '../utils.js';
 
 function SearchBar() {
-
+    const navigate = useNavigate();
     const [searchText, setSearchText] = useState('');
     const searchArray = searchText.split(' ');
-    console.log(searchArray)
+    const [feedPost, setFeedPost] = useState<{
+    }[]>([]);
+
+    let searchObj = {
+        "skill": searchText
+    }
+
+    console.log(searchObj)
+
+    async function searchRes() {
+        try {
+            const response = await axios.post(localStorage.getItem('apiServerURL') + "api/posts/searchBySkill", searchObj, {
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+            });
+            console.log(response)
+            if (!response.data) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            let posts = [{}]
+            posts.pop()
+            response.data.forEach((post) => {
+                let fileTypeHandel = ['PNG', 'JPEG', 'JPG', 'PNG', 'GIF', 'TIFF', 'PDF']
+                let file = !!post.fileName && fileTypeHandel.includes((post.fileName.split('.')[1]).toUpperCase()
+                ) ? [{
+                    uri: localStorage.getItem('apiServerURL') + "api/posts/getFile/" + post.fileName,
+                    fileType: post.fileName.split('.')[1],
+                    fileName: 'file'
+                }]
+                    : [{
+                        uri: localStorage.getItem('apiServerURL') + "api/posts/getFile/1700250920907.png",
+                        fileType: 'png',
+                        fileName: 'no file'
+                    }]
+                posts.push({
+                    "user_id": post.userId,
+                    "first_name": post.firstName,
+                    "last_name": post.lastName,
+                    "post_id": post._id,
+                    "caption": post.caption,
+                    "link": "https://www.google.com/",
+                    "tags": post.skills,
+                    "date": convertDate(post.lastUpdatedOn),
+                    "docsToView": file
+                })
+            });
+            setFeedPost(posts.reverse());
+            navigate(
+                '/home',
+                {
+                    state: {
+                        feedPost
+                    }
+                }
+            );
+        } catch (error) {
+            // Handle errors by updating the state
+            //   setError(error);
+        } finally {
+            // Set loading to false once the API call is complet
+        }
+    }
+
+
 
     //fetch with searchArray
-    let feedPost = [{
-        "user_id": "4",
-        "first_name": "Hamesha",
-        "last_name": "Mahato",
-        "caption": "Review my paper on Software Engineering",
-        "link": "https://www.google.com/",
-        "tags": ["C++", "tag2", "tag3", "tag4", "tag5"],
-        "date": "12-08-2023"
-    },
-    {
-        "user_id": "5",
-        "first_name": "Yo",
-        "last_name": "Pool",
-        "caption": "Review my paper on Software Engineering",
-        "link": "https://www.google.com/",
-        "tags": ["C#", "tag2", "tag3", "tag4", "tag5"],
-        "date": "12-08-2023"
-    },
-    {
-        "user_id": "6",
-        "first_name": "Yo",
-        "last_name": "Mahato",
-        "caption": "Review my paper on Software Engineering",
-        "link": "https://www.google.com/",
-        "tags": ["C#", "tag2", "tag3", "tag4", "tag5"],
-        "date": "12-08-2023"
-    }]
+    // if (feedPost == null) {
+    //     let feedPostx = [{
+    //         "user_id": "4",
+    //         "first_name": "Hamesha",
+    //         "last_name": "Mahato",
+    //         "caption": "Review my paper on Software Engineering",
+    //         "link": "https://www.google.com/",
+    //         "tags": ["C++", "tag2", "tag3", "tag4", "tag5"],
+    //         "date": "12-08-2023"
+    //     },
+    //     {
+    //         "user_id": "5",
+    //         "first_name": "Yo",
+    //         "last_name": "Pool",
+    //         "caption": "Review my paper on Software Engineering",
+    //         "link": "https://www.google.com/",
+    //         "tags": ["C#", "tag2", "tag3", "tag4", "tag5"],
+    //         "date": "12-08-2023"
+    //     },
+    //     {
+    //         "user_id": "6",
+    //         "first_name": "Yo",
+    //         "last_name": "Mahato",
+    //         "caption": "Review my paper on Software Engineering",
+    //         "link": "https://www.google.com/",
+    //         "tags": ["C#", "tag2", "tag3", "tag4", "tag5"],
+    //         "date": "12-08-2023"
+    //     }]
+    //     feedPost = feedPostx
+    // }
 
 
 
@@ -49,9 +118,7 @@ function SearchBar() {
             {/* <Link to="/home">
                 <i className="fa fa-search"></i> 
                 </Link> */}
-             <Link to="/home" state={{ feedPost }}>
-                <i className="fa fa-search"></i>
-            </Link>
+            <i className="fa fa-search" style={{ cursor: 'pointer' }} onClick={searchRes}></i>
         </div>
     );
 }

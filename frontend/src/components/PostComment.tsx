@@ -7,66 +7,125 @@ function PostComment({ postComments, postId, upvotes, downvotes }) {
 
     // let count = upvotes.length - downvotes.length
     const [count, setCount] = useState(upvotes.length - downvotes.length);
+    const [upvoteCount, setUpvoteCount] = useState(upvotes.length);
+    const [downvoteCount, setDownvoteCount] = useState(downvotes.length);
     // console.log(count)
-    const [upvoteStyle, setUpvoteStyle] = useState({ color: '#9D9D9D' });
-    const [downvoteStyle, setDownvoteStyle] = useState({ color: '#9D9D9D' });
+    let initColor = '#9D9D9D'
+    let activeColor = '#710808'
     let localToken = (String)(localStorage.getItem('local_login_token'));
-    const handleUpvote = () => {
-        setCount((prevCount) => {
-            if (upvoteStyle.color === '#9D9D9D') {
-                if (downvoteStyle.color === '#710808') {
-                    setDownvoteStyle({ color: '#9D9D9D' });
-                    setUpvoteStyle({ color: '#710808' });
-                    return prevCount + 2;
-                } else {
-                    setUpvoteStyle({ color: '#710808' });
+    let localUserId = localStorage.getItem('local_loggedin_userid');
+    const [upvoteStyle, setUpvoteStyle] = useState({ color: initColor });
+    const [downvoteStyle, setDownvoteStyle] = useState({ color: initColor });
 
-                    axios.get(localStorage.getItem('apiServerURL') + `api/posts/upvote/${postId}`, {
+    useEffect(() => {
+        if (upvotes.includes(localUserId)) {
+            setUpvoteStyle({ color: activeColor });
+        }
+        if (downvotes.includes(localUserId)) {
+            setDownvoteStyle({ color: activeColor });
+        }
+    }, [upvotes, downvotes, localUserId]);
+
+
+    const handleUpvote = async () => {
+        if (upvoteStyle.color === initColor) {
+            try {
+                const response = await axios.post(
+                    `${localStorage.getItem('apiServerURL')}api/posts/upvote/${postId}`, {},
+                    {
                         headers: {
                             'x-auth-token': localToken,
                             'Content-Type': 'application/json'
                         },
-                    })
-                        .then((response) => {
-                            console.log("Upvote " + response.status)
-                            if (response.status === 200) {
-                                console.log('Upvoted successfully.');
-                                // window.location.reload();
-                            } else {
-                                console.error('Upvote failed');
-                            }
-                        })
-                        .catch((error) => {
-                            // setLoading(false);
-                            console.error('File upload failed:', error);
-                            // Handle network or other errors here.
-                        });
-                    return prevCount + 1;
-                }
-            } else {
-                setUpvoteStyle({ color: '#9D9D9D' });
-                return prevCount - 1;
-            }
-        });
-    }
+                    }
+                );
 
-    const handleDownvote = () => {
-        setCount((prevCount) => {
-            if (downvoteStyle.color === '#9D9D9D') {
-                if (upvoteStyle.color === '#710808') {
-                    setUpvoteStyle({ color: '#9D9D9D' });
-                    setDownvoteStyle({ color: '#710808' });
-                    return prevCount - 2;
-                } else {
-                    setDownvoteStyle({ color: '#710808' });
-                    return prevCount - 1;
+                if (response.status === 200) {
+                    console.log('Upvoted successfully.');
+
+                    setUpvoteStyle({ color: activeColor });
+                    setDownvoteStyle({ color: initColor });
+
+                    window.location.reload()
                 }
-            } else {
-                setDownvoteStyle({ color: '#9D9D9D' });
-                return prevCount + 1;
+            } catch (error) {
+                console.error('Upvote failed:', error);
             }
-        });
-    }
+        } else {
+            try {
+                const response = await axios.post(
+                    `${localStorage.getItem('apiServerURL')}api/posts/upvote/${postId}`,
+                    {},
+                    {
+                        headers: {
+                            'x-auth-token': localToken,
+                            'Content-Type': 'application/json'
+                        },
+                    }
+                );
+
+                if (response.status === 200) {
+                    console.log('Upvote removed successfully.');
+
+                    setUpvoteStyle({ color: initColor });
+
+                    window.location.reload()
+                }
+            } catch (error) {
+                console.error('Removing upvote failed:', error);
+            }
+        }
+    };
+
+    const handleDownvote = async () => {
+        if (downvoteStyle.color === initColor) {
+            try {
+                const response = await axios.post(
+                    `${localStorage.getItem('apiServerURL')}api/posts/downvote/${postId}`,
+                    {},
+                    {
+                        headers: {
+                            'x-auth-token': localToken,
+                            'Content-Type': 'application/json'
+                        },
+                    }
+                );
+
+                if (response.status === 200) {
+                    console.log('Downvoted successfully.');
+
+
+                    setUpvoteStyle({ color: initColor });
+                    setDownvoteStyle({ color: activeColor });
+
+                    window.location.reload()
+                }
+            } catch (error) {
+                console.error('Downvote failed:', error);
+            }
+        } else {
+            try {
+                const response = await axios.post(
+                    `${localStorage.getItem('apiServerURL')}api/posts/downvote/${postId}`, {},
+                    {
+                        headers: {
+                            'x-auth-token': localToken,
+                            'Content-Type': 'application/json'
+                        },
+                    }
+                );
+
+                if (response.status === 200) {
+                    console.log('Downvote removed successfully.');
+                    setDownvoteStyle({ color: initColor });
+
+                    window.location.reload()
+                }
+            } catch (error) {
+                console.error('Removing downvote failed:', error);
+            }
+        }
+    };
 
 
     var [newComment, setNewComment] = useState('');
@@ -163,12 +222,13 @@ function PostComment({ postComments, postId, upvotes, downvotes }) {
                             style={upvoteStyle}
                             onClick={handleUpvote}
                         ></i>
+                        <div>{upvoteCount}</div>
                         <i
                             className="fa-solid fa-circle-arrow-down"
                             style={downvoteStyle}
                             onClick={handleDownvote}
                         ></i>
-                        <div>{count}</div>
+                        <div>{downvoteCount}</div>
                     </div>
                 </div>
                 <div style={{ height: '29vh', overflow: 'auto' }}>
