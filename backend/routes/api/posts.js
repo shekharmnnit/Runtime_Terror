@@ -188,10 +188,10 @@ router.post('/downvote/:postid', auth, checkObjectId('postid'), async (req, res)
     const indexU = post.upvotes.indexOf(req.user.id);
     const indexD = post.downvotes.indexOf(req.user.id);
     if (indexD > -1){
-      post.downvotes.splice(indexU,1)
+      post.downvotes.splice(indexD,1)
     } else if (indexU > -1){
       post.downvotes.unshift(req.user.id);
-      post.upvotes.splice(indexD, 1);
+      post.upvotes.splice(indexU, 1);
       flag=1;
     } else {
       post.downvotes.unshift(req.user.id);
