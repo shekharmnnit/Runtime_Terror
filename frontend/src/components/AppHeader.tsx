@@ -21,15 +21,17 @@ function AppHeader() {
     const [newNotificationCount, setNewNotificationCount] = useState(0);
     
     async function getProfileDetails(){
-        let localToken = (String)(localStorage.getItem('local_login_token'));
-        const profileResponse = await axios.get(localStorage.getItem('apiServerURL') + "api/user/fetchProfile/1", {
-          headers: {
-            'x-auth-token': localToken,
-            'Content-Type': 'application/json'
-          },
-        });
-        let newNotificationCount = profileResponse.data.user.notifications.length-profileResponse.data.user.notificationsShowedTillNow
-        setNewNotificationCount(newNotificationCount)
+        let localToken = (localStorage.getItem('local_login_token'));
+        if(!!localToken){
+            const profileResponse = await axios.get(localStorage.getItem('apiServerURL') + "api/user/fetchProfile/1", {
+            headers: {
+                'x-auth-token': localToken,
+                'Content-Type': 'application/json'
+            },
+            });
+            let newNotificationCount = profileResponse.data.user.notifications.length-profileResponse.data.user.notificationsShowedTillNow
+            setNewNotificationCount(newNotificationCount)
+        }
       }
 
     async function getNotification(){
