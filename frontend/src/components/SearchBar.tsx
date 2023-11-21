@@ -59,58 +59,20 @@ function SearchBar() {
                     "docsToView": file
                 })
             });
-            setFeedPost(posts.reverse());
+            setFeedPost(posts);
             navigate(
-                '/home',
+                "/home",
                 {
                     state: {
-                        feedPost
+                        feedPost: posts.reverse()
                     }
                 }
             );
+
         } catch (error) {
-            // Handle errors by updating the state
-            //   setError(error);
-        } finally {
-            // Set loading to false once the API call is complet
+            console.log("Error in search", error)
         }
     }
-
-
-
-    //fetch with searchArray
-    // if (feedPost == null) {
-    //     let feedPostx = [{
-    //         "user_id": "4",
-    //         "first_name": "Hamesha",
-    //         "last_name": "Mahato",
-    //         "caption": "Review my paper on Software Engineering",
-    //         "link": "https://www.google.com/",
-    //         "tags": ["C++", "tag2", "tag3", "tag4", "tag5"],
-    //         "date": "12-08-2023"
-    //     },
-    //     {
-    //         "user_id": "5",
-    //         "first_name": "Yo",
-    //         "last_name": "Pool",
-    //         "caption": "Review my paper on Software Engineering",
-    //         "link": "https://www.google.com/",
-    //         "tags": ["C#", "tag2", "tag3", "tag4", "tag5"],
-    //         "date": "12-08-2023"
-    //     },
-    //     {
-    //         "user_id": "6",
-    //         "first_name": "Yo",
-    //         "last_name": "Mahato",
-    //         "caption": "Review my paper on Software Engineering",
-    //         "link": "https://www.google.com/",
-    //         "tags": ["C#", "tag2", "tag3", "tag4", "tag5"],
-    //         "date": "12-08-2023"
-    //     }]
-    //     feedPost = feedPostx
-    // }
-
-
 
     return (
         <div className='search-box'>
