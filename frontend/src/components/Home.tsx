@@ -5,24 +5,13 @@ import AppFooter from './AppFooter.tsx';
 import ShowPostSummary from './Post_summary.tsx';
 import { useLocation } from 'react-router-dom';
 import axios from "axios";
+import { convertDate } from '../utils.js';
 
 function Home() {
   const [show, setShow] = useState(false);
   const location = useLocation();
   const { state } = location;
-  const [feedPost, setFeedPost] = useState<{
-
-  }[]>([]);
-
-  function convertDate(dateTimeString) {
-    const dateObject = new Date(dateTimeString);
-    // Extract date components
-    const year = dateObject.getFullYear();
-    const month = String(dateObject.getMonth() + 1).padStart(2, '0'); // Month is zero-based
-    const day = String(dateObject.getDate()).padStart(2, '0');
-    // Formatted date string
-    return `${day}-${month}-${year}`;
-  }
+  const [feedPost, setFeedPost] = useState<{}[]>([]);
 
   useEffect(() => {
     const getPost = async () => {
@@ -73,14 +62,14 @@ function Home() {
         // Set loading to false once the API call is complet
       }
     };
-    if (state && state.feedPost) {
+    if (state && state.feedPost !== undefined && state.feedPost !== null) {
       setFeedPost(state.feedPost);
       console.log(state.feedPost)
     } else {
       getPost();
       console.log(feedPost)
     }
-  }, []);
+  }, [state?.feedPost]);
   console.log(feedPost)
   return (
     <section>
