@@ -165,7 +165,7 @@ router.get('/fetchAll', async (req, res) => {
 
 // Fetch posts by a specific skill from the request body
 router.post('/searchBySkill', async (req, res) => {
-  const skillToSearch = req.body.skill; // Get the skill from the request body
+  let skillToSearch = req.body.skill; // Get the skill from the request body
 
   try {
     skillToSearch = skillToSearch.toLowerCase();
