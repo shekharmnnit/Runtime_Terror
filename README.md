@@ -24,7 +24,7 @@ Actual result:
 The user is successfully registered. 
 The user is redirected to the home page.
 
-(frontend/src/assets/acceptanceTest/image1.jpg)
+![image1](frontend/src/assets/acceptanceTest/image1.jpg)
 
 Status: Pass
 
@@ -52,7 +52,7 @@ The registration process should not proceed with incomplete or incorrect informa
 
 Actual result:
 The error message is displayed and the registration process is not proceeding.
-(frontend/src/assets/acceptanceTest/image2.jpg)
+![image2](frontend/src/assets/acceptanceTest/image2.jpg)
 
 
 
@@ -75,7 +75,7 @@ Actual result:
  The user is successfully logged-in. 
 The user is redirected to the home page.
 
-(frontend/src/assets/acceptanceTest/image3.jpg)
+![image3](frontend/src/assets/acceptanceTest/image3.jpg)
 Status: Pass
  
 Test case: Error Scenario in User Login
@@ -94,7 +94,7 @@ The login process should not proceed with invalid login details.
 Actual result:
  The error message is displayed and the loginprocess is not proceeding.
 
-(frontend/src/assets/acceptanceTest/image4.jpg)
+![image4](frontend/src/assets/acceptanceTest/image4.jpg)
 Status: Pass
 
  
@@ -111,8 +111,8 @@ The post should be successfully uploaded when valid content, including a caption
 Actual result:
  The post is created.
 
- (frontend/src/assets/acceptanceTest/image5.jpg)
- (frontend/src/assets/acceptanceTest/image6.jpg)
+ ![image5](frontend/src/assets/acceptanceTest/image5.jpg)
+ ![image6](frontend/src/assets/acceptanceTest/image6.jpg)
 
 Status: Pass
 
@@ -128,7 +128,7 @@ Expected result:
  Error messages should be displayed for missing mandatory fields (caption, at least one tag and a file).
 The post should not be created with incomplete or missing mandatory information.
 Actual result:
-(frontend/src/assets/acceptanceTest/image7.jpg)
+![image7](frontend/src/assets/acceptanceTest/image7.jpg)
  
 Status: Pass
 
@@ -143,7 +143,7 @@ Expected result:
 The user profile details should be edited.
 Actual result:
 
-(frontend/src/assets/acceptanceTest/image8.jpg)
+![image8](frontend/src/assets/acceptanceTest/image8.jpg)
 
 Status: Pass
 
@@ -155,8 +155,8 @@ Click on ‘POST’ button.
 Expected result:
 The post should be edited.
 Actual result:
-(frontend/src/assets/acceptanceTest/image9.jpg)
-(frontend/src/assets/acceptanceTest/image10.jpg)
+![image9](frontend/src/assets/acceptanceTest/image9.jpg)
+![image10](frontend/src/assets/acceptanceTest/image10.jpg)
 
 Status: Pass
 
@@ -178,9 +178,9 @@ Expected result:
 The notifications should be visible.
 Actual result:
 The notifications with the count are visible.
-(frontend/src/assets/acceptanceTest/image11.jpg)
-(frontend/src/assets/acceptanceTest/image12.jpg)
-(frontend/src/assets/acceptanceTest/image13.jpg)
+![image11](frontend/src/assets/acceptanceTest/image11.jpg)
+![image12](frontend/src/assets/acceptanceTest/image12.jpg)
+![image13](frontend/src/assets/acceptanceTest/image13.jpg)
 
 
 Status: Pass
@@ -194,8 +194,8 @@ Expected result:
 The new comment should be added to the comments section.
 Actual result:
 
-(frontend/src/assets/acceptanceTest/image14.jpg)
-(frontend/src/assets/acceptanceTest/image15.jpg)
+![image14](frontend/src/assets/acceptanceTest/image14.jpg)
+![image15](frontend/src/assets/acceptanceTest/image15.jpg)
 Status: Pass
 
 Test case: Post Upvote
@@ -203,7 +203,7 @@ Description: User upvotes a post.
 Test Steps: Click on the upvote icon for a post.
 Expected result: The upvote count should increase, and the style of the upvote icon should change to indicate it has been upvoted.
 Actual result:
-(frontend/src/assets/acceptanceTest/image16.jpg)
+![image16](frontend/src/assets/acceptanceTest/image16.jpg)
 
 Status: Pass
 
@@ -212,7 +212,7 @@ Description: User downvotes a post.
 Test Steps: Click on the downvote icon for a post.
 Expected result: The count should decrease, and the style of the icon should change to indicate it has been downvoted.
 Actual result:
-(frontend/src/assets/acceptanceTest/image17.jpg)
+![image17](frontend/src/assets/acceptanceTest/image17.jpg)
 
 Status: Pass
 
@@ -221,8 +221,8 @@ Description: User clicks on "Continue as Guest."
 Test Steps: Click on the "Continue as Guest" button.
 Expected result: The application allows the user to access limited features without requiring a full login. The user should be directed to the main interface with restricted capabilities.
 Actual result:
-(frontend/src/assets/acceptanceTest/image18.jpg)
-(frontend/src/assets/acceptanceTest/image19.jpg)
+![image18](frontend/src/assets/acceptanceTest/image18.jpg)
+![image19](frontend/src/assets/acceptanceTest/image19.jpg)
 
 Status: Pass
 
@@ -231,7 +231,7 @@ Description: Testing the search functionality.
 Test Steps: Type the hashtag in the search box and click on search icon.
 Expected result: The post with the searched hashtag should be displayed.
 Actual result:
-(frontend/src/assets/acceptanceTest/image20.jpg)
+![image20](frontend/src/assets/acceptanceTest/image20.jpg)
 Status: Pass
 
 
