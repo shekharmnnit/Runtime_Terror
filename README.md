@@ -9,6 +9,7 @@ Install MySQL workbench - https://dev.mysql.com/downloads/workbench/
 ### Navigate to the 'frontend' directory inside 'Runtime_Terror' repository and run the following commands.
 npm ci -f\
 npm run start
+
 Modify apiServerURL in frontend/src/App.js to the port where backend is running (usually http://localhost:5000/)
 ````md
 ```js
