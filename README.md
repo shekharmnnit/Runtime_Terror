@@ -1,5 +1,28 @@
 # Runtime_Terror
-Runtime_Terror
+
+### Applications to be installed:
+Install mongodbcompass - https://www.mongodb.com/try/download/compass \
+Install nodejs - choose lts version - https://nodejs.org/en/download/current \
+Install MySQL community sever - https://dev.mysql.com/downloads/mysql/ \
+Install MySQL workbench - https://dev.mysql.com/downloads/workbench/
+# Commands for running the frontend
+### Navigate to the 'frontend' directory inside 'Runtime_Terror' repository and run the following commands.
+npm ci -f\
+npm run start
+Modify apiServerURL in frontend/src/App.js to the port where backend is running (usually http://localhost:5000/)
+````md
+```js
+localStorage.setItem('apiServerURL', 'http://localhost:5000/');
+}
+```
+````
+# Commands for running the backend
+### Navigate to the 'backend' directory inside 'Runtime_Terror' repository and run the following commands.
+npm ci -f\
+npm run start
+# Steps for Unit-testing
+### Navigate to the 'backend' repository inside 'Runtime_Terror' directory and run the following commands.
+npm test
 
 
 # Acceptance Test report - ReviewMe
