@@ -70,7 +70,7 @@ function PostDetailContainer({ postContent, postId }) {
                 <div className="post-detail-summary" key={index}>
                     <div className="post-details">
                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%' }}>
-                            <h4 style={{ display: 'inline' }}>{item.first_name} {item.last_name}</h4>
+                            <a href={`/profile/${item.userid}`}><h4 style={{ display: 'inline' }}>{item.first_name} {item.last_name}</h4></a>
                             <div>
                                 {showEdit && (
                                     <Popup trigger={<button style={{ "border": "none", "backgroundColor": "white" }} onClick={() => handleEditClick()}><i className="fa-regular fa-pen-to-square icon"></i></button>} position="center center">

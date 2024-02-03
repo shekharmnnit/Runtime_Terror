@@ -66,7 +66,8 @@ function PostPage() {
                     setPostData(postDataResponse)
                     // { uri: require("./example-files/pdf.pdf") }, // Local File
                 } catch (error) {
-                    window.alert('Error fetching post')
+                    if(error?.response?.data?.message=='Post not found') window.alert('Selected post deleted by admin.')
+                    else window.alert('Error fetching post')
                     console.error('Error fetching post:', error);
                     navigate("/home");
                 }
